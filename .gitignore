@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/git,node,windows,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=git,node,windows,visualstudiocode
+# Created by https://www.gitignore.io/api/git,node,react,macos,windows,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=git,node,react,macos,windows,visualstudiocode
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
@@ -16,6 +16,34 @@
 *_BASE_*.txt
 *_LOCAL_*.txt
 *_REMOTE_*.txt
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 ### Node ###
 # Logs
@@ -123,6 +151,19 @@ dist/
 tmp/
 temp/
 
+### react ###
+.DS_*
+**/*.backup.*
+**/*.back.*
+
+node_modules
+
+*.sublime*
+
+psd
+thumb
+sketch
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -160,4 +201,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/git,node,windows,visualstudiocode
+# End of https://www.gitignore.io/api/git,node,react,macos,windows,visualstudiocode
