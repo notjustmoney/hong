@@ -9,9 +9,9 @@ const createUser = catchAsync(async (req, res) => {
 
 const getUsers = catchAsync(async (req, res) => {
   const users = await userService.getUsers(req.query);
-  const response = users.map(user => user.transform());
+  const response = users.map((user) => user.transform());
   res.send(response);
-})
+});
 
 const getUser = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
