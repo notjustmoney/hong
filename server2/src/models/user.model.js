@@ -158,7 +158,7 @@ userSchema.statics.findByName = function (name) {
 
 userSchema.methods.toJSON = function () {
   const user = this;
-  return omit(user.toObject(), ['password']);
+  return omit(user.toObject(), ['password', '_id']);
 };
 
 userSchema.methods.transform = function () {
