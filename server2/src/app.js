@@ -20,6 +20,8 @@ app.use(morgan.errorHandler);
 
 app.use(helmet());
 
+app.use('/public', express.static('public'));
+
 // Body Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
