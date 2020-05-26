@@ -50,6 +50,7 @@ const createPost = async (postBody) => {
     tags.push(tag._id);
   }
   const post = await Post.create({
+    _id,
     title: postBody.title,
     contents: postBody.contents,
     imgs: postBody.imgs,
