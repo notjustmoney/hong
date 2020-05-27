@@ -1,9 +1,9 @@
 const Joi = require('@hapi/joi');
-const { objectid } = require('./custom.validation');
+const { objectId } = require('./custom.validation');
 
 const searchByTagId = {
   params: Joi.object({
-    tagId: Joi.string().custom(objectid),
+    tagId: Joi.string().custom(objectId),
   }),
 };
 
