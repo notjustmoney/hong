@@ -33,11 +33,11 @@ app.use(compression());
 
 // CORS configuration
 const corsOptions = {
-  "origin": "*",
-  "method": "GET, POST, PUT, PATCH, DELETE, HEAD, OPTION",
-  "preflightContinue": false,
-}
-app.use(cors(corsOptions));
+  origin: '*',
+  method: 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTION',
+  preflightContinue: false,
+};
+// app.use(cors(corsOptions));
 // app.options('*', cors());
 
 // Passport.js JWT authentication configuration
