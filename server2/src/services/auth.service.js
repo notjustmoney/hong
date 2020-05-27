@@ -7,7 +7,7 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const AppError = require('../utils/AppError');
 
-const generateAuthTokens = async userId => {
+const generateAuthTokens = async (userId) => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = tokenService.generateToken(userId, accessTokenExpires);
 
@@ -36,9 +36,7 @@ const checkPassword = async (password, correctPassword) => {
 
 const loginUser = async (email, password) => {
   try {
-    console.log(email, password);
     const user = await userService.getUserByEmail(email);
-    console.log(email, password);
     await checkPassword(password, user.password);
     return user;
   } catch (error) {
@@ -46,7 +44,7 @@ const loginUser = async (email, password) => {
   }
 };
 
-const refreshAuthTokens = async refreshToken => {
+const refreshAuthTokens = async (refreshToken) => {
   try {
     const refreshTokenDoc = await tokenService.verifyToken(refreshToken, 'refresh');
     const userId = refreshTokenDoc.user;
@@ -58,7 +56,7 @@ const refreshAuthTokens = async refreshToken => {
   }
 };
 
-const generateResetPasswordToken = async email => {
+const generateResetPasswordToken = async (email) => {
   const user = await userService.getUserByEmail(email);
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = tokenService.generateToken(user._id, expires);
@@ -73,7 +71,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     userId = resetPasswordTokenDoc.user;
     await userService.updateUser(userId, { password: newPassword });
   } catch (error) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+    throw new AppError(httpStatus.UNAUTHORIZED, `Password reset failed: ${error}`);
   }
   await Token.deleteMany({ user: userId, type: 'resetPassword' });
 };
