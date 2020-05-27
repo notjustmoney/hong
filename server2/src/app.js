@@ -32,8 +32,8 @@ app.use(xss());
 app.use(compression());
 
 // CORS configuration
-app.use(cors());
-app.options('*', cors());
+app.use(cors({ * }));
+// app.options('*', cors());
 
 // Passport.js JWT authentication configuration
 app.use(passport.initialize());
