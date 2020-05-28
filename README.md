@@ -8,10 +8,3 @@ cd /home
 git clone "https://github.com/notjustmoney/hong.git"
 cd notjustmoney
 </pre>
-
-## Run
-<pre>
-docker login
-docker pull chajyn/hong
-docker run -p 3030:3030 -d chajyn/hong
-</pre>
