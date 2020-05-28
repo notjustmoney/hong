@@ -1,8 +1,8 @@
 FROM node:12 as builder
 
 WORKDIR /usr/src/client
-COPY ../client2/package*.json .
-COPY ../client2/yarn.lock .
+COPY ../client2/package*.json ./
+COPY ../client2/yarn.lock ./
 RUN npm install
 RUN yarn install
 COPY . .
