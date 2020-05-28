@@ -1,3 +1,14 @@
+FROM node:12 as builder
+
+WORKDIR /usr/src/client
+COPY ../client2/package*.json .
+COPY ../client2/yarn.lock .
+RUN npm install
+RUN yarn install
+COPY . .
+RUN npm run build
+
 FROM nginx:alpine
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /usr/src/client/build /usr/share/nginx/html

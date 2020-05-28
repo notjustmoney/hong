@@ -14,12 +14,6 @@ services:
       - "80:80"
     networks:
       - backend
-  client:
-    image: hong:client
-    contianer_name: client
-    ports: "3000:3000"
-    networks:
-      - backend
 
 networks: # basic bridge network
   backend:
