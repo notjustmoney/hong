@@ -2,11 +2,11 @@ FROM node:12
 
 WORKDIR /usr/src/app
 
-COPY ./package*.json ./
+COPY server2/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY server2/ .
 
 EXPOSE 3030
 
