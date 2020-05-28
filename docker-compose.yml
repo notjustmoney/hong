@@ -1,14 +1,14 @@
 version: "3.5"
 services:
   server:
-    image: hong:server 
+    image: chajyn/hong:server 
     container_name: server
     ports:
       - "5000:3030"
     networks:
       - backend
   nginx:
-    image: hong:nginx
+    image: chajyn/hong:nginx
     container_name: nginx
     ports:
       - "80:80"
