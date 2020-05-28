@@ -12,7 +12,7 @@ const checkDuplicateEmail = async (email, excludeUserId) => {
 };
 
 const checkDuplicateNickname = async (nickname, excludeUserId) => {
-  const user = await User.findOne({ nickname, _id: { $ne: excludeUserId } });
+  const user = await User.findOne({ 'profile.nickname': nickname, _id: { $ne: excludeUserId } });
   if (user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Nickname alread exists');
   }
