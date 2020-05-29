@@ -79,7 +79,7 @@ const Menu = styled.div`
   &:hover {
     border-bottom: 3px solid #fdcb6e;
   }
-  transition: all 0.1s linear;
+  transition: all 0.2s linear;
   border-bottom: 3px solid
     ${(props) => (props.status ? "#fdcb6e" : "transparent")};
 `;
@@ -182,7 +182,11 @@ export default withRouter(({ location: { pathname } }) => {
               <STLink to="/about">
                 <Menu status={pathname === "/about"}>About</Menu>
               </STLink>
-              <Menu onClick={() => dispatch(allActions.openModal())}>User</Menu>
+              <Menu
+                onClick={() => dispatch(allActions.modalActions.openModal())}
+              >
+                User
+              </Menu>
             </MenuContainer>
           </Content>
         </Container>
@@ -207,7 +211,9 @@ export default withRouter(({ location: { pathname } }) => {
             <STLink to="/about">
               <Menu status={pathname === "/about"}>About</Menu>
             </STLink>
-            <Menu onClick={() => dispatch(allActions.openModal())}>User</Menu>
+            <Menu onClick={() => dispatch(allActions.modalActions.openModal())}>
+              User
+            </Menu>
           </MenuContainer>
         </Content>
       </Fixedheader>
@@ -215,7 +221,7 @@ export default withRouter(({ location: { pathname } }) => {
         size="mini"
         dimmer="blurring"
         open={open}
-        onClose={() => dispatch(allActions.closeModal())}
+        onClose={() => dispatch(allActions.modalActions.closeModal())}
       >
         <LoginModal />
       </Modal>
