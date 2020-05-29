@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   server:
-    image: hong:server 
+    image: chajyn/hong:server 
     container_name: server
     volumes:
       - /home/hong/.env:/usr/src/.env
@@ -10,7 +10,7 @@ services:
     networks:
       - backend
   nginx:
-    image: hong:nginx
+    image: chajyn/hong:nginx
     container_name: nginx
     ports:
       - "80:80"
