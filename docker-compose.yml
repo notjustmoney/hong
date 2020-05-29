@@ -3,6 +3,8 @@ services:
   server:
     image: hong:server 
     container_name: server
+    volumes:
+      - /home/hong/.env:/home/hong/.env
     ports:
       - "5000:3030"
     networks:
