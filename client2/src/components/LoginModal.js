@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Icon, Divider } from "semantic-ui-react";
+import { Modal, Button, Icon, Loader } from "semantic-ui-react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -43,11 +43,13 @@ const Or = styled.div`
 const Input = styled.input`
   border: 1px solid #c2c2c2;
   width: 100%;
+  height: 40px;
   padding: 10px;
   border-radius: 5px;
   position: relative;
   left: -2px;
   margin-bottom: 10px;
+  line-height: 40px;
 `;
 
 const SButton = styled(Button)`
@@ -116,6 +118,9 @@ const LoginModal = () => {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState("");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState("");
   const handleIdChange = (e) => {
     setId(e.target.value);
   };
@@ -125,21 +130,40 @@ const LoginModal = () => {
   const handleSubmit = async () => {
     console.log("submit");
     if (id === "") {
-      setError("이메일을");
+      setError("이메일을 입력하세요.");
       return;
     } else if (pw === "") {
-      setError("비밀번호를");
+      setError("비밀번호를 입력하세요.");
       return;
     } else {
-      setError("");
-      const info = { id: id, pw: pw };
-      const data = await axios.post(
-        "http://18.221.250.120/api/auth/login",
-        info
-      );
-      console.log(data);
+      setLoading(true);
+      setDisabled("disabled");
+      const info = { email: id, password: pw };
+      try {
+        const resp = await axios.post(
+          "http://www.hongsick.com/api/auth/login",
+          info
+        );
+        setLoading(false);
+        setDisabled("");
+        setData(resp);
+        dispatch(allActinos.modalActions.closeModal());
+      } catch (e) {
+        console.log(e);
+        setError("이메일 또는 비밀번호가 일치하지 않습니다.");
+        setLoading(false);
+        setDisabled("");
+      }
     }
   };
+  useEffect(() => {
+    if (data !== null) {
+      const access = data.data.tokens.access.token;
+      const refresh = data.data.tokens.refresh.token;
+      window.localStorage.setItem("access_token", access);
+      window.localStorage.setItem("refresh_token", refresh);
+    }
+  }, [data]);
   return (
     <>
       <Modal.Header>홍대병 로그인</Modal.Header>
@@ -151,19 +175,29 @@ const LoginModal = () => {
             placeholder="비밀번호"
             onChange={handlePwChange}
           />
-          <ErrorDiv error={error}>{error} 입력하세요.</ErrorDiv>
-          <SButton color="orange" fluid onClick={handleSubmit}>
-            홍대병 로그인
+          <ErrorDiv error={error}>{error}</ErrorDiv>
+          <SButton
+            className={disabled}
+            color="orange"
+            fluid
+            onClick={handleSubmit}
+          >
+            {loading ? (
+              <Loader size="mini" active inline="centered" />
+            ) : (
+              "홍대병 로그인"
+            )}
           </SButton>
           <Userpanel>
             ID 찾기 | 비밀번호 찾기 |{" "}
             <Link
               to="/register"
-              onClick={() => dispatch(allActinos.closeModal())}
+              onClick={() => dispatch(allActinos.modalActions.closeModal())}
             >
               회원가입
             </Link>
           </Userpanel>
+
           <BarContainer>
             <Bar />
             <Or>또는</Or>
