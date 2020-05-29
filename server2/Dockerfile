@@ -1,5 +1,5 @@
 FROM node:12 as builder
-MAINTAINER chajy97@gmail.com
+LABEL maintainer chajy97@gmail.com
 
 WORKDIR /usr/src/server
 COPY ./package*.json ./
