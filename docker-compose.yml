@@ -4,7 +4,7 @@ services:
     image: chajyn/hong:server 
     container_name: server
     volumes:
-      - /home/hong/.env:/usr/src/.env
+      - /home/hong/server2/.env:/usr/src/server.env
     ports:
       - "5000:3030"
     networks:
