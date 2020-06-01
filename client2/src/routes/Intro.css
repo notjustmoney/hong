@@ -21,6 +21,11 @@ p {
   position: relative;
   z-index: 20;
   top: -10vh;
+  transition: all 0.3s ease-in-out;
+}
+
+#scroll-section-0 h1:hover {
+  color: #cd6133;
 }
 
 .explain {

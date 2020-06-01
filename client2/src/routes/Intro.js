@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Contact from "../components/Contact";
 import "./Intro.css";
 
@@ -266,14 +267,22 @@ const Intro = () => {
       yOffset = window.pageYOffset;
       scrollLoop();
     });
+
+    return { setLayout, scrollLoop };
   }
   useEffect(() => {
-    init();
+    const returnInit = init();
+    return () => {
+      window.removeEventListener("resize", returnInit.setLayout);
+      window.removeEventListener("scroll", returnInit.scrollLoop);
+    };
   }, []);
   return (
     <div id="wrapper">
       <section className="scroll-section" id="scroll-section-0">
-        <h1>#홍대병</h1>
+        <Link to="/main">
+          <h1>#홍대병</h1>
+        </Link>
         <div className="explain">2020 Sejong Univ. Web Programming Project</div>
         <div className="sticky-elem sticky-elem-canvas">
           <canvas id="video-canvas-0" width="1920" height="1080"></canvas>
