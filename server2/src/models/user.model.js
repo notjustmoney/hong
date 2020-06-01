@@ -174,4 +174,9 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.post('populate', async function (next) {
+  const user = this.transform();
+  next();
+});
+
 module.exports = mongoose.model('User', userSchema);
