@@ -1,5 +1,12 @@
 const Joi = require('@hapi/joi');
+const { objectId } = require('./custom.validation');
 const { password } = require('./custom.validation');
+
+const getUserInfo = {
+  params: Joi.object().keys({
+    userId: Joi.custom(objectId),
+  }),
+};
 
 const register = {
   body: Joi.object().keys({
@@ -40,6 +47,7 @@ const resetPassword = {
 };
 
 module.exports = {
+  getUserInfo,
   register,
   login,
   refreshTokens,
