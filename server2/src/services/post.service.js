@@ -88,6 +88,14 @@ const getPosts = async (query) => {
 const updatePost = async (postId, body) => {
   const updateBody = body;
   const post = await getPostById(postId);
+  const diff = post.tags.map((x) => x.hashtag).filter((elem) => !body.tags.includes(elem));
+  for (const elem of diff) {
+    const tag = await Hashtag.findOne({ hashtag: elem });
+    tag.posts.remove(postId);
+    if (tag.posts.length === 0) {
+      await Hashtag.deleteOne({ hashtag: elem });
+    }
+  }
   if (body.tags) {
     const tags = [];
     for (const elem of body.tags) {
