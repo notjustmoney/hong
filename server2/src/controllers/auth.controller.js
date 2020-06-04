@@ -1,6 +1,13 @@
 const httpStatus = require('http-status');
+const { omit } = require('lodash');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService } = require('../services');
+
+const getUserInfo = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.userId);
+  const response = { user: omit(user.transform(), ['role']) };
+  res.send(response);
+});
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -34,6 +41,7 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 module.exports = {
+  getUserInfo,
   register,
   login,
   refreshTokens,

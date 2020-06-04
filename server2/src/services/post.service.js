@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 const httpStatus = require('http-status');
 const mongoose = require('mongoose');
@@ -93,12 +94,13 @@ const updatePost = async (postId, body) => {
       // eslint-disable-next-line no-await-in-loop
       let tag = await Hashtag.findOne({ hashtag: elem });
       if (!tag) {
-        // if tag doesn't exists
-        // eslint-disable-next-line no-await-in-loop
         tag = await Hashtag.create({
           hashtag: elem,
           posts: [postId],
         });
+      } else {
+        tag.posts.push(postId);
+        await tag.save();
       }
       tags.push(tag._id);
     }
