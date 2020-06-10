@@ -3,21 +3,24 @@ import { withRouter, Link } from "react-router-dom";
 import styled from "styled-components";
 import LogoImage from "../images/LogoImage.png";
 import "./header.css";
-import { Modal, Visibility } from "semantic-ui-react";
-import axios from "axios";
+import { Modal, Visibility, Icon } from "semantic-ui-react";
 import LoginModal from "../components/LoginModal";
 import allActions from "../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import UserDropdown from "./UserDropdown";
+import apis from "../api";
 
 const Fixedheader = styled.div`
-  font-family: "Song Myung", serif;
+  /*font-family: "Song Myung", serif;*/
+  font-family: --apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: 100%;
   background-color: white;
   height: 60px;
   position: fixed;
   left: 0;
   top: ${(props) => (props.status ? "0" : "-60px")};
-  z-index: 9999;
+  z-index: 20;
   transition: all 0.25s;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -35,13 +38,13 @@ const Container = styled.div`
   padding: 20px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  font-family: "Song Myung", serif;
+  /*font-family: "Song Myung", serif;*/
+  font-family: --apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   z-index: 10;
 `;
 
 const SLink = styled(Link)`
-  width: 240px;
-  height: 59px;
   background: url(${(props) => props.path});
   background-size: cover;
   background-position: center;
@@ -54,7 +57,6 @@ const Logo = styled.div`
   background: url(${(props) => props.path});
   background-size: cover;
   background-position: center;
-  margin-bottom: 10px;
 `;
 
 const Content = styled.div`
@@ -71,8 +73,8 @@ const MenuContainer = styled.div`
 const Menu = styled.div`
   width: 70px;
   height: 35px;
-  font-size: 20px;
-  padding: 7px 10px 10px 10px;
+  font-size: 16px;
+  padding: 10px 0;
   &:nth-child(1) {
     margin-right: 100px;
   }
@@ -82,6 +84,8 @@ const Menu = styled.div`
   transition: all 0.2s linear;
   border-bottom: 3px solid
     ${(props) => (props.status ? "#fdcb6e" : "transparent")};
+  font-weight: 700;
+  text-align: center;
 `;
 
 const InputContainer = styled.div`
@@ -93,34 +97,28 @@ const InputContainer = styled.div`
     margin-right: 10px;
   }
   i {
-    padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 20px;
+    opacity: 0.5;
+    transition: all 0.35s;
   }
   border-bottom: 3px solid rgba(255, 234, 167, 0.7);
-`;
-
-const Input = styled.input`
-  font-family: "Song Myung", serif;
-  padding: 10px;
-  border-width: 3px;
-  border-style: solid;
-  border-image: linear-gradient(to right, #ffeaa7 0%, #fdcb6e 100%);
-  border-image-slice: 1;
-  border-radius: 7px;
-  border-radius: 10px;
-  width: 450px;
-  &:focus {
-    outline: none;
-  }
-  transition: all 0.2s linear;
-  &:nth-child(1) {
-    margin-bottom: 20px;
-  }
 `;
 
 const STLink = styled(Link)``;
 
 const SVisibility = styled(Visibility)`
   width: 100%;
+`;
+
+const Iconlefst = styled(Icon)`
+  padding-top: 13px;
+  float: left;
+`;
+
+const Iconright = styled(Icon)`
+  padding-top: 13px;
+  float: right;
 `;
 
 export default withRouter(({ location: { pathname } }) => {
@@ -139,10 +137,11 @@ export default withRouter(({ location: { pathname } }) => {
 
   const handleIsUser = async () => {
     const userId = window.localStorage.getItem("id");
+    const access = window.localStorage.getItem("access_token");
     if (userId !== null) {
       const {
         data: { user },
-      } = await axios.get(`http://www.hongsick.com/api/auth/me/${userId}`);
+      } = await apis.authMe(userId, access);
       dispatch(allActions.loginActions.loginUserSuccess(user));
     }
   };
@@ -150,13 +149,6 @@ export default withRouter(({ location: { pathname } }) => {
   useEffect(() => {
     handleIsUser();
   }, []);
-
-  const handleLogout = () => {
-    window.localStorage.removeItem("access_token");
-    window.localStorage.removeItem("refresh_token");
-    window.localStorage.removeItem("id");
-    dispatch(allActions.loginActions.logOutUser());
-  };
 
   const handleIdChange = (event) => {
     setId(event.target.value);
@@ -168,26 +160,60 @@ export default withRouter(({ location: { pathname } }) => {
     setCalcul(calculations);
   };
 
-  /*const handleSubmit = async () => {
-    console.log(id, pw);
-    const info = { email: id, password: pw };
-    const {
-      data: { tokens },
-    } = await axios.post("http://192.168.0.20:3030/auth/login", info);
-    console.log(tokens);
-    window.localStorage.setItem("access_token", tokens.access.token);
-  };*/
+  const handleValideToken = async () => {
+    const userId = window.localStorage.getItem("id");
+    const access = window.localStorage.getItem("access_token");
+    if (userId === null || access === null) return;
+    try {
+      const resp = await apis.authMe(userId, access);
+    } catch (e) {
+      if (e.response.status === 401) {
+        console.log("401");
+        const currentRefresh = window.localStorage.getItem("refresh_token");
+
+        //try {
+        /*const resp = await axios.post(
+          `http://www.hongsick.com/api/auth/refresh-tokens`,
+          { refreshToken: currentRefresh }
+        );*/
+        const resp = await apis.refreshToken(currentRefresh);
+        console.log("재요청");
+        const access = resp.data.access.token;
+        const refresh = resp.data.refresh.token;
+        window.localStorage.setItem("access_token", access);
+        window.localStorage.setItem("refresh_token", refresh);
+        /*const response = await axios.get(
+            `http://www.hongsick.com/api/auth/me/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${access}`,
+              },
+            }
+          );
+        } catch (error) {
+          window.localStorage.removeItem("access_token");
+          window.localStorage.removeItem("refresh_token");
+          window.localStorage.removeItem("id");
+          dispatch(allActions.loginActions.logOutUser());
+          alert("로그인 해주세요");
+        }*/
+      }
+    }
+  };
+  handleValideToken();
   return (
     <>
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
         <Container>
-          <SLink to="/">
+          <SLink to="/main">
             <Logo path={LogoImage} />
           </SLink>
           <Content>
             <MenuContainer>
-              <Menu>메뉴 1</Menu>
-              <Menu>메뉴 2</Menu>
+              <STLink to="/main">
+                <Menu status={pathname === "/main"}>Main</Menu>
+              </STLink>
+              <Menu status={pathname === "/search"}>Search</Menu>
             </MenuContainer>
             <InputContainer>
               <div>
@@ -196,6 +222,8 @@ export default withRouter(({ location: { pathname } }) => {
                   type="text"
                   placeholder="검색어를 입력하세용"
                 />
+                <Iconlefst name="hashtag" />
+                <Iconright name="search" />
                 <div className="inputBar"></div>
               </div>
             </InputContainer>
@@ -204,7 +232,11 @@ export default withRouter(({ location: { pathname } }) => {
                 <Menu status={pathname === "/about"}>About</Menu>
               </STLink>
               {loginInfo ? (
-                <Menu onClick={handleLogout}>{loginInfo.profile.nickname}</Menu>
+                //<Menu onClick={handleLogout}>{loginInfo.profile.nickname}</Menu>
+                <UserDropdown
+                  id={loginInfo.id}
+                  nickname={loginInfo.profile.nickname}
+                />
               ) : (
                 <Menu
                   onClick={() => dispatch(allActions.modalActions.openModal())}
@@ -219,8 +251,10 @@ export default withRouter(({ location: { pathname } }) => {
       <Fixedheader status={calculations.bottomPassed}>
         <Content>
           <MenuContainer>
-            <Menu>메뉴 1</Menu>
-            <Menu>메뉴 2</Menu>
+            <STLink to="/main">
+              <Menu status={pathname === "/main"}>Main</Menu>
+            </STLink>
+            <Menu status={pathname === "/search"}>Search</Menu>
           </MenuContainer>
           <InputContainer>
             <div>
@@ -229,6 +263,8 @@ export default withRouter(({ location: { pathname } }) => {
                 type="text"
                 placeholder="검색어를 입력하세용"
               />
+              <Iconlefst name="hashtag" />
+              <Iconright name="search" />
               <div className="inputBar"></div>
             </div>
           </InputContainer>
@@ -237,7 +273,10 @@ export default withRouter(({ location: { pathname } }) => {
               <Menu status={pathname === "/about"}>About</Menu>
             </STLink>
             {loginInfo ? (
-              <Menu onClick={handleLogout}>{loginInfo.profile.nickname}</Menu>
+              <UserDropdown
+                id={loginInfo.id}
+                nickname={loginInfo.profile.nickname}
+              />
             ) : (
               <Menu
                 onClick={() => dispatch(allActions.modalActions.openModal())}

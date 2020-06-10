@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Placeholder } from "semantic-ui-react";
 import styled from "styled-components";
-import axios from "axios";
 import Cards from "../components/Cards";
-import CardsTwo from "../components/CardsTwo";
 import Header from "../components/Header";
+import apis from "../api";
+import DetailModal from "../components/DetailModal";
 
 const Container = styled.div`
   width: 1250px;
@@ -39,7 +38,7 @@ const TitleGrid = styled.div`
   background-size: cover;
 `;
 
-const Main = () => {
+/*const Main = () => {
   const [movies, setMovies] = useState({ loading: true, movie: [] });
 
   const handleMovies = async () => {
@@ -92,6 +91,53 @@ const Main = () => {
               />
             ))}
           </GridTwo>
+        )}
+      </Container>
+    </>
+  );
+};*/
+
+const Main = () => {
+  const [posts, setPosts] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getPosts = async () => {
+    try {
+      const resp = await apis.getPosts();
+      setPosts(resp.data);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+  console.log(posts);
+  return (
+    <>
+      <Header />
+      <Container>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <Grid>
+            {posts.map((post) => (
+              <Cards
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                contents={post.contents}
+                imgs={post.imgs[0]}
+                tags={post.tags}
+                price={post.price}
+                writer={post.writer.profile.nickname}
+              />
+            ))}
+          </Grid>
         )}
       </Container>
     </>

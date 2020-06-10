@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import allActinos from "../store/actions";
-import axios from "axios";
-import allActions from "../store/actions";
+import apis from "../api";
 
 const Container = styled.div`
   display: flex;
@@ -129,6 +128,13 @@ const LoginModal = () => {
   const handlePwChange = (e) => {
     setPw(e.target.value);
   };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter'){
+      handleSubmit(0);
+    }
+  };
+
   const handleSubmit = async () => {
     console.log("submit");
     if (id === "") {
@@ -142,10 +148,11 @@ const LoginModal = () => {
       setDisabled("disabled");
       const info = { email: id, password: pw };
       try {
-        const resp = await axios.post(
+        /*const resp = await axios.post(
           "http://www.hongsick.com/api/auth/login",
           info
-        );
+        );*/
+        const resp = await apis.login(info);
         setLoading(false);
         setDisabled("");
         setData(resp);
@@ -160,6 +167,7 @@ const LoginModal = () => {
   };
   useEffect(() => {
     if (data !== null) {
+      console.log(data);
       const access = data.data.tokens.access.token;
       const refresh = data.data.tokens.refresh.token;
       const user = data.data.user;
@@ -167,19 +175,22 @@ const LoginModal = () => {
       window.localStorage.setItem("access_token", access);
       window.localStorage.setItem("refresh_token", refresh);
       window.localStorage.setItem("id", id);
-      dispatch(allActions.loginActions.loginUserSuccess(user));
+      dispatch(allActinos.loginActions.loginUserSuccess(user));
     }
   }, [data]);
+  
+
   return (
     <>
       <Modal.Header>홍대병 로그인</Modal.Header>
       <Modal.Content>
         <Container>
-          <Input type="text" placeholder="이메일" onChange={handleIdChange} />
+          <Input type="text" placeholder="이메일" onChange={handleIdChange} onKeyPress={handleKeyPress}/>
           <Input
             type="password"
             placeholder="비밀번호"
             onChange={handlePwChange}
+            onKeyPress={handleKeyPress}
           />
           <ErrorDiv error={error}>{error}</ErrorDiv>
           <SButton
@@ -195,7 +206,7 @@ const LoginModal = () => {
             )}
           </SButton>
           <Userpanel>
-            ID 찾기 | 비밀번호 찾기 |{" "}
+            이메일 찾기 | <Link to="/find" onClick={() => dispatch(allActinos.modalActions.closeModal())}>비밀번호 찾기</Link> |{" "}
             <Link
               to="/register"
               onClick={() => dispatch(allActinos.modalActions.closeModal())}
