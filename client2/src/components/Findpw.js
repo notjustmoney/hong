@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import apis from "../api";
 
@@ -23,6 +24,12 @@ const Errormsg = styled.div`
   color: red;
   margin-bottom: 19px;
   text-align: center;
+`;
+
+const MainLink = styled.div`
+  margin:10px;
+  color:gray;
+  text-align:center;
 `;
 
 const Findpw = () => {
@@ -152,6 +159,10 @@ const Findpw = () => {
       >
         {token ? <>홍대병 비밀번호 변경</> : <>홍대병 이메일 인증</>}
       </Button>
+      <MainLink>
+        <Link to="/main">홍대병 바로가기</Link>
+      </MainLink>
+      
     </Wrap>
   );
 };
