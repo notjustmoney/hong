@@ -8,11 +8,24 @@ const getUserInfo = {
   }),
 };
 
+const updateUserInfo = {
+  params: Joi.object().keys({
+    userId: Joi.custom(objectId),
+  }),
+  body: Joi.object().keys({
+    password: Joi.string(),
+    passwordConfirmation: Joi.string(),
+    nickname: Joi.string(),
+    thumbnail: Joi.string(),
+    gender: Joi.string(),
+  }),
+};
+
 const register = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
-    passwordConfirmation: Joi.string().required(),
+    passwordConfirmation: Joi.string().required().custom(password),
     name: Joi.string().required(),
     nickname: Joi.string().required(),
   }),
@@ -48,6 +61,7 @@ const resetPassword = {
 
 module.exports = {
   getUserInfo,
+  updateUserInfo,
   register,
   login,
   refreshTokens,

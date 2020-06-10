@@ -128,6 +128,13 @@ const LoginModal = () => {
   const handlePwChange = (e) => {
     setPw(e.target.value);
   };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter'){
+      handleSubmit(0);
+    }
+  };
+
   const handleSubmit = async () => {
     console.log("submit");
     if (id === "") {
@@ -171,17 +178,19 @@ const LoginModal = () => {
       dispatch(allActinos.loginActions.loginUserSuccess(user));
     }
   }, [data]);
+  
 
   return (
     <>
       <Modal.Header>홍대병 로그인</Modal.Header>
       <Modal.Content>
         <Container>
-          <Input type="text" placeholder="이메일" onChange={handleIdChange} />
+          <Input type="text" placeholder="이메일" onChange={handleIdChange} onKeyPress={handleKeyPress}/>
           <Input
             type="password"
             placeholder="비밀번호"
             onChange={handlePwChange}
+            onKeyPress={handleKeyPress}
           />
           <ErrorDiv error={error}>{error}</ErrorDiv>
           <SButton
