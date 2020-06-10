@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3"
 services:
   server:
     image: chajyn/hong:server 
@@ -11,6 +11,9 @@ services:
       - backend
   nginx:
     image: chajyn/hong:nginx
+    links:
+      - server
+    volumes: /home/hong/nginx/public:/usr/share/nginx/public
     container_name: nginx
     ports:
       - "80:80"
