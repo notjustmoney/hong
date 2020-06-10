@@ -13,7 +13,6 @@ services:
     image: chajyn/hong:nginx
     links:
       - server
-    volumes: /home/hong/nginx/public:/usr/share/nginx/public
     container_name: nginx
     ports:
       - "80:80"
