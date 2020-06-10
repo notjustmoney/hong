@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3"
 services:
   server:
     image: chajyn/hong:server2 
@@ -10,6 +10,8 @@ services:
   nginx:
     image: chajyn/hong:react-server2
     container_name: nginx
+    depends_on:
+      - server
     ports:
       - "80:80"
     networks:
