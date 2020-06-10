@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import styled from "styled-components";
 import LogoImage from "../images/LogoImage.png";
 import "./header.css";
-import { Modal, Visibility } from "semantic-ui-react";
+import { Modal, Visibility, Icon } from "semantic-ui-react";
 import LoginModal from "../components/LoginModal";
 import allActions from "../store/actions";
 import { useSelector, useDispatch } from "react-redux";
@@ -95,7 +95,10 @@ const InputContainer = styled.div`
     margin-right: 10px;
   }
   i {
-    padding-right: 10px;
+    padding-left:10px;
+    padding-right:20px;
+    opacity:0.5;
+    transition:all .35s;
   }
   border-bottom: 3px solid rgba(255, 234, 167, 0.7);
 `;
@@ -104,6 +107,16 @@ const STLink = styled(Link)``;
 
 const SVisibility = styled(Visibility)`
   width: 100%;
+`;
+
+const Iconlefst = styled(Icon)`
+  padding-top:13px;
+  float: left;
+`;
+
+const Iconright = styled(Icon)`
+  padding-top:13px;
+  float: right;
 `;
 
 export default withRouter(({ location: { pathname } }) => {
@@ -199,12 +212,14 @@ export default withRouter(({ location: { pathname } }) => {
               <Menu>메뉴 2</Menu>
             </MenuContainer>
             <InputContainer>
-              <div>
+            <div>
                 <input
                   className="inputBox"
                   type="text"
                   placeholder="검색어를 입력하세용"
                 />
+                <Iconlefst name='hashtag' />
+                <Iconright name='search' />
                 <div className="inputBar"></div>
               </div>
             </InputContainer>
@@ -236,14 +251,16 @@ export default withRouter(({ location: { pathname } }) => {
             <Menu>메뉴 2</Menu>
           </MenuContainer>
           <InputContainer>
-            <div>
-              <input
-                className="inputBox"
-                type="text"
-                placeholder="검색어를 입력하세용"
-              />
-              <div className="inputBar"></div>
-            </div>
+          <div>
+                <input
+                  className="inputBox"
+                  type="text"
+                  placeholder="검색어를 입력하세용"
+                />
+                <Iconlefst name='hashtag' />
+                <Iconright name='search' />
+                <div className="inputBar"></div>
+              </div>
           </InputContainer>
           <MenuContainer>
             <STLink to="/about">
