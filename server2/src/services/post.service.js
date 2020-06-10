@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 const httpStatus = require('http-status');
 const mongoose = require('mongoose');
@@ -87,18 +88,27 @@ const getPosts = async (query) => {
 const updatePost = async (postId, body) => {
   const updateBody = body;
   const post = await getPostById(postId);
+  const diff = post.tags.map((x) => x.hashtag).filter((elem) => !body.tags.includes(elem));
+  for (const elem of diff) {
+    const tag = await Hashtag.findOne({ hashtag: elem });
+    tag.posts.remove(postId);
+    if (tag.posts.length === 0) {
+      await Hashtag.deleteOne({ hashtag: elem });
+    }
+  }
   if (body.tags) {
     const tags = [];
     for (const elem of body.tags) {
       // eslint-disable-next-line no-await-in-loop
       let tag = await Hashtag.findOne({ hashtag: elem });
       if (!tag) {
-        // if tag doesn't exists
-        // eslint-disable-next-line no-await-in-loop
         tag = await Hashtag.create({
           hashtag: elem,
           posts: [postId],
         });
+      } else {
+        tag.posts.push(postId);
+        await tag.save();
       }
       tags.push(tag._id);
     }

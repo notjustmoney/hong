@@ -4,10 +4,11 @@ import styled from "styled-components";
 import LogoImage from "../images/LogoImage.png";
 import "./header.css";
 import { Modal, Visibility } from "semantic-ui-react";
-import axios from "axios";
 import LoginModal from "../components/LoginModal";
 import allActions from "../store/actions";
 import { useSelector, useDispatch } from "react-redux";
+import UserDropdown from "./UserDropdown";
+import apis from "../api";
 
 const Fixedheader = styled.div`
   font-family: "Song Myung", serif;
@@ -98,25 +99,6 @@ const InputContainer = styled.div`
   border-bottom: 3px solid rgba(255, 234, 167, 0.7);
 `;
 
-const Input = styled.input`
-  font-family: "Song Myung", serif;
-  padding: 10px;
-  border-width: 3px;
-  border-style: solid;
-  border-image: linear-gradient(to right, #ffeaa7 0%, #fdcb6e 100%);
-  border-image-slice: 1;
-  border-radius: 7px;
-  border-radius: 10px;
-  width: 450px;
-  &:focus {
-    outline: none;
-  }
-  transition: all 0.2s linear;
-  &:nth-child(1) {
-    margin-bottom: 20px;
-  }
-`;
-
 const STLink = styled(Link)``;
 
 const SVisibility = styled(Visibility)`
@@ -135,6 +117,22 @@ export default withRouter(({ location: { pathname } }) => {
     topVisible: false,
     bottomVisible: false,
   });
+  const loginInfo = useSelector((state) => state.loginInfo);
+
+  const handleIsUser = async () => {
+    const userId = window.localStorage.getItem("id");
+    const access = window.localStorage.getItem("access_token");
+    if (userId !== null) {
+      const {
+        data: { user },
+      } = await apis.authMe(userId, access);
+      dispatch(allActions.loginActions.loginUserSuccess(user));
+    }
+  };
+
+  useEffect(() => {
+    handleIsUser();
+  }, []);
 
   const handleIdChange = (event) => {
     setId(event.target.value);
@@ -146,21 +144,52 @@ export default withRouter(({ location: { pathname } }) => {
     setCalcul(calculations);
   };
 
-  const handleSubmit = async () => {
-    console.log(id, pw);
-    const info = { email: id, password: pw };
-    const {
-      data: { tokens },
-    } = await axios.post("http://192.168.0.20:3030/auth/login", info);
-    console.log(tokens);
-    window.localStorage.setItem("access_token", tokens.access.token);
-  };
+  const handleValideToken = async () => {
+    const userId = window.localStorage.getItem("id");
+    const access = window.localStorage.getItem("access_token");
+    if (userId === null || access === null) return;
+    try {
+      const resp = await apis.authMe(userId, access);
+    } catch (e) {
+      if (e.response.status === 401) {
+        console.log("401");
+        const currentRefresh = window.localStorage.getItem("refresh_token");
 
+        //try {
+        /*const resp = await axios.post(
+          `http://www.hongsick.com/api/auth/refresh-tokens`,
+          { refreshToken: currentRefresh }
+        );*/
+        const resp = await apis.refreshToken(currentRefresh);
+        console.log("재요청");
+        const access = resp.data.access.token;
+        const refresh = resp.data.refresh.token;
+        window.localStorage.setItem("access_token", access);
+        window.localStorage.setItem("refresh_token", refresh);
+        /*const response = await axios.get(
+            `http://www.hongsick.com/api/auth/me/${userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${access}`,
+              },
+            }
+          );
+        } catch (error) {
+          window.localStorage.removeItem("access_token");
+          window.localStorage.removeItem("refresh_token");
+          window.localStorage.removeItem("id");
+          dispatch(allActions.loginActions.logOutUser());
+          alert("로그인 해주세요");
+        }*/
+      }
+    }
+  };
+  handleValideToken();
   return (
     <>
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
         <Container>
-          <SLink to="/">
+          <SLink to="/main">
             <Logo path={LogoImage} />
           </SLink>
           <Content>
@@ -182,11 +211,19 @@ export default withRouter(({ location: { pathname } }) => {
               <STLink to="/about">
                 <Menu status={pathname === "/about"}>About</Menu>
               </STLink>
-              <Menu
-                onClick={() => dispatch(allActions.modalActions.openModal())}
-              >
-                User
-              </Menu>
+              {loginInfo ? (
+                //<Menu onClick={handleLogout}>{loginInfo.profile.nickname}</Menu>
+                <UserDropdown
+                  id={loginInfo.id}
+                  nickname={loginInfo.profile.nickname}
+                />
+              ) : (
+                <Menu
+                  onClick={() => dispatch(allActions.modalActions.openModal())}
+                >
+                  User
+                </Menu>
+              )}
             </MenuContainer>
           </Content>
         </Container>
@@ -211,9 +248,18 @@ export default withRouter(({ location: { pathname } }) => {
             <STLink to="/about">
               <Menu status={pathname === "/about"}>About</Menu>
             </STLink>
-            <Menu onClick={() => dispatch(allActions.modalActions.openModal())}>
-              User
-            </Menu>
+            {loginInfo ? (
+              <UserDropdown
+                id={loginInfo.id}
+                nickname={loginInfo.profile.nickname}
+              />
+            ) : (
+              <Menu
+                onClick={() => dispatch(allActions.modalActions.openModal())}
+              >
+                User
+              </Menu>
+            )}
           </MenuContainer>
         </Content>
       </Fixedheader>
