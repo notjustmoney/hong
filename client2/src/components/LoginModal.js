@@ -128,11 +128,13 @@ const LoginModal = () => {
   const handlePwChange = (e) => {
     setPw(e.target.value);
   };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter'){
       handleSubmit(0);
     }
   };
+  
   const handleSubmit = async () => {
     console.log("submit");
     if (id === "") {
