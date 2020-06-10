@@ -197,7 +197,7 @@ const LoginModal = () => {
             )}
           </SButton>
           <Userpanel>
-            ID 찾기 | <Link to="/find">비밀번호 찾기</Link> |{" "}
+            이메일 찾기 | <Link to="/find" onClick={() => dispatch(allActinos.modalActions.closeModal())}>비밀번호 찾기</Link> |{" "}
             <Link
               to="/register"
               onClick={() => dispatch(allActinos.modalActions.closeModal())}
