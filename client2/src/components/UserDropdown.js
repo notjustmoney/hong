@@ -11,7 +11,8 @@ const SDropdown = styled(Dropdown)`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 700;
   }
 `;
 
