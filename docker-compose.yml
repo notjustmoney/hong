@@ -9,8 +9,6 @@ services:
       - backend
   nginx:
     image: chajyn/hong:react-server2
-    volumes_from: 
-      - server
     container_name: nginx
     ports:
       - "80:80"
