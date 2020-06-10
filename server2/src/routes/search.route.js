@@ -35,7 +35,6 @@ router.get(
         });
       posts.push(post);
     }
-    console.log(tags.posts);
     const response = posts;
     res.send(response);
   })
