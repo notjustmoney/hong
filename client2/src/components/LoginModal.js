@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import allActinos from "../store/actions";
-import allActions from "../store/actions";
 import apis from "../api";
 
 const Container = styled.div`
@@ -169,7 +168,7 @@ const LoginModal = () => {
       window.localStorage.setItem("access_token", access);
       window.localStorage.setItem("refresh_token", refresh);
       window.localStorage.setItem("id", id);
-      dispatch(allActions.loginActions.loginUserSuccess(user));
+      dispatch(allActinos.loginActions.loginUserSuccess(user));
     }
   }, [data]);
 
@@ -198,7 +197,7 @@ const LoginModal = () => {
             )}
           </SButton>
           <Userpanel>
-            ID 찾기 | 비밀번호 찾기 |{" "}
+            이메일 찾기 | <Link to="/find" onClick={() => dispatch(allActinos.modalActions.closeModal())}>비밀번호 찾기</Link> |{" "}
             <Link
               to="/register"
               onClick={() => dispatch(allActinos.modalActions.closeModal())}
