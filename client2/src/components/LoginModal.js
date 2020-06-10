@@ -134,7 +134,7 @@ const LoginModal = () => {
       handleSubmit(0);
     }
   };
-  
+
   const handleSubmit = async () => {
     console.log("submit");
     if (id === "") {
@@ -178,6 +178,7 @@ const LoginModal = () => {
       dispatch(allActinos.loginActions.loginUserSuccess(user));
     }
   }, [data]);
+  
 
   return (
     <>
