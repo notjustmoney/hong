@@ -50,6 +50,7 @@ const UserInfo = (props) => {
       );*/
       const resp = await apis.authMe(id, access);
       setUserInfo(resp.data);
+      console.log(resp);
     } catch (e) {
       console.log(e);
       setError("Invalid Access");
@@ -67,7 +68,7 @@ const UserInfo = (props) => {
     }
   };
   useEffect(() => {
-    getUserArticles(id);
+    //getUserArticles(id);
     getUserInfo(id);
   }, []);
   return (

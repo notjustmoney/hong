@@ -14,7 +14,15 @@ const apis = {
   login: (info) => axios.post("http://www.hongsick.com/api/auth/login", info),
   register: (data) =>
     axios.post("http://www.hongsick.com/api/auth/register", data),
-  getPosts: (id) => axios.get(`http://www.hongsick.com/api/post/${id}`),
+  getPosts: () => axios.get(`http://www.hongsick.com/api/post/`),
+  getDetailPost: (id) => axios.get(`http://www.hongsick.com/api/post/${id}`),
+  forgot: (data) =>
+    axios.post("http://www.hongsick.com/api/auth/forgot-password", data),
+  reset: (token, data) =>
+    axios.post(
+      `http://www.hongsick.com/api/auth/reset-password?token=${token}`,
+      data
+    ),
 };
 
 export default apis;

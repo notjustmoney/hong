@@ -18,7 +18,7 @@ const Fixedheader = styled.div`
   position: fixed;
   left: 0;
   top: ${(props) => (props.status ? "0" : "-60px")};
-  z-index: 9999;
+  z-index: 20;
   transition: all 0.25s;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -36,13 +36,13 @@ const Container = styled.div`
   padding: 20px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  font-family: "Song Myung", serif;
+  /*font-family: "Song Myung", serif;*/
+  font-family: --apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   z-index: 10;
 `;
 
 const SLink = styled(Link)`
-  width: 240px;
-  height: 59px;
   background: url(${(props) => props.path});
   background-size: cover;
   background-position: center;
@@ -55,7 +55,6 @@ const Logo = styled.div`
   background: url(${(props) => props.path});
   background-size: cover;
   background-position: center;
-  margin-bottom: 10px;
 `;
 
 const Content = styled.div`
@@ -70,9 +69,9 @@ const MenuContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  width: 70px;
+  width: 80px;
   height: 35px;
-  font-size: 20px;
+  font-size: 16px;
   padding: 7px 10px 10px 10px;
   &:nth-child(1) {
     margin-right: 100px;
@@ -83,6 +82,8 @@ const Menu = styled.div`
   transition: all 0.2s linear;
   border-bottom: 3px solid
     ${(props) => (props.status ? "#fdcb6e" : "transparent")};
+  font-weight: 700;
+  text-align: center;
 `;
 
 const InputContainer = styled.div`
