@@ -11,7 +11,9 @@ import UserDropdown from "./UserDropdown";
 import apis from "../api";
 
 const Fixedheader = styled.div`
-  font-family: "Song Myung", serif;
+  /*font-family: "Song Myung", serif;*/
+  font-family: --apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: 100%;
   background-color: white;
   height: 60px;
@@ -69,10 +71,10 @@ const MenuContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  width: 80px;
+  width: 70px;
   height: 35px;
   font-size: 16px;
-  padding: 7px 10px 10px 10px;
+  padding: 10px 0;
   &:nth-child(1) {
     margin-right: 100px;
   }
@@ -95,10 +97,10 @@ const InputContainer = styled.div`
     margin-right: 10px;
   }
   i {
-    padding-left:10px;
-    padding-right:20px;
-    opacity:0.5;
-    transition:all .35s;
+    padding-left: 10px;
+    padding-right: 20px;
+    opacity: 0.5;
+    transition: all 0.35s;
   }
   border-bottom: 3px solid rgba(255, 234, 167, 0.7);
 `;
@@ -110,12 +112,12 @@ const SVisibility = styled(Visibility)`
 `;
 
 const Iconlefst = styled(Icon)`
-  padding-top:13px;
+  padding-top: 13px;
   float: left;
 `;
 
 const Iconright = styled(Icon)`
-  padding-top:13px;
+  padding-top: 13px;
   float: right;
 `;
 
@@ -208,18 +210,20 @@ export default withRouter(({ location: { pathname } }) => {
           </SLink>
           <Content>
             <MenuContainer>
-              <Menu>메뉴 1</Menu>
-              <Menu>메뉴 2</Menu>
+              <STLink to="/main">
+                <Menu status={pathname === "/main"}>Main</Menu>
+              </STLink>
+              <Menu status={pathname === "/search"}>Search</Menu>
             </MenuContainer>
             <InputContainer>
-            <div>
+              <div>
                 <input
                   className="inputBox"
                   type="text"
                   placeholder="검색어를 입력하세용"
                 />
-                <Iconlefst name='hashtag' />
-                <Iconright name='search' />
+                <Iconlefst name="hashtag" />
+                <Iconright name="search" />
                 <div className="inputBar"></div>
               </div>
             </InputContainer>
@@ -247,20 +251,22 @@ export default withRouter(({ location: { pathname } }) => {
       <Fixedheader status={calculations.bottomPassed}>
         <Content>
           <MenuContainer>
-            <Menu>메뉴 1</Menu>
-            <Menu>메뉴 2</Menu>
+            <STLink to="/main">
+              <Menu status={pathname === "/main"}>Main</Menu>
+            </STLink>
+            <Menu status={pathname === "/search"}>Search</Menu>
           </MenuContainer>
           <InputContainer>
-          <div>
-                <input
-                  className="inputBox"
-                  type="text"
-                  placeholder="검색어를 입력하세용"
-                />
-                <Iconlefst name='hashtag' />
-                <Iconright name='search' />
-                <div className="inputBar"></div>
-              </div>
+            <div>
+              <input
+                className="inputBox"
+                type="text"
+                placeholder="검색어를 입력하세용"
+              />
+              <Iconlefst name="hashtag" />
+              <Iconright name="search" />
+              <div className="inputBar"></div>
+            </div>
           </InputContainer>
           <MenuContainer>
             <STLink to="/about">

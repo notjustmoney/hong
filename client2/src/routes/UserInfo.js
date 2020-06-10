@@ -28,6 +28,26 @@ const Nickname = styled.div`
   font-weight: 600;
 `;
 
+const InfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Img = styled.div`
+  width: 200px;
+  height: 200px;
+  background: url(${(props) => props.path});
+  background-position: center;
+  border-radius: 100px;
+  margin-bottom: 20px;
+  margin-right: 50px;
+`;
+
 const UserInfo = (props) => {
   const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState(null);
@@ -40,14 +60,6 @@ const UserInfo = (props) => {
   const getUserInfo = async (id) => {
     const access = window.localStorage.getItem("access_token");
     try {
-      /*const resp = await axios.get(
-        `http://www.hongsick.com/api/auth/me/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access}`,
-          },
-        }
-      );*/
       const resp = await apis.authMe(id, access);
       setUserInfo(resp.data);
       console.log(resp);
@@ -82,11 +94,16 @@ const UserInfo = (props) => {
             {error ? (
               <div>{error}</div>
             ) : (
-              <>
-                <Name>{userInfo.user.profile.name}</Name>
-                <Email>{userInfo.user.email}</Email>
-                <Nickname>{userInfo.user.profile.nickname}</Nickname>
-              </>
+              <InfoContainer>
+                <Img
+                  path={`http://www.hongsick.com${userInfo.user.profile.thumbnail}`}
+                />
+                <Info>
+                  <Name>{userInfo.user.profile.name}</Name>
+                  <Email>{userInfo.user.email}</Email>
+                  <Nickname>{userInfo.user.profile.nickname}</Nickname>
+                </Info>
+              </InfoContainer>
             )}
           </div>
         )}
