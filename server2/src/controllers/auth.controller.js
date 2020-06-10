@@ -4,6 +4,11 @@ const catchAsync = require('../utils/catchAsync');
 const { authService, userService } = require('../services');
 
 const getUserInfo = catchAsync(async (req, res) => {
+  const jwtUserId = req.user._id.toString();
+  if (jwtUserId !== req.params.userId) {
+    const response = { msg: `You cannot access others profile management page` };
+    res.status(httpStatus.FORBIDDEN).send(response);
+  }
   const user = await userService.getUserById(req.params.userId);
   const response = { user: omit(user.transform(), ['role']) };
   res.send(response);
