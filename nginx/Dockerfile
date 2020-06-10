@@ -13,5 +13,5 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 RUN cat /etc/nginx/conf.d/default.conf
 RUN mkdir /usr/share/nginx/public
-COPY ./nginx/public /usr/share/nginx/public
+COPY /home/hong/nginx/public /usr/share/nginx/public
 COPY --from=builder /usr/src/client/build /usr/share/nginx/html
