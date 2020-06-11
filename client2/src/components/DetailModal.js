@@ -303,7 +303,9 @@ const DetailModal = ({ info }) => {
                     <Info>
                       <HashTags>
                         {contents.tags.map((tag, index) => (
-                          <Link to={`/search?${tag.id}`}><Tag key={index}>#{tag.hashtag}</Tag></Link>
+                          <Link to={`/search?${tag.id}`} key={index}>
+                            <Tag >#{tag.hashtag}</Tag>
+                          </Link>
                         ))}
                       </HashTags>
                     </Info>
