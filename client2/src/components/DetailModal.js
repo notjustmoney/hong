@@ -277,7 +277,7 @@ const DetailModal = ({ info }) => {
           <>
             <PopContent>
               <ImgCarousel>
-                <InstaLink onClick={() => {window.location.href=`${contents.link}`;}}>Instagram 바로가기</InstaLink>
+                <InstaLink onClick={() => {window.open(`${contents.link}`);}}>Instagram 바로가기</InstaLink>
                 <Carousel showThumbs={false}>
                   {contents.imgs.map((imgs,index) => (
                     <ImgPostion key={index}>
