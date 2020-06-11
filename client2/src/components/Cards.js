@@ -41,10 +41,8 @@ const Bg = styled.div`
 
 const Info = styled.div`
   display: flex;
-  height: 100%;
   flex-direction: column;
   padding: 20px;
-  position: relative;
 `;
 
 const Title = styled.div`
@@ -65,9 +63,6 @@ const BgDesc = styled.div`
   font-family: "Song Myung", serif;
   line-height: 1.4;
   overflow-y: scroll;
-  ::-webkit-scrollbar:{
-    display:none;
-  }
   opacity: 1 !important;
 `;
 
@@ -86,12 +81,12 @@ const HashTags = styled.div`
   font-weight: 600;
 `;
 
-const Img = styled.img`
+const Img = styled.div`
   width: 300px;
-  transition:all .35s;
-  :hover{
-    filter:brightness(50%);
-  }
+  height: 200px;
+  background: url(${(props) => props.path});
+  background-position: center;
+  background-size: cover;
 `;
 
 
@@ -119,7 +114,6 @@ const PopupModal = styled(Modal)`
   &&&{
     border-radius:0;
   }
-
 `;
 
 const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
@@ -138,7 +132,7 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
           <BgTitle>{title}</BgTitle>
           <BgDesc>{contents}</BgDesc>
         </Bg>
-        <Img src={imgs} alt=""/>
+        <Img path={imgs} />
         <Title>{title}</Title>
         <Info>
           <Price>{price}원</Price>

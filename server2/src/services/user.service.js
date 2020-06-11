@@ -57,6 +57,22 @@ const getUserByEmail = async (email) => {
   return user;
 };
 
+const updateUserInfo = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+  if (updateBody.nickname !== user.profile.nickname) {
+    await checkDuplicateNickname(updateBody.nickname, userId);
+    user.profile.nickname = updateBody.nickname;
+  }
+  if (updateBody.gender !== user.gender) {
+    user.gender = updateBody.gender;
+  }
+  if (updateBody.thumbnail !== user.profile.thumbnail) {
+    user.profile.thumbnail = updateBody.thumbnail;
+  }
+  await user.save();
+  return user;
+};
+
 // set default updateBody.email = origin email
 const updateUser = async (userId, updateBody) => {
   const user = await getUserById(userId);
@@ -94,6 +110,7 @@ module.exports = {
   getUserById,
   getUserByEmail,
   updateUser,
+  updateUserInfo,
   updateUserPassword,
   deleteUser,
 };

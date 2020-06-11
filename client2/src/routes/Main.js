@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Cards from "../components/Cards";
 import Header from "../components/Header";
 import apis from "../api";
-import DetailModal from "../components/DetailModal";
 
 const Container = styled.div`
   width: 1250px;
@@ -19,83 +18,46 @@ const Grid = styled.div`
   margin-bottom: 50px;
 `;
 
-const GridTwo = styled.div`
-  width: 1250px;
-  column-count: 4;
-  column-gap: 10px;
-`;
-
-const TitleGrid = styled.div`
-  border: 1px solid gray;
-  grid-column: span 2;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.1),
-      rgba(0, 0, 0, 0.1)
-    ),
-    url("https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2680&q=80");
-  background-position: center;
+const Banner = styled.div`
+  grid-column: span 4;
+  height: 300px;
+  background: url("images/Banner.png");
   background-size: cover;
+  background-position: center;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 300px;
+    width: 420px;
+    background-color: #acc538;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
 `;
 
-/*const Main = () => {
-  const [movies, setMovies] = useState({ loading: true, movie: [] });
+const BannerTitle = styled.div`
+  position: relative;
+  z-index: 200;
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+`;
 
-  const handleMovies = async () => {
-    try {
-      const {
-        data: { results },
-      } = await axios.get(
-        "https://api.themoviedb.org/3/movie/popular?api_key=e6e0dd53c79220875187320b4265f3d6&language=ko&page=1"
-      );
-      setMovies({ loading: false, movie: results });
-      console.log(results);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  useEffect(() => {
-    handleMovies();
-  }, []);
-  return (
-    <>
-      <Header />
-      <Container>
-        {movies.loading ? (
-          <div>Loading...</div>
-        ) : (
-          <Grid>
-            <TitleGrid></TitleGrid>
-            {movies.movie.map((m) => (
-              <Cards
-                key={m.id}
-                img={`https://image.tmdb.org/t/p/w500/${m.backdrop_path}`}
-                title={m.title}
-                score={m.vote_average}
-                desc={m.overview}
-              />
-            ))}
-          </Grid>
-        )}
-        {movies.loading ? (
-          <div>Loading...</div>
-        ) : (
-          <GridTwo>
-            {movies.movie.map((m) => (
-              <CardsTwo
-                key={m.id}
-                img={`https://image.tmdb.org/t/p/w500/${m.backdrop_path}`}
-                title={m.title}
-                score={m.vote_average}
-                desc={m.overview}
-              />
-            ))}
-          </GridTwo>
-        )}
-      </Container>
-    </>
-  );
-};*/
+const BannerContent = styled.div`
+  color: #f2f2f2;
+  position: relative;
+  z-index: 200;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+`;
 
 const Main = () => {
   const [posts, setPosts] = useState(null);
@@ -104,7 +66,8 @@ const Main = () => {
   const getPosts = async () => {
     try {
       const resp = await apis.getPosts();
-      setPosts(resp.data);
+      const data = resp.data.reverse();
+      setPosts(data);
     } catch (e) {
       console.log(e);
     } finally {
@@ -125,6 +88,17 @@ const Main = () => {
           <div>Loading...</div>
         ) : (
           <Grid>
+            <Banner>
+              <BannerTitle>홍대병</BannerTitle>
+              <BannerContent>
+                카드를 누르면 자세한 정보를 볼 수 있어요!
+              </BannerContent>
+              <BannerContent>
+                해시태그를 누르면 해당 태그를 가진 게시물이 보여요!
+              </BannerContent>
+              <BannerContent>원하는 옷을 찾아보고 구매하세요!</BannerContent>
+              <BannerContent>감사합니다!</BannerContent>
+            </Banner>
             {posts.map((post) => (
               <Cards
                 key={post.id}

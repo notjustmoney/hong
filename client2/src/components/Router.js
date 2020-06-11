@@ -7,6 +7,7 @@ import Contact from "./Contact";
 import Intro from "../routes/Intro";
 import UserInfo from "../routes/UserInfo";
 import Find from "../components/Findpw";
+import Search from "../routes/Search";
 
 export default () => (
   <Router>
@@ -17,6 +18,7 @@ export default () => (
       <Route exact path="/register" component={RegisterForm} />
       <Route exact path="/contact" component={Contact} />
       <Route exact path="/find" component={Find} />
+      <Route path="/search/:id" component={Search} />
       <Route path="/user/:id" component={UserInfo} />
     </Switch>
   </Router>

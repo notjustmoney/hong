@@ -250,7 +250,7 @@ const DetailModal = ({ info }) => {
       "contents":comments
     };
     try{
-      const resp = await apis.comment(comment,contents.id,loginInfo)
+      const resp = await apis.comment(comment,contents.id,loginInfo);
       const refresh = await apis.getDetailPost(contents.id);
       setContents(refresh.data);
       setBtnState({ loading: "", disabled: "disabled" });
@@ -259,7 +259,6 @@ const DetailModal = ({ info }) => {
           top:element.scrollHeight,
           behavior: 'smooth'
         })
-      console.log(resp);
       
     }catch(e){
       alert("댓글 작성 실패. 로그인 상태를 확인해 주세요.");
