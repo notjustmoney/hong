@@ -36,10 +36,8 @@ const Bg = styled.div`
 
 const Info = styled.div`
   display: flex;
-  height: 100%;
   flex-direction: column;
   padding: 20px;
-  position: relative;
 `;
 
 const Title = styled.div`
@@ -78,8 +76,12 @@ const HashTags = styled.div`
   font-weight: 600;
 `;
 
-const Img = styled.img`
+const Img = styled.div`
   width: 300px;
+  height: 200px;
+  background: url(${(props) => props.path});
+  background-position: center;
+  background-size: cover;
 `;
 
 const Price = styled.div`
@@ -102,11 +104,7 @@ const Tag = styled.div`
   border-radius: 3px;
 `;
 
-const Star = styled.span`
-  color: #fdcb6e;
-`;
-
-const Cards = ({ id, img, title, tags, contents, price, writer }) => {
+const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
   const handleClick = async () => {
@@ -121,7 +119,7 @@ const Cards = ({ id, img, title, tags, contents, price, writer }) => {
           <BgTitle>{title}</BgTitle>
           <BgDesc>{contents}</BgDesc>
         </Bg>
-        <Img src="/images/placeholder-img.jpg" />
+        <Img path={imgs} />
         <Title>{title}</Title>
         <Info>
           <Price>{price}원</Price>

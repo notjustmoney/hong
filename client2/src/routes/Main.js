@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Cards from "../components/Cards";
 import Header from "../components/Header";
 import apis from "../api";
-import DetailModal from "../components/DetailModal";
 
 const Container = styled.div`
   width: 1250px;
@@ -19,83 +18,12 @@ const Grid = styled.div`
   margin-bottom: 50px;
 `;
 
-const GridTwo = styled.div`
-  width: 1250px;
-  column-count: 4;
-  column-gap: 10px;
-`;
-
-const TitleGrid = styled.div`
+const Banner = styled.div`
+  grid-column: span 4;
+  height: 300px;
   border: 1px solid gray;
-  grid-column: span 2;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.1),
-      rgba(0, 0, 0, 0.1)
-    ),
-    url("https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2680&q=80");
-  background-position: center;
-  background-size: cover;
+  margin-bottom: 20px;
 `;
-
-/*const Main = () => {
-  const [movies, setMovies] = useState({ loading: true, movie: [] });
-
-  const handleMovies = async () => {
-    try {
-      const {
-        data: { results },
-      } = await axios.get(
-        "https://api.themoviedb.org/3/movie/popular?api_key=e6e0dd53c79220875187320b4265f3d6&language=ko&page=1"
-      );
-      setMovies({ loading: false, movie: results });
-      console.log(results);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  useEffect(() => {
-    handleMovies();
-  }, []);
-  return (
-    <>
-      <Header />
-      <Container>
-        {movies.loading ? (
-          <div>Loading...</div>
-        ) : (
-          <Grid>
-            <TitleGrid></TitleGrid>
-            {movies.movie.map((m) => (
-              <Cards
-                key={m.id}
-                img={`https://image.tmdb.org/t/p/w500/${m.backdrop_path}`}
-                title={m.title}
-                score={m.vote_average}
-                desc={m.overview}
-              />
-            ))}
-          </Grid>
-        )}
-        {movies.loading ? (
-          <div>Loading...</div>
-        ) : (
-          <GridTwo>
-            {movies.movie.map((m) => (
-              <CardsTwo
-                key={m.id}
-                img={`https://image.tmdb.org/t/p/w500/${m.backdrop_path}`}
-                title={m.title}
-                score={m.vote_average}
-                desc={m.overview}
-              />
-            ))}
-          </GridTwo>
-        )}
-      </Container>
-    </>
-  );
-};*/
 
 const Main = () => {
   const [posts, setPosts] = useState(null);
@@ -125,13 +53,14 @@ const Main = () => {
           <div>Loading...</div>
         ) : (
           <Grid>
+            <Banner>Hello</Banner>
             {posts.map((post) => (
               <Cards
                 key={post.id}
                 id={post.id}
                 title={post.title}
                 contents={post.contents}
-                imgs={post.imgs[0]}
+                imgs={`http://www.hongsick.com${post.imgs[0]}`}
                 tags={post.tags}
                 price={post.price}
                 writer={post.writer.profile.nickname}

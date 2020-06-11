@@ -130,8 +130,8 @@ const LoginModal = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter'){
-      handleSubmit(0);
+    if (e.key === "Enter") {
+      handleSubmit();
     }
   };
 
@@ -178,14 +178,18 @@ const LoginModal = () => {
       dispatch(allActinos.loginActions.loginUserSuccess(user));
     }
   }, [data]);
-  
 
   return (
     <>
       <Modal.Header>홍대병 로그인</Modal.Header>
       <Modal.Content>
         <Container>
-          <Input type="text" placeholder="이메일" onChange={handleIdChange} onKeyPress={handleKeyPress}/>
+          <Input
+            type="text"
+            placeholder="이메일"
+            onChange={handleIdChange}
+            onKeyPress={handleKeyPress}
+          />
           <Input
             type="password"
             placeholder="비밀번호"
@@ -206,7 +210,14 @@ const LoginModal = () => {
             )}
           </SButton>
           <Userpanel>
-            이메일 찾기 | <Link to="/find" onClick={() => dispatch(allActinos.modalActions.closeModal())}>비밀번호 찾기</Link> |{" "}
+            이메일 찾기 |{" "}
+            <Link
+              to="/find"
+              onClick={() => dispatch(allActinos.modalActions.closeModal())}
+            >
+              비밀번호 찾기
+            </Link>{" "}
+            |{" "}
             <Link
               to="/register"
               onClick={() => dispatch(allActinos.modalActions.closeModal())}
