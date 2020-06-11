@@ -1,20 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import { Dimmer, Loader } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
-  padding: 50px;
+  display: flex;
+  min-height: 500px;
 `;
 
 const Title = styled.div`
-  font-size: 36px;
+  font-size: 26px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const Contents = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.2;
+  margin-bottom: 50px;
 `;
 
 const HashTags = styled.div`
@@ -32,26 +35,36 @@ const HashTags = styled.div`
   font-weight: 600;
 `;
 
+const UserImg = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  margin-right: 10px;
+`;
+
 const Img = styled.img`
-  width: 100%;
-  margin-bottom: 20px;
+  max-width: 500px;
 `;
 
 const Info = styled.div`
   display: flex;
-  height: 100%;
+  width: 450px;
   flex-direction: column;
   position: relative;
+  padding: 30px;
+  justify-content: center;
 `;
 
 const Price = styled.div`
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 `;
 
 const Writer = styled.div`
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
 `;
 
 const Tag = styled.div`
@@ -70,21 +83,28 @@ const DetailModal = ({ info }) => {
     <>
       {info === null ? (
         <Container>
-          <Dimmer active>
-            <Loader />
+          <Dimmer inverted active>
+            <Loader inverted />
           </Dimmer>
         </Container>
       ) : (
         <Container>
-          <Title>{info.title}</Title>
-          <Img src="/images/placeholder-img.jpg" />
-          <Contents>{info.contents}</Contents>
+          <Img src={`http://www.hongsick.com${info.imgs[0]}`} />
           <Info>
+            <Title>{info.title}</Title>
+            <Writer>
+              <UserImg
+                src={`http://www.hongsick.com${info.writer.profile.thumbnail}`}
+              />
+              <div>{info.writer.profile.nickname}</div>
+            </Writer>
+            <Contents>{info.contents}</Contents>
             <Price>{info.price}원</Price>
-            <Writer>{info.writer.profile.nickname}</Writer>
             <HashTags>
               {info.tags.map((tag, index) => (
-                <Tag key={index}>#{tag.hashtag}</Tag>
+                <Tag key={index}>
+                  <Link to={`/search/${tag.id}`}>#{tag.hashtag}</Link>
+                </Tag>
               ))}
             </HashTags>
           </Info>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Link } from "react-router-dom";
 import styled from "styled-components";
-import LogoImage from "../images/LogoImage.png";
 import "./header.css";
 import { Modal, Visibility, Icon } from "semantic-ui-react";
 import LoginModal from "../components/LoginModal";
@@ -30,7 +29,7 @@ const Fixedheader = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: 150px;
+  height: 160px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,8 +51,8 @@ const SLink = styled(Link)`
 `;
 
 const Logo = styled.div`
-  width: 240px;
-  height: 59px;
+  width: 220px;
+  height: 68px;
   background: url(${(props) => props.path});
   background-size: cover;
   background-position: center;
@@ -61,6 +60,7 @@ const Logo = styled.div`
 
 const Content = styled.div`
   width: 100%;
+  max-width: 1400px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -206,14 +206,14 @@ export default withRouter(({ location: { pathname } }) => {
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
         <Container>
           <SLink to="/main">
-            <Logo path={LogoImage} />
+            <Logo path={`images/logo.png`} />
           </SLink>
           <Content>
             <MenuContainer>
               <STLink to="/main">
                 <Menu status={pathname === "/main"}>Main</Menu>
               </STLink>
-              <Menu status={pathname === "/search"}>Search</Menu>
+              <Menu status={pathname.includes("search")}>Search</Menu>
             </MenuContainer>
             <InputContainer>
               <div>

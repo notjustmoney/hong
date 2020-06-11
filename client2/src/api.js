@@ -23,6 +23,7 @@ const apis = {
       `http://www.hongsick.com/api/auth/reset-password?token=${token}`,
       data
     ),
+  searchByTag: (id) => axios.get(`http://www.hongsick.com/api/search/${id}`),
 };
 
 export default apis;
