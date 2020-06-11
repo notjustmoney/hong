@@ -99,18 +99,19 @@ const Main = () => {
               <BannerContent>원하는 옷을 찾아보고 구매하세요!</BannerContent>
               <BannerContent>감사합니다!</BannerContent>
             </Banner>
-            {posts.map((post) => (
-              <Cards
-                key={post.id}
-                id={post.id}
-                title={post.title}
-                contents={post.contents}
-                imgs={`http://www.hongsick.com${post.imgs[0]}`}
-                tags={post.tags}
-                price={post.price}
-                writer={post.writer.profile.nickname}
-              />
-            ))}
+            {posts &&
+              posts.map((post) => (
+                <Cards
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  contents={post.contents}
+                  imgs={`http://www.hongsick.com${post.imgs[0]}`}
+                  tags={post.tags}
+                  price={post.price}
+                  writer={post.writer.profile.nickname}
+                />
+              ))}
           </Grid>
         )}
       </Container>
