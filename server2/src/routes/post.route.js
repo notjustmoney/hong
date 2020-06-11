@@ -19,6 +19,8 @@ router
   .delete(auth('manageComment'), validate(commentValidation.deleteCommnet), commentController.deleteComment)
   .patch(auth('manageComment'), validate(commentValidation.updateComment), commentController.updateComment);
 
+router.route('/user/:userId').get(validate(postValidation.getPostsByUser), postController.getPostsByUser);
+
 router
   .route('/:postId')
   .get(postController.getPost)

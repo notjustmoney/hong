@@ -6,6 +6,49 @@ const AppError = require('../utils/AppError');
 const { Post, Hashtag } = require('../models');
 const { getQueryOptions } = require('../utils/service.util');
 
+const getPostsByUser = async (userId) => {
+  const posts = await Post.find({ writer: userId })
+    .populate({
+      path: 'comments',
+      select: 'contents writer createdAt',
+      populate: {
+        path: 'writer',
+        select: 'profile',
+      },
+    })
+    .populate({
+      path: 'tags',
+      select: 'hashtag',
+    })
+    .populate({
+      path: 'writer',
+      select: 'profile',
+    });
+  return posts;
+};
+
+const getPosts = async (query) => {
+  const options = getQueryOptions(query);
+  const posts = await Post.find(query, null, options)
+    .populate({
+      path: 'comments',
+      select: 'contents writer createdAt',
+      populate: {
+        path: 'writer',
+        select: 'profile',
+      },
+    })
+    .populate({
+      path: 'tags',
+      select: 'hashtag',
+    })
+    .populate({
+      path: 'writer',
+      select: 'profile',
+    });
+  return posts;
+};
+
 const getPostById = async (postId) => {
   const post = await Post.findById(postId)
     .populate({
@@ -63,28 +106,6 @@ const createPost = async (postBody) => {
   return post;
 };
 
-const getPosts = async (query) => {
-  const options = getQueryOptions(query);
-  const posts = await Post.find(query, null, options)
-    .populate({
-      path: 'comments',
-      select: 'contents writer createdAt',
-      populate: {
-        path: 'writer',
-        select: 'profile',
-      },
-    })
-    .populate({
-      path: 'tags',
-      select: 'hashtag',
-    })
-    .populate({
-      path: 'writer',
-      select: 'profile',
-    });
-  return posts;
-};
-
 const updatePost = async (postId, body) => {
   const updateBody = body;
   const post = await getPostById(postId);
@@ -107,7 +128,7 @@ const updatePost = async (postId, body) => {
           posts: [postId],
         });
       } else {
-        tag.posts.push(postId);
+        if (!tag.posts.includes(postId)) tag.posts.push(postId);
         await tag.save();
       }
       tags.push(tag._id);
@@ -134,6 +155,7 @@ const deletePost = async (postId, userId) => {
 
 module.exports = {
   createPost,
+  getPostsByUser,
   getPostById,
   getPosts,
   updatePost,

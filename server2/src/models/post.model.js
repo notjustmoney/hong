@@ -50,6 +50,11 @@ const postSchema = new Schema(
       type: Schema.ObjectId,
       ref: 'User',
     },
+    status: {
+      type: String,
+      enum: ['scrapped', 'uploaded'],
+      default: 'scrapped',
+    },
   },
   {
     toObject: { getters: true },
@@ -62,9 +67,17 @@ postSchema.method.toJSON = function () {
   return post.toObject();
 };
 
+// postSchema.pre('save', async function (next) {
+//   const post = this;
+//   if (user.isModified('password')) {
+//     user.password = await bcrypt.hash(user.password, 8);
+//   }
+//   next();
+// });
+
 postSchema.methods.transform = function () {
   const post = this;
-  return pick(post.toJSON(), ['id', 'title', 'contents', 'comments', 'imgs', 'link', 'price', 'tags', 'writer']);
+  return pick(post.toJSON(), ['id', 'title', 'contents', 'comments', 'imgs', 'link', 'price', 'tags', 'writer', 'status']);
 };
 
 const Post = mongoose.model('Post', postSchema);
