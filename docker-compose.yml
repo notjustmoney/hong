@@ -5,6 +5,8 @@ services:
     container_name: server
     ports:
       - "5000:3030"
+    volumes:
+      - ./server2/.env:/usr/src/server/.env
     networks:
       - backend
   nginx:
