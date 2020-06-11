@@ -149,6 +149,7 @@ const PopComment = styled.div`
   padding:10px 20px;
   overflow-y:scroll;
   border-bottom:1px solid rgba(0,0,0,.2);
+  ::-webkit-scrollbar { display: none; }
 `;
 
 const PopInfo = styled.div`
