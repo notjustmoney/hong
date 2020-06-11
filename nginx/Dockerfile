@@ -11,4 +11,5 @@ RUN npm run build
 FROM nginx:latest
 RUN rm /etc/nginx/conf.d/default.conf
 RUN mkdir /usr/share/nginx/public
+RUN mkdir /usr/share/nginx/public/public
 COPY --from=builder /usr/src/client/build /usr/share/nginx/html
