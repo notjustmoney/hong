@@ -8,7 +8,7 @@ RUN yarn install
 COPY ./client2 .
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginx:latest
 RUN rm /etc/nginx/conf.d/default.conf
 RUN mkdir /usr/share/nginx/public
 COPY --from=builder /usr/src/client/build /usr/share/nginx/html
