@@ -21,8 +21,42 @@ const Grid = styled.div`
 const Banner = styled.div`
   grid-column: span 4;
   height: 300px;
-  border: 1px solid gray;
+  background: url("images/Banner.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 300px;
+    width: 420px;
+    background-color: #acc538;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+`;
+
+const BannerTitle = styled.div`
+  position: relative;
+  z-index: 200;
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 5px;
   margin-bottom: 20px;
+`;
+
+const BannerContent = styled.div`
+  color: #f2f2f2;
+  position: relative;
+  z-index: 200;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
 `;
 
 const Main = () => {
@@ -32,7 +66,8 @@ const Main = () => {
   const getPosts = async () => {
     try {
       const resp = await apis.getPosts();
-      setPosts(resp.data);
+      const data = resp.data.reverse();
+      setPosts(data);
     } catch (e) {
       console.log(e);
     } finally {
@@ -53,7 +88,17 @@ const Main = () => {
           <div>Loading...</div>
         ) : (
           <Grid>
-            <Banner>Hello</Banner>
+            <Banner>
+              <BannerTitle>홍대병</BannerTitle>
+              <BannerContent>
+                카드를 누르면 자세한 정보를 볼 수 있어요!
+              </BannerContent>
+              <BannerContent>
+                해시태그를 누르면 해당 태그를 가진 게시물이 보여요!
+              </BannerContent>
+              <BannerContent>원하는 옷을 찾아보고 구매하세요!</BannerContent>
+              <BannerContent>감사합니다!</BannerContent>
+            </Banner>
             {posts.map((post) => (
               <Cards
                 key={post.id}

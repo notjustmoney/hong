@@ -14,7 +14,7 @@ const apis = {
   login: (info) => axios.post("http://www.hongsick.com/api/auth/login", info),
   register: (data) =>
     axios.post("http://www.hongsick.com/api/auth/register", data),
-  getPosts: () => axios.get(`http://www.hongsick.com/api/post/`),
+  getPosts: () => axios.get(`http://localhost:3030/post/`),
   getDetailPost: (id) => axios.get(`http://www.hongsick.com/api/post/${id}`),
   forgot: (data) =>
     axios.post("http://www.hongsick.com/api/auth/forgot-password", data),
