@@ -3,6 +3,7 @@ import styled from "styled-components";
 import apis from "../api";
 import { Modal } from "semantic-ui-react";
 import DetailModal from "../components/DetailModal";
+import "./card.css";
 
 const Container = styled.div`
   width: 300px;
@@ -15,6 +16,10 @@ const Container = styled.div`
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   position: relative;
+  transition:all .35s;
+  :hover{
+    transform:translateY(-3px);
+  }
 `;
 
 const Bg = styled.div`
@@ -59,7 +64,10 @@ const BgTitle = styled.div`
 const BgDesc = styled.div`
   font-family: "Song Myung", serif;
   line-height: 1.4;
-  overflow: scroll;
+  overflow-y: scroll;
+  ::-webkit-scrollbar:{
+    display:none;
+  }
   opacity: 1 !important;
 `;
 
@@ -80,7 +88,12 @@ const HashTags = styled.div`
 
 const Img = styled.img`
   width: 300px;
+  transition:all .35s;
+  :hover{
+    filter:brightness(50%);
+  }
 `;
+
 
 const Price = styled.div`
   font-size: 16px;
@@ -102,17 +115,21 @@ const Tag = styled.div`
   border-radius: 3px;
 `;
 
-const Star = styled.span`
-  color: #fdcb6e;
+const PopupModal = styled(Modal)`
+  &&&{
+    border-radius:0;
+  }
+
 `;
 
-const Cards = ({ id, img, title, tags, contents, price, writer }) => {
+const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
   const handleClick = async () => {
     setOpen(true);
     const resp = await apis.getDetailPost(id);
     setInfo(resp.data);
+    
   };
   return (
     <>
@@ -121,7 +138,7 @@ const Cards = ({ id, img, title, tags, contents, price, writer }) => {
           <BgTitle>{title}</BgTitle>
           <BgDesc>{contents}</BgDesc>
         </Bg>
-        <Img src="/images/placeholder-img.jpg" />
+        <Img src={imgs} alt=""/>
         <Title>{title}</Title>
         <Info>
           <Price>{price}원</Price>
@@ -133,9 +150,9 @@ const Cards = ({ id, img, title, tags, contents, price, writer }) => {
           </HashTags>
         </Info>
       </Container>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <PopupModal open={open} onClose={() => setOpen(false)}>
         <DetailModal info={info} />
-      </Modal>
+      </PopupModal>
     </>
   );
 };
