@@ -18,7 +18,7 @@ const userSchema = new Schema(
       },
       thumbnail: {
         type: String,
-        default: '/static/img/default_thumbnail',
+        default: '/public/user/default/male.png',
       },
     },
     email: {
@@ -143,13 +143,13 @@ userSchema.path('password').validate(function () {
   }
 
   // case: update
-  if (!user.isNew) {
-    if (!user.currentPassword && !user.isReset) {
-      user.invalidate('currentPassword', 'current password is required');
-    } else if (user.currentPassword !== user.originPassword) {
-      user.invalidate('currentPassword', 'current password does not match with original password');
-    }
-  }
+  // if (!user.isNew) {
+  //   if (!user.currentPassword && !user.isReset) {
+  //     user.invalidate('currentPassword', 'current password is required');
+  //   } else if (user.currentPassword !== user.originPassword) {
+  //     user.invalidate('currentPassword', 'current password does not match with original password');
+  //   }
+  // }
 });
 
 userSchema.statics.findByName = function (name) {
@@ -175,7 +175,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.post('populate', async function (next) {
-  const user = this.transform();
+  this.transform();
   next();
 });
 

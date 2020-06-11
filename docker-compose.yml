@@ -1,17 +1,17 @@
 version: "3"
 services:
   server:
-    image: chajyn/hong:server 
+    image: chajyn/hong:server2 
     container_name: server
     ports:
       - "5000:3030"
     networks:
       - backend
   nginx:
-    image: chajyn/hong:nginx
-    volumes_from: 
-      - server
+    image: chajyn/hong:react-server2
     container_name: nginx
+    depends_on:
+      - server
     ports:
       - "80:80"
     networks:
