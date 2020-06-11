@@ -27,7 +27,7 @@ const UserDropdown = ({ id, nickname }) => {
   return (
     <SDropdown text="My Info" icon="">
       <Dropdown.Menu>
-        <Link to={`user/${id}`}>
+        <Link to={`/user/${id}`}>
           <Dropdown.Item text={`#${nickname}`} />
         </Link>
         <Dropdown.Divider />
