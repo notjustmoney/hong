@@ -3,6 +3,7 @@ import styled from "styled-components";
 import apis from "../api";
 import { Modal } from "semantic-ui-react";
 import DetailModal from "../components/DetailModal";
+import "./card.css";
 
 const Container = styled.div`
   width: 300px;
@@ -15,6 +16,10 @@ const Container = styled.div`
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   position: relative;
+  transition:all .35s;
+  :hover{
+    transform:translateY(-3px);
+  }
 `;
 
 const Bg = styled.div`
@@ -57,7 +62,7 @@ const BgTitle = styled.div`
 const BgDesc = styled.div`
   font-family: "Song Myung", serif;
   line-height: 1.4;
-  overflow: scroll;
+  overflow-y: scroll;
   opacity: 1 !important;
 `;
 
@@ -84,6 +89,7 @@ const Img = styled.div`
   background-size: cover;
 `;
 
+
 const Price = styled.div`
   font-size: 16px;
   font-weight: 600;
@@ -104,6 +110,12 @@ const Tag = styled.div`
   border-radius: 3px;
 `;
 
+const PopupModal = styled(Modal)`
+  &&&{
+    border-radius:0;
+  }
+`;
+
 const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
@@ -111,6 +123,7 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
     setOpen(true);
     const resp = await apis.getDetailPost(id);
     setInfo(resp.data);
+    
   };
   return (
     <>
@@ -131,9 +144,9 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
           </HashTags>
         </Info>
       </Container>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <PopupModal open={open} onClose={() => setOpen(false)}>
         <DetailModal info={info} />
-      </Modal>
+      </PopupModal>
     </>
   );
 };

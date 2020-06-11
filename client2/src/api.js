@@ -23,6 +23,12 @@ const apis = {
       `http://www.hongsick.com/api/auth/reset-password?token=${token}`,
       data
     ),
+  comment: (comment, postId, access) =>
+    axios.post(`http://www.hongsick.com/api/post/comment?postId=${postId}`,comment, {
+      headers: {
+        Authorization: `Bearer ${access}`
+      }
+    }),
   searchByTag: (id) => axios.get(`http://www.hongsick.com/api/search/${id}`),
 };
 
