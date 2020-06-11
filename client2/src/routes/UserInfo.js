@@ -85,7 +85,6 @@ const UserInfo = (props) => {
   }, []);
   return (
     <div>
-      <Header />
       <Container>
         {loading ? (
           <div>Loading...</div>

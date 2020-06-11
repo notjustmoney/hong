@@ -8,9 +8,11 @@ import Intro from "../routes/Intro";
 import UserInfo from "../routes/UserInfo";
 import Find from "../components/Findpw";
 import Search from "../routes/Search";
+import Header from "../components/Header";
 
 export default () => (
   <Router>
+    <Header />
     <Switch>
       <Route exact path="/" component={Intro} />
       <Route exact path="/main" component={Main} />

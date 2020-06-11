@@ -21,7 +21,7 @@ const Grid = styled.div`
 const Banner = styled.div`
   grid-column: span 4;
   height: 300px;
-  background: url("images/Banner.png");
+  background: url("images/bannerImage.png");
   background-size: cover;
   background-position: center;
   position: relative;
@@ -82,7 +82,6 @@ const Main = () => {
   console.log(posts);
   return (
     <>
-      <Header />
       <Container>
         {loading ? (
           <div>Loading...</div>

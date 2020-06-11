@@ -45,7 +45,6 @@ export default withRouter((props) => {
   console.log(posts);
   return (
     <>
-      <Header />
       <Container>
         {loading ? (
           <div>Loading...</div>

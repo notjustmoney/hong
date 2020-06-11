@@ -75,7 +75,6 @@ const QnA = () => {
   }, []);
   return (
     <>
-      <Header />
       <Container>
         <TitleWrapper>
           <Title>홍대병 FAQ</Title>

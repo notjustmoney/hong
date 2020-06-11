@@ -200,13 +200,13 @@ export default withRouter(({ location: { pathname } }) => {
       }
     }
   };
-  handleValideToken();
+  useEffect(() => handleValideToken(), [pathname]);
   return (
     <>
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
         <Container>
           <SLink to="/main">
-            <Logo path={`images/logo.png`} />
+            <Logo path={`images/logoImage.png`} />
           </SLink>
           <Content>
             <MenuContainer>
