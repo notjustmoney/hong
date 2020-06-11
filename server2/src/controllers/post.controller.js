@@ -9,6 +9,12 @@ const createPost = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(response);
 });
 
+const getPostsByUser = catchAsync(async (req, res) => {
+  const posts = await postService.getPostsByUser(req.params.userId);
+  const response = posts.map((post) => post.transform());
+  res.send(response);
+});
+
 const getPost = catchAsync(async (req, res) => {
   const post = await postService.getPostById(req.params.postId);
   const response = post.transform();
@@ -35,6 +41,7 @@ const deletePost = catchAsync(async (req, res) => {
 
 module.exports = {
   createPost,
+  getPostsByUser,
   getPost,
   getPosts,
   updatePost,
