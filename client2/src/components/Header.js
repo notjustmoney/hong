@@ -86,7 +86,7 @@ const Menu = styled.div`
     ${(props) => (props.status ? "#fdcb6e" : "transparent")};
   font-weight: 700;
   text-align: center;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 const InputContainer = styled.div`
@@ -128,7 +128,7 @@ const SearchInput = styled.input`
     opacity: 0.5;
     -webkit-transition: opacity 0.35s ease-in-out;
     transition: opacity 0.35s ease-in-out;
-    text-align:center;
+    text-align: center;
   }
   :hover::-webkit-input-placeholder {
     opacity: 0.75;
@@ -136,7 +136,7 @@ const SearchInput = styled.input`
     transition: opacity 0.35s ease-in-out;
   }
   :focus::-webkit-input-placeholder {
-    text-align:center;
+    text-align: center;
     opacity: 0;
     -webkit-transition: opacity 0.35s ease-in-out;
     transition: opacity 0.35s ease-in-out;
@@ -170,7 +170,6 @@ export default withRouter(({ location: { pathname } }) => {
 
   useEffect(() => {
     handleIsUser();
-
   }, []);
 
   const handleUpdate = (e, { calculations }) => {
@@ -232,7 +231,14 @@ export default withRouter(({ location: { pathname } }) => {
               <STLink to="/main">
                 <Menu status={pathname === "/main"}>Main</Menu>
               </STLink>
-              <Menu status={pathname.includes("search")} onClick={() => {document.getElementById("MainInput").focus();}}>Search</Menu>
+              <Menu
+                status={pathname.includes("search")}
+                onClick={() => {
+                  document.getElementById("MainInput").focus();
+                }}
+              >
+                Search
+              </Menu>
             </MenuContainer>
             <InputContainer>
               <div>
@@ -274,7 +280,14 @@ export default withRouter(({ location: { pathname } }) => {
             <STLink to="/main">
               <Menu status={pathname === "/main"}>Main</Menu>
             </STLink>
-            <Menu status={pathname === "/search"} onClick={() => {document.getElementById("SubInput").focus();}}>Search</Menu>
+            <Menu
+              status={pathname === "/search"}
+              onClick={() => {
+                document.getElementById("SubInput").focus();
+              }}
+            >
+              Search
+            </Menu>
           </MenuContainer>
           <InputContainer>
             <div>

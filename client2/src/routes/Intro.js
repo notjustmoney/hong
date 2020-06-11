@@ -56,7 +56,7 @@ const Intro = () => {
           container: document.querySelector("#scroll-section-1"),
         },
         values: {
-          container_opacity_in: [0, 1, { start: 0, end: 0.2 }],
+          container_opacity_in: [0, 1, { start: 0.1, end: 0.3 }],
         },
       },
     ];
@@ -245,6 +245,7 @@ const Intro = () => {
             window.innerHeight * sceneInfo[i].heightNum;
         } else if (sceneInfo[i].type === "normal") {
           sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight;
+          //sceneInfo[i].scrollHeight = 1540;
         }
         //sceneInfo[i].scrollHeight = window.innerHeight * sceneInfo[i].heightNum;
         sceneInfo[
