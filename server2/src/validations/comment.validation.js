@@ -2,19 +2,15 @@ const Joi = require('@hapi/joi');
 const { objectId } = require('./custom.validation');
 
 const createComment = {
-  query: Joi.object({
-    postId: Joi.string().custom(objectId),
-  }),
   body: Joi.object().keys({
+    postId: Joi.string().custom(objectId).required(),
     contents: Joi.string().required(),
   }),
 };
 
 const updateComment = {
-  query: Joi.object({
-    commentId: Joi.string().custom(objectId).required(),
-  }),
   body: Joi.object({
+    commentId: Joi.string().custom(objectId).required(),
     contents: Joi.string().required(),
   }),
 };
