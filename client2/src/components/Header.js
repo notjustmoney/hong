@@ -18,7 +18,7 @@ const Fixedheader = styled.div`
   height: 60px;
   position: fixed;
   left: 0;
-  top: ${(props) => (props.status ? "0" : "-60px")};
+  top: ${(props) => (props.status ? "0" : "-70px")};
   z-index: 20;
   transition: all 0.25s;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
