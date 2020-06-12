@@ -56,7 +56,7 @@ const Intro = () => {
           container: document.querySelector("#scroll-section-1"),
         },
         values: {
-          container_opacity_in: [0, 1, { start: 0.1, end: 0.3 }],
+          container_opacity_in: [0, 1, { start: 0, end: 0.3 }],
         },
       },
     ];
