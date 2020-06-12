@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import apis from "../api";
-import Header from "../components/Header";
 
 const Container = styled.div`
   max-width: 1250px;

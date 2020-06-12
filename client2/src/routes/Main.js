@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Cards from "../components/Cards";
-import Header from "../components/Header";
 import apis from "../api";
 
 const Container = styled.div`

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Input, Button } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import apis from "../api";
 
 const Wrap = styled.div`
-    clear: both;
+  clear: both;
   width: 450px;
   margin: 0 auto;
   padding: 70px 0;
@@ -23,12 +22,6 @@ const Errormsg = styled.div`
   color: red;
   margin-bottom: 19px;
   text-align: center;
-`;
-
-const MainLink = styled.div`
-  margin:10px;
-  color:gray;
-  text-align:center;
 `;
 
 const Findpw = () => {
