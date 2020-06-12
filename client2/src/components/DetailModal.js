@@ -281,7 +281,7 @@ const DetailModal = ({ info }) => {
             <ImgCarousel>
               <InstaLink
                 onClick={() => {
-                  window.location.href = `${contents.link}`;
+                  window.open(`${contents.link}`);
                 }}
               >
                 Instagram 바로가기
