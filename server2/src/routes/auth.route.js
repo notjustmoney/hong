@@ -3,8 +3,6 @@ const auth = require('../middlewares/auth');
 const validate = require('../middlewares/validate');
 const authValidation = require('../validations/auth.validation');
 const authController = require('../controllers/auth.controller');
-const postValidation = require('../validations/post.validation');
-const postController = require('../controllers/post.controller');
 
 const router = express.Router();
 
@@ -12,8 +10,6 @@ router
   .route('/me')
   .get(auth('manageProfile'), validate(authValidation.getUserInfo), authController.getUserInfo)
   .patch(auth('manageProfile'), validate(authValidation.updateUserInfo), authController.updateUserInfo);
-
-router.route('/user-post').get(validate(postValidation.getPostsByUser), postController.getPostsByUser);
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);
