@@ -5,11 +5,10 @@ import styled from "styled-components";
 import apis from "../api";
 
 const Wrap = styled.div`
-  width: 500px;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    clear: both;
+  width: 450px;
+  margin: 0 auto;
+  padding: 70px 0;
 `;
 
 const InputA = styled(Input)`
@@ -159,10 +158,6 @@ const Findpw = () => {
       >
         {token ? <>홍대병 비밀번호 변경</> : <>홍대병 이메일 인증</>}
       </Button>
-      <MainLink>
-        <Link to="/main">홍대병 바로가기</Link>
-      </MainLink>
-      
     </Wrap>
   );
 };
