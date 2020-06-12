@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Dimmer, Loader, Button } from "semantic-ui-react";
+import { Dimmer, Loader, Button, Icon } from "semantic-ui-react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from "react-router-dom";
@@ -27,7 +27,6 @@ const Contents = styled.div`
 const HashTags = styled.div`
   display: flex;
   width: 100%;
-  cursor: pointer;
   div {
     margin-right: 5px;
     color: #0984e3;
@@ -73,6 +72,7 @@ const Tag = styled.div`
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;
+  cursor: pointer;
 `;
 
 const PopContent = styled.div`
@@ -137,9 +137,11 @@ const PopHeader = styled.div`
   margin-bottom: 10px;
 `;
 const PopContents = styled.div`
-  padding: 10px 20px;
+  padding: 10px 20px 0 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
+
+
 
 const PopComment = styled.div`
   min-height: 100px;
@@ -157,6 +159,30 @@ const PopInfo = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
+
+const PopFooter = styled.div`
+  width:100%;
+  height:30px;
+  text-align:right;
+  color:rgba(0,0,0,0.6);
+  font-size:.95em;
+  line-height:30px;
+  i{
+    transition:all .35s;
+    margin-left:5px;
+    cursor: pointer;
+    :hover{
+      color:rgba(0,0,0,1);
+    }
+  }
+`;
+
+const Like = styled(Icon)`
+  color:${(props) => props.isliked ? "rgba(254, 136, 0, 1)" : "inherit"};
+  :hover{
+    color:${(props) => props.isliked ? "rgba(255, 181, 30, 1)" : "rgba(0,0,0,1);"};
+  }
 `;
 
 const CommentBox = styled.div`
@@ -223,6 +249,7 @@ const NeedLogin = styled.div`
 
 const DetailModal = ({ info }) => {
   const [comments, setComment] = useState("");
+  const [isLiked, setLike] = useState(false);
   const [btnstate, setBtnState] = useState({
     loading: "",
     disabled: "disabled",
@@ -267,6 +294,7 @@ const DetailModal = ({ info }) => {
     }
     setComment("");
   };
+
   return (
     <>
       {contents === null ? (
@@ -314,6 +342,10 @@ const DetailModal = ({ info }) => {
                         </Link>
                       ))}
                     </HashTags>
+                    <PopFooter>
+                      <Like name="like" isliked={isLiked} />0
+                      <Icon name="comment" onClick={() => {document.getElementById("commentbox").focus()}} />0
+                    </PopFooter>
                   </Info>
                 </PopContents>
                 <PopComment id="comments">
@@ -341,6 +373,7 @@ const DetailModal = ({ info }) => {
                         placeholder="댓글 작성"
                         value={comments}
                         onChange={handleComment}
+                        id = "commentbox"
                       />
                       <CommnetSubmit
                         onClick={handleCommentSubmit}
