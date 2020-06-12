@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Cards from "../components/Cards";
-import Header from "../components/Header";
 import apis from "../api";
 
 const Container = styled.div`
@@ -21,7 +20,7 @@ const Grid = styled.div`
 const Banner = styled.div`
   grid-column: span 4;
   height: 300px;
-  background: url("images/Banner.png");
+  background: url("images/banner.png");
   background-size: cover;
   background-position: center;
   position: relative;
@@ -82,7 +81,6 @@ const Main = () => {
   console.log(posts);
   return (
     <>
-      <Header />
       <Container>
         {loading ? (
           <div>Loading...</div>

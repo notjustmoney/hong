@@ -7,6 +7,10 @@ const Container = styled.div`
   background-color: #121212;
   color: white;
   padding-bottom: 100px;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 50;
 `;
 
 const Img = styled.div`
