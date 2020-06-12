@@ -12,6 +12,10 @@ import Header from "../components/Header";
 
 export default () => (
   <Router>
+    <Route
+      path={["/main","/about","/register","/find","/search","/user"]}
+      component={Header}
+    />
     <Switch>
       <Route exact path="/" component={Intro} />
       <Route exact path="/main" component={Main} />
