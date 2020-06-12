@@ -3,6 +3,8 @@
 const express = require('express');
 const validate = require('../middlewares/validate');
 const searchValidation = require('../validations/search.validation');
+const postValidation = require('../validations/post.validation');
+const postController = require('../controllers/post.controller');
 const catchAsync = require('../utils/catchAsync');
 const Hashtag = require('../models/hashtag.model');
 const Post = require('../models/post.model');
@@ -34,6 +36,8 @@ const getPostsByTag = async (tags) => {
   return posts;
 };
 
+router.route('/user').get(validate(postValidation.getPostsByUser), postController.getPostsByUser);
+router.route('/like').get(validate(postValidation.getPostByLike), postController.getPostByLike);
 router.get(
   '/tag',
   validate(searchValidation.searchByTagName),
