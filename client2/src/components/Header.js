@@ -143,6 +143,12 @@ const SearchInput = styled.input`
   }
 `;
 
+const ModalWrapper = styled(Modal)`
+  &&&{
+    border-radius:0;
+  }
+`;
+
 export default withRouter(({ location: { pathname } }) => {
   //const [open, setOpen] = useState(false);
   const open = useSelector((state) => state.isOpen);
@@ -321,14 +327,14 @@ export default withRouter(({ location: { pathname } }) => {
           </MenuContainer>
         </Content>
       </Fixedheader>
-      <Modal
+      <ModalWrapper
         size="mini"
         dimmer="blurring"
         open={open}
         onClose={() => dispatch(allActions.modalActions.closeModal())}
       >
         <LoginModal />
-      </Modal>
+      </ModalWrapper>
     </>
   );
 });
