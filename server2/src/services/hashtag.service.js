@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Hashtag, Post } = require('../models');
+const { Hashtag } = require('../models');
 const AppError = require('../utils/AppError');
 
 const getHashtagById = async (tagId) => {
@@ -11,14 +11,14 @@ const getHashtagById = async (tagId) => {
 };
 
 const updateHashtag = async (post) => {
-  post.tags.forEach(async (tag) => {
-    const deletedTag = await Hashtag.findOne({ hashtag: tag });
+  post.tags.forEach(async (tagId) => {
+    const deletedTag = await Hashtag.findById(tagId);
     if (deletedTag) {
-      const index = tag.posts.indexOf(post._id);
+      const index = deletedTag.posts.indexOf(post._id);
       if (index > -1) {
-        tag.posts.splice(index, 1);
+        deletedTag.posts.splice(index, 1);
       }
-      if (tag.posts.length === 0) {
+      if (deletedTag.posts.length === 0) {
         await deletedTag.remove();
       }
     }

@@ -161,7 +161,7 @@ const updatePost = async (body) => {
 };
 
 const deletePost = async (postId, userId) => {
-  const post = await getPostById(postId);
+  const post = await Post.findById(postId);
   if (!post) {
     throw new AppError(httpStatus.NOT_FOUND, `Post not found`);
   }
