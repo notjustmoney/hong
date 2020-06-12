@@ -7,7 +7,6 @@ const postSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
     },
     contents: {
       type: String,
@@ -30,10 +29,12 @@ const postSchema = new Schema(
       default: 0,
       required: false,
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
+    likes: [
+      {
+        type: Schema.ObjectId,
+        ref: 'Like',
+      },
+    ],
     tags: [
       {
         type: Schema.ObjectId,
@@ -57,7 +58,10 @@ const postSchema = new Schema(
     },
   },
   {
-    toObject: { getters: true },
+    toObject: {
+      virtuals: true,
+      getters: true,
+    },
     toJSON: { getters: true },
   }
 );
@@ -67,17 +71,21 @@ postSchema.method.toJSON = function () {
   return post.toObject();
 };
 
-// postSchema.pre('save', async function (next) {
-//   const post = this;
-//   if (user.isModified('password')) {
-//     user.password = await bcrypt.hash(user.password, 8);
-//   }
-//   next();
-// });
-
 postSchema.methods.transform = function () {
   const post = this;
-  return pick(post.toJSON(), ['id', 'title', 'contents', 'comments', 'imgs', 'link', 'price', 'tags', 'writer', 'status']);
+  return pick(post.toJSON(), [
+    'id',
+    'title',
+    'contents',
+    'comments',
+    'imgs',
+    'link',
+    'price',
+    'tags',
+    'writer',
+    'status',
+    'likes',
+  ]);
 };
 
 const Post = mongoose.model('Post', postSchema);

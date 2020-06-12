@@ -12,17 +12,27 @@ const createPost = {
   }),
 };
 
-const getPostsByUser = {
+const getPostById = {
   params: Joi.object().keys({
+    postId: Joi.string().custom(objectId),
+  }),
+};
+
+const getPostsByUser = {
+  body: Joi.object().keys({
     userId: Joi.string().custom(objectId),
   }),
 };
 
-const updatePost = {
-  params: Joi.object({
-    postId: Joi.required().custom(objectId),
+const getPostByLike = {
+  body: Joi.object().keys({
+    likeId: Joi.string().custom(objectId),
   }),
+};
+
+const updatePost = {
   body: Joi.object({
+    postId: Joi.required().custom(objectId),
     title: Joi.string(),
     contents: Joi.string(),
     price: Joi.number(),
@@ -32,14 +42,16 @@ const updatePost = {
 };
 
 const deletePost = {
-  params: Joi.object({
+  body: Joi.object({
     postId: Joi.string().custom(objectId),
   }),
 };
 
 module.exports = {
   createPost,
+  getPostById,
   getPostsByUser,
+  getPostByLike,
   updatePost,
   deletePost,
 };

@@ -3,16 +3,14 @@ const { objectId } = require('./custom.validation');
 const { password } = require('./custom.validation');
 
 const getUserInfo = {
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     userId: Joi.custom(objectId),
   }),
 };
 
 const updateUserInfo = {
-  params: Joi.object().keys({
-    userId: Joi.custom(objectId),
-  }),
   body: Joi.object().keys({
+    userId: Joi.custom(objectId),
     password: Joi.string(),
     passwordConfirmation: Joi.string(),
     nickname: Joi.string(),

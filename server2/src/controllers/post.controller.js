@@ -10,9 +10,14 @@ const createPost = catchAsync(async (req, res) => {
 });
 
 const getPostsByUser = catchAsync(async (req, res) => {
-  const posts = await postService.getPostsByUser(req.params.userId);
+  const posts = await postService.getPostsByUser(req.body.userId);
   const response = posts.map((post) => post.transform());
   res.send(response);
+});
+
+const getPostByLike = catchAsync(async (req, res) => {
+  const post = await postService.getPostByLike(req.body.likeId);
+  res.send(post);
 });
 
 const getPost = catchAsync(async (req, res) => {
@@ -28,13 +33,13 @@ const getPosts = catchAsync(async (req, res) => {
 });
 
 const updatePost = catchAsync(async (req, res) => {
-  const post = await postService.updatePost(req.params.postId, req.body);
+  const post = await postService.updatePost(req.body);
   res.send(post.transform());
 });
 
 const deletePost = catchAsync(async (req, res) => {
   const userId = req.user._id;
-  const { postId } = req.params;
+  const { postId } = req.body;
   const response = await postService.deletePost(postId, userId);
   res.status(httpStatus.NO_CONTENT).send(response);
 });
@@ -42,6 +47,7 @@ const deletePost = catchAsync(async (req, res) => {
 module.exports = {
   createPost,
   getPostsByUser,
+  getPostByLike,
   getPost,
   getPosts,
   updatePost,

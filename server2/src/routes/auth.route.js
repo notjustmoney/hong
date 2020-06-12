@@ -7,7 +7,7 @@ const authController = require('../controllers/auth.controller');
 const router = express.Router();
 
 router
-  .route('/me/:userId')
+  .route('/me')
   .get(auth('manageProfile'), validate(authValidation.getUserInfo), authController.getUserInfo)
   .patch(auth('manageProfile'), validate(authValidation.updateUserInfo), authController.updateUserInfo);
 

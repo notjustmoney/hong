@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "../components/Header";
 import { withRouter } from "react-router-dom";
 import apis from "../api";
 import Cards from "../components/Cards";
