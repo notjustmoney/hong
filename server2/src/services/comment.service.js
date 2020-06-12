@@ -24,7 +24,8 @@ const createComment = async (postId, contents, userId) => {
   return comment;
 };
 
-const updateComment = async (commentId, updateBody, userId) => {
+const updateComment = async (updateBody, userId) => {
+  const { commentId } = updateBody;
   const comment = await getCommentById(commentId);
   if (comment.writer._id.equals(userId)) {
     Object.assign(comment, updateBody);
@@ -47,4 +48,5 @@ module.exports = {
   createComment,
   updateComment,
   deleteComment,
+  getCommentById,
 };

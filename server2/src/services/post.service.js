@@ -2,6 +2,9 @@
 /* eslint-disable no-restricted-syntax */
 const httpStatus = require('http-status');
 const mongoose = require('mongoose');
+const commentService = require('./comment.service');
+const likeService = require('./like.service');
+const hashtagService = require('./hashtag.service');
 const AppError = require('../utils/AppError');
 const { Post, Hashtag } = require('../models');
 const { getQueryOptions } = require('../utils/service.util');
@@ -23,6 +26,14 @@ const getPostsByUser = async (userId) => {
     .populate({
       path: 'writer',
       select: 'profile',
+    })
+    .populate({
+      path: 'likes',
+      select: 'user',
+      populate: {
+        path: 'user',
+        select: 'profile',
+      },
     });
   return posts;
 };
@@ -45,6 +56,14 @@ const getPosts = async (query) => {
     .populate({
       path: 'writer',
       select: 'profile',
+    })
+    .populate({
+      path: 'likes',
+      select: 'user',
+      populate: {
+        path: 'user',
+        select: 'profile',
+      },
     });
   return posts;
 };
@@ -106,8 +125,9 @@ const createPost = async (postBody) => {
   return post;
 };
 
-const updatePost = async (postId, body) => {
+const updatePost = async (body) => {
   const updateBody = body;
+  const { postId } = body;
   const post = await getPostById(postId);
   const diff = post.tags.map((x) => x.hashtag).filter((elem) => !body.tags.includes(elem));
   for (const elem of diff) {
@@ -141,15 +161,28 @@ const updatePost = async (postId, body) => {
 };
 
 const deletePost = async (postId, userId) => {
-  try {
-    const post = await getPostById(postId);
-    if (post.writer._id.equals(userId)) {
-      await post.remove();
-      return post;
+  const post = await getPostById(postId);
+  if (!post) {
+    throw new AppError(httpStatus.NOT_FOUND, `Post not found`);
+  }
+  if (post.writer._id.equals(userId)) {
+    if (post.comments.length > 0) {
+      post.comments.forEach(async (commentId) => {
+        const comment = await commentService.getCommentById(commentId);
+        await comment.remove();
+      });
     }
-    throw new AppError(httpStatus.UNAUTHORIZED, `Post delete failed`);
-  } catch (e) {
-    throw new AppError(httpStatus.NOT_FOUND, `Post not found: ${e}`);
+    if (post.likes.length > 0) {
+      post.likes.forEach(async (likeId) => {
+        const like = await likeService.getLikeById(likeId);
+        if (like) {
+          await like.remove();
+        }
+      });
+    }
+    await hashtagService.updateHashtag(post);
+    await post.remove();
+    return post;
   }
 };
 

@@ -57,30 +57,32 @@ const getUserByEmail = async (email) => {
   return user;
 };
 
-const updateUserInfo = async (userId, updateBody) => {
+const updateUserInfo = async (updateBody) => {
+  const { userId, nickname, gender, thumbnail } = updateBody;
   const user = await getUserById(userId);
-  if (updateBody.nickname !== user.profile.nickname) {
-    await checkDuplicateNickname(updateBody.nickname, userId);
-    user.profile.nickname = updateBody.nickname;
+  if (nickname !== user.profile.nickname) {
+    await checkDuplicateNickname(nickname, userId);
+    user.profile.nickname = nickname;
   }
-  if (updateBody.gender !== user.gender) {
-    user.gender = updateBody.gender;
+  if (gender !== user.gender) {
+    user.gender = gender;
   }
-  if (updateBody.thumbnail !== user.profile.thumbnail) {
-    user.profile.thumbnail = updateBody.thumbnail;
+  if (thumbnail !== user.profile.thumbnail) {
+    user.profile.thumbnail = thumbnail;
   }
   await user.save();
   return user;
 };
 
 // set default updateBody.email = origin email
-const updateUser = async (userId, updateBody) => {
+const updateUser = async (updateBody) => {
+  const { userId, nickname, email } = updateBody;
   const user = await getUserById(userId);
-  if (updateBody.nickname) {
-    await checkDuplicateNickname(updateBody.nickname, userId);
+  if (nickname) {
+    await checkDuplicateNickname(nickname, userId);
   }
-  if (updateBody.email) {
-    await checkDuplicateEmail(updateBody.email, userId);
+  if (email) {
+    await checkDuplicateEmail(email, userId);
   }
   user.isReset = true;
   Object.assign(user, updateBody);
