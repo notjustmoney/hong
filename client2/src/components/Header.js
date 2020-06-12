@@ -230,7 +230,7 @@ export default withRouter(({ location: { pathname } }) => {
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
         <Container>
           <SLink to="/main">
-            <Logo path={`images/logo.png`} />
+            <Logo path={`/images/logo.png`} />
           </SLink>
           <Content>
             <MenuContainer>
