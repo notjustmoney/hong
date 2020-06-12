@@ -63,10 +63,11 @@ export default withRouter((props) => {
                       id={post.id}
                       title={post.title}
                       contents={post.contents}
-                      imgs={post.imgs[0]}
+                      imgs={`http://www.hongsick.com${post.imgs[0]}`}
                       tags={post.tags}
                       price={post.price}
                       writer={post.writer.profile.nickname}
+                      imgsLength={post.imgs.length}
                     />
                   )
                 )}
