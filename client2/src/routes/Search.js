@@ -66,6 +66,7 @@ export default withRouter((props) => {
                       tags={post.tags}
                       price={post.price}
                       writer={post.writer.profile.nickname}
+                      imgsLength={post.imgs.length}
                     />
                   )
                 )}
