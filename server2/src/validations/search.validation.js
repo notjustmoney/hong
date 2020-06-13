@@ -8,8 +8,8 @@ const searchByTagId = {
 };
 
 const searchByTagName = {
-  body: Joi.object({
-    tagName: Joi.string().required(),
+  query: Joi.object({
+    name: Joi.string().required(),
   }),
 };
 

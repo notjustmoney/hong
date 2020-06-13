@@ -3,7 +3,7 @@ const { objectId } = require('./custom.validation');
 const { password } = require('./custom.validation');
 
 const getUserInfo = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     userId: Joi.custom(objectId),
   }),
 };

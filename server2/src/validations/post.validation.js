@@ -19,13 +19,13 @@ const getPostById = {
 };
 
 const getPostsByUser = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     userId: Joi.string().custom(objectId),
   }),
 };
 
 const getPostByLike = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     likeId: Joi.string().custom(objectId),
   }),
 };
