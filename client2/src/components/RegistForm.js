@@ -181,7 +181,6 @@ const RegistForm = () => {
 
   return (
     <>
-      <Header />
       <Wrap>
         <Title>홍대병 회원가입</Title>
         <InputA

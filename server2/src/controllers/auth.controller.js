@@ -4,22 +4,24 @@ const { authService, userService } = require('../services');
 
 const getUserInfo = catchAsync(async (req, res) => {
   const jwtUserId = req.user._id.toString();
-  if (jwtUserId !== req.params.userId) {
+  const { userId } = req.params;
+  if (jwtUserId !== userId) {
     const response = { msg: `You cannot access others profile management page` };
     res.status(httpStatus.FORBIDDEN).send(response);
   }
-  const user = await userService.getUserById(req.params.userId);
+  const user = await userService.getUserById(userId);
   const response = { user: user.transform() };
   res.send(response);
 });
 
 const updateUserInfo = catchAsync(async (req, res) => {
   const jwtUserId = req.user._id.toString();
-  if (jwtUserId !== req.params.userId) {
+  const { userId } = req.body;
+  if (jwtUserId !== userId) {
     const response = { msg: `You cannot access others profile management page` };
     res.status(httpStatus.FORBIDDEN).send(response);
   }
-  const user = await userService.updateUserInfo(req.user._id, req.body);
+  const user = await userService.updateUserInfo(req.body);
   const response = { user: user.transform() };
   res.send(response);
 });

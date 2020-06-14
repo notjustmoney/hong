@@ -9,10 +9,8 @@ const getUserInfo = {
 };
 
 const updateUserInfo = {
-  params: Joi.object().keys({
-    userId: Joi.custom(objectId),
-  }),
   body: Joi.object().keys({
+    userId: Joi.custom(objectId),
     password: Joi.string(),
     passwordConfirmation: Joi.string(),
     nickname: Joi.string(),

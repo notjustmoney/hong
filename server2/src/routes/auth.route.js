@@ -6,10 +6,8 @@ const authController = require('../controllers/auth.controller');
 
 const router = express.Router();
 
-router
-  .route('/me/:userId')
-  .get(auth('manageProfile'), validate(authValidation.getUserInfo), authController.getUserInfo)
-  .patch(auth('manageProfile'), validate(authValidation.updateUserInfo), authController.updateUserInfo);
+router.get('/me/:userId', auth('manageProfile'), validate(authValidation.getUserInfo), authController.getUserInfo);
+router.patch('/me', auth('manageProfile'), validate(authValidation.updateUserInfo), authController.updateUserInfo);
 
 router.post('/register', validate(authValidation.register), authController.register);
 router.post('/login', validate(authValidation.login), authController.login);

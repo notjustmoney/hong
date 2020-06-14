@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
 import "./QnA.css";
+import Kakaomap from "../components/Kakaomap";
 
 const Container = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ const TitleWrapper = styled.div`
 const Title = styled.div`
   font-size: 40px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 const Explain = styled.div`
@@ -75,7 +75,6 @@ const QnA = () => {
   }, []);
   return (
     <>
-      <Header />
       <Container>
         <TitleWrapper>
           <Title>홍대병 FAQ</Title>
@@ -133,6 +132,10 @@ const QnA = () => {
             </div>
           </div>
         </Accordion>
+        <TitleWrapper>
+          <Title>찾아오시는 길</Title>
+          <Kakaomap />
+        </TitleWrapper>
         <TitleWrapper>
           <Title>Contact US</Title>
           <Explain>

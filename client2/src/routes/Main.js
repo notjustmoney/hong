@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Cards from "../components/Cards";
-import Header from "../components/Header";
+import { Loader } from "semantic-ui-react";
 import apis from "../api";
 
 const Container = styled.div`
@@ -18,13 +18,18 @@ const Grid = styled.div`
   margin-bottom: 50px;
 `;
 
+const Loading = styled.div`
+  text-align:center;
+`;
+
 const Banner = styled.div`
   grid-column: span 4;
   height: 300px;
-  background: url("images/Banner.png");
+  background: url("/images/banner.png");
   background-size: cover;
   background-position: center;
   position: relative;
+  z-index:1;
   &::before {
     content: "";
     position: absolute;
@@ -33,6 +38,7 @@ const Banner = styled.div`
     height: 300px;
     width: 420px;
     background-color: #acc538;
+    z-index: 10;
   }
   display: flex;
   flex-direction: column;
@@ -42,7 +48,7 @@ const Banner = styled.div`
 
 const BannerTitle = styled.div`
   position: relative;
-  z-index: 200;
+  z-index: 2;
   font-size: 40px;
   font-weight: 700;
   color: #fff;
@@ -53,7 +59,7 @@ const BannerTitle = styled.div`
 const BannerContent = styled.div`
   color: #f2f2f2;
   position: relative;
-  z-index: 200;
+  z-index: 2;
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 10px;
@@ -82,10 +88,9 @@ const Main = () => {
   console.log(posts);
   return (
     <>
-      <Header />
       <Container>
         {loading ? (
-          <div>Loading...</div>
+          <Loading><Loader active /></Loading>
         ) : (
           <Grid>
             <Banner>
@@ -99,18 +104,20 @@ const Main = () => {
               <BannerContent>원하는 옷을 찾아보고 구매하세요!</BannerContent>
               <BannerContent>감사합니다!</BannerContent>
             </Banner>
-            {posts.map((post) => (
-              <Cards
-                key={post.id}
-                id={post.id}
-                title={post.title}
-                contents={post.contents}
-                imgs={`http://www.hongsick.com${post.imgs[0]}`}
-                tags={post.tags}
-                price={post.price}
-                writer={post.writer.profile.nickname}
-              />
-            ))}
+            {posts &&
+              posts.map((post) => (
+                <Cards
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  contents={post.contents}
+                  imgs={`http://www.hongsick.com${post.imgs[0]}`}
+                  tags={post.tags}
+                  price={post.price}
+                  writer={post.writer.profile.nickname}
+                  imgsLength={post.imgs.length}
+                />
+              ))}
           </Grid>
         )}
       </Container>

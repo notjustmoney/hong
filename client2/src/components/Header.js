@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import "./header.css";
 import { Modal, Visibility, Icon } from "semantic-ui-react";
@@ -18,8 +18,8 @@ const Fixedheader = styled.div`
   height: 60px;
   position: fixed;
   left: 0;
-  top: ${(props) => (props.status ? "0" : "-60px")};
-  z-index: 20;
+  top: ${(props) => (props.status ? "0" : "-70px")};
+  z-index: 95;
   transition: all 0.25s;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -86,6 +86,7 @@ const Menu = styled.div`
     ${(props) => (props.status ? "#fdcb6e" : "transparent")};
   font-weight: 700;
   text-align: center;
+  cursor: pointer;
 `;
 
 const InputContainer = styled.div`
@@ -119,14 +120,44 @@ const Iconlefst = styled(Icon)`
 const Iconright = styled(Icon)`
   padding-top: 13px;
   float: right;
+  cursor: pointer;
 `;
 
-export default withRouter(({ location: { pathname } }) => {
-  //const [open, setOpen] = useState(false);
+const SearchInput = styled.input`
+  ::-webkit-input-placeholder {
+    color: #000;
+    opacity: 0.5;
+    -webkit-transition: opacity 0.35s ease-in-out;
+    transition: opacity 0.35s ease-in-out;
+    text-align: center;
+  }
+  :hover::-webkit-input-placeholder {
+    opacity: 0.75;
+    -webkit-transition: opacity 0.35s ease-in-out;
+    transition: opacity 0.35s ease-in-out;
+  }
+  :focus::-webkit-input-placeholder {
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity 0.35s ease-in-out;
+    transition: opacity 0.35s ease-in-out;
+  }
+`;
+
+const ModalWrapper = styled(Modal)`
+  &&& {
+    border-radius: 0;
+  }
+`;
+
+export default withRouter(({ location: { pathname, search } }) => {
   const open = useSelector((state) => state.isOpen);
+  const posts = useSelector((state) => state.posts);
+  const [infos, setInfos] = useState([]);
+  const [loading, setLoading] = useState(0);
+  const [cnt, setCnt] = useState(0);
   const dispatch = useDispatch();
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
+  const [tagsearch, setTagSearch] = useState("");
   const [calculations, setCalcul] = useState({
     topPassed: false,
     bottomPassed: false,
@@ -134,11 +165,13 @@ export default withRouter(({ location: { pathname } }) => {
     bottomVisible: false,
   });
   const loginInfo = useSelector((state) => state.loginInfo);
+  const uH = useHistory();
 
   const handleIsUser = async () => {
     const userId = window.localStorage.getItem("id");
     const access = window.localStorage.getItem("access_token");
     if (userId !== null) {
+      console.log("LS get user");
       const {
         data: { user },
       } = await apis.authMe(userId, access);
@@ -150,12 +183,26 @@ export default withRouter(({ location: { pathname } }) => {
     handleIsUser();
   }, []);
 
-  const handleIdChange = (event) => {
-    setId(event.target.value);
+  const handleSearch = (e) => {
+    const tags = e.target.value.replace(" ", ",");
+    setTagSearch(tags);
   };
-  const handlePwChange = (event) => {
-    setPw(event.target.value);
+
+  const handleTagSearch = () => {
+    if (tagsearch === "") {
+      alert("태그를 입력해주세요.");
+      return;
+    }
+    const url = encodeURIComponent(tagsearch);
+    uH.push(`/search?tags=${url}`);
   };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleTagSearch();
+    }
+  };
+
   const handleUpdate = (e, { calculations }) => {
     setCalcul(calculations);
   };
@@ -200,30 +247,53 @@ export default withRouter(({ location: { pathname } }) => {
       }
     }
   };
-  handleValideToken();
+  useEffect(() => {
+    handleValideToken();
+  }, [pathname]);
+
+  useEffect(() => {
+    if (pathname === "/search") {
+      const tags = decodeURIComponent(search.split("=")[1]);
+      setTagSearch(tags);
+    } else {
+      setTagSearch("");
+    }
+  }, [search]);
+
   return (
     <>
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
         <Container>
           <SLink to="/main">
-            <Logo path={`images/logo.png`} />
+            <Logo path={`/images/logo.png`} />
           </SLink>
           <Content>
             <MenuContainer>
               <STLink to="/main">
                 <Menu status={pathname === "/main"}>Main</Menu>
               </STLink>
-              <Menu status={pathname.includes("search")}>Search</Menu>
+              <Menu
+                status={pathname.includes("search")}
+                onClick={() => {
+                  document.getElementById("MainInput").focus();
+                }}
+              >
+                Search
+              </Menu>
             </MenuContainer>
             <InputContainer>
               <div>
-                <input
+                <SearchInput
                   className="inputBox"
                   type="text"
-                  placeholder="검색어를 입력하세용"
+                  placeholder="띄어쓰기로 태그 별 검색."
+                  id="MainInput"
+                  onChange={handleSearch}
+                  value={tagsearch}
+                  onKeyPress={handleKeyPress}
                 />
                 <Iconlefst name="hashtag" />
-                <Iconright name="search" />
+                <Iconright name="search" onClick={handleTagSearch} />
                 <div className="inputBar"></div>
               </div>
             </InputContainer>
@@ -254,17 +324,28 @@ export default withRouter(({ location: { pathname } }) => {
             <STLink to="/main">
               <Menu status={pathname === "/main"}>Main</Menu>
             </STLink>
-            <Menu status={pathname === "/search"}>Search</Menu>
+            <Menu
+              status={pathname === "/search"}
+              onClick={() => {
+                document.getElementById("SubInput").focus();
+              }}
+            >
+              Search
+            </Menu>
           </MenuContainer>
           <InputContainer>
             <div>
-              <input
+              <SearchInput
                 className="inputBox"
                 type="text"
-                placeholder="검색어를 입력하세용"
+                placeholder="띄어쓰기로 태그 별 검색."
+                id="SubInput"
+                onChange={handleSearch}
+                value={tagsearch}
+                onKeyPress={handleKeyPress}
               />
               <Iconlefst name="hashtag" />
-              <Iconright name="search" />
+              <Iconright name="search" onClick={handleTagSearch} />
               <div className="inputBar"></div>
             </div>
           </InputContainer>
@@ -287,20 +368,14 @@ export default withRouter(({ location: { pathname } }) => {
           </MenuContainer>
         </Content>
       </Fixedheader>
-      <Modal
+      <ModalWrapper
         size="mini"
         dimmer="blurring"
         open={open}
         onClose={() => dispatch(allActions.modalActions.closeModal())}
       >
         <LoginModal />
-      </Modal>
+      </ModalWrapper>
     </>
   );
 });
-
-/*
-외부광선 오바임
-그라데이션 위에 흰 폰트를 얹어라!!
-가우시안 블러 150 이상으로 올리면 개멋짐
-*/

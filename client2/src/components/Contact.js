@@ -7,6 +7,10 @@ const Container = styled.div`
   background-color: #121212;
   color: white;
   padding-bottom: 100px;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 50;
 `;
 
 const Img = styled.div`
@@ -61,7 +65,7 @@ const InfoWrapper = styled.div`
   align-items: center;
   padding-bottom: 50px;
   margin-right: 50px;
-  padding: 30px 50px;
+  padding: 30px 100px;
 `;
 
 const InfoContainer = styled.div`

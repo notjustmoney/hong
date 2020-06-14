@@ -1,0 +1,11 @@
+.ui.dimmer{
+    background-color: rgba(0, 0, 0, .35);
+}
+.ui.modal>.icon:first-child+*, .ui.modal>:first-child:not(.icon){
+    border-radius: 0;
+}
+
+.ui.modal{
+    width: auto;
+}
+

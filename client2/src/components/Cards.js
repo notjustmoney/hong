@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import apis from "../api";
-import { Modal } from "semantic-ui-react";
+import { Modal, Icon } from "semantic-ui-react";
 import DetailModal from "../components/DetailModal";
+import "./card.css";
 
 const Container = styled.div`
   width: 300px;
@@ -15,6 +16,11 @@ const Container = styled.div`
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   position: relative;
+  transition: all 0.35s;
+  :hover {
+    transform: translateY(-3px);
+  }
+  cursor: pointer;
 `;
 
 const Bg = styled.div`
@@ -55,10 +61,14 @@ const BgTitle = styled.div`
 `;
 
 const BgDesc = styled.div`
-  font-family: "Song Myung", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   line-height: 1.4;
-  overflow: scroll;
+  overflow-y: scroll;
   opacity: 1 !important;
+  ::-webkit-scrollbar{
+    display:none;
+  }
 `;
 
 const HashTags = styled.div`
@@ -104,7 +114,20 @@ const Tag = styled.div`
   border-radius: 3px;
 `;
 
-const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
+const PopupModal = styled(Modal)`
+  &&& {
+    border-radius: 0;
+  }
+`;
+
+const MultipleIcon = styled(Icon)`
+  z-index:3;
+  position:absolute;
+  top:10px;
+  right:5px;
+`;
+
+const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
   const handleClick = async () => {
@@ -112,13 +135,21 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
     const resp = await apis.getDetailPost(id);
     setInfo(resp.data);
   };
+  useEffect(() => {
+    let content = document.getElementById(id);
+    let parseContents = contents.replace(/&lt;/gi, "<");
+    content.innerHTML = parseContents;
+  }, []);
   return (
     <>
       <Container onClick={handleClick}>
         <Bg>
           <BgTitle>{title}</BgTitle>
-          <BgDesc>{contents}</BgDesc>
+          <BgDesc id={id}></BgDesc>
         </Bg>
+        {
+          imgsLength > 1 && <MultipleIcon inverted name='clone' />
+        }
         <Img path={imgs} />
         <Title>{title}</Title>
         <Info>
@@ -131,9 +162,9 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
           </HashTags>
         </Info>
       </Container>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <PopupModal open={open} onClose={() => setOpen(false)}>
         <DetailModal info={info} />
-      </Modal>
+      </PopupModal>
     </>
   );
 };
