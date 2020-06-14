@@ -10,7 +10,7 @@ services:
     networks:
       - backend
   nginx:
-    image: chajyn/hong:react-server2
+    image: chajyn/hong:nginx-server2
     container_name: nginx
     depends_on:
       - server
