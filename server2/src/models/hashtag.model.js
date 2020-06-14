@@ -21,6 +21,17 @@ const hashtagSchema = new Schema(
   }
 );
 
+hashtagSchema.index(
+  {
+    hashtag: 'text',
+  },
+  {
+    weights: {
+      hashtag: 10,
+    },
+  }
+);
+
 hashtagSchema.methods.toJSON = function () {
   const hashtag = this;
   return omit(hashtag.toObject(), ['_id']);

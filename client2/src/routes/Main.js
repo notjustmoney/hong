@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Cards from "../components/Cards";
+import { Loader } from "semantic-ui-react";
 import apis from "../api";
 
 const Container = styled.div`
@@ -17,6 +18,10 @@ const Grid = styled.div`
   margin-bottom: 50px;
 `;
 
+const Loading = styled.div`
+  text-align:center;
+`;
+
 const Banner = styled.div`
   grid-column: span 4;
   height: 300px;
@@ -24,6 +29,7 @@ const Banner = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
+  z-index:1;
   &::before {
     content: "";
     position: absolute;
@@ -42,7 +48,7 @@ const Banner = styled.div`
 
 const BannerTitle = styled.div`
   position: relative;
-  z-index: 200;
+  z-index: 2;
   font-size: 40px;
   font-weight: 700;
   color: #fff;
@@ -53,7 +59,7 @@ const BannerTitle = styled.div`
 const BannerContent = styled.div`
   color: #f2f2f2;
   position: relative;
-  z-index: 200;
+  z-index: 2;
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 10px;
@@ -84,7 +90,7 @@ const Main = () => {
     <>
       <Container>
         {loading ? (
-          <div>Loading...</div>
+          <Loading><Loader active /></Loading>
         ) : (
           <Grid>
             <Banner>
@@ -109,6 +115,7 @@ const Main = () => {
                   tags={post.tags}
                   price={post.price}
                   writer={post.writer.profile.nickname}
+                  imgsLength={post.imgs.length}
                 />
               ))}
           </Grid>

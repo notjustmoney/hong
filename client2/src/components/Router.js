@@ -24,8 +24,7 @@ export default () => (
       <Route exact path="/register" component={RegisterForm} />
       <Route exact path="/contact" component={Contact} />
       <Route exact path="/find" component={Find} />
-      <Route exact path="/search" component={SearchByTags} />
-      <Route path="/search/:id" component={Search} />
+      <Route exact path="/search" component={Search} />
       <Route path="/user/:id" component={UserInfo} />
     </Switch>
   </Router>

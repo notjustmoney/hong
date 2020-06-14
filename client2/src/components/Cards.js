@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import apis from "../api";
-import { Modal } from "semantic-ui-react";
+import { Modal, Icon } from "semantic-ui-react";
 import DetailModal from "../components/DetailModal";
 import "./card.css";
 
@@ -20,6 +20,7 @@ const Container = styled.div`
   :hover {
     transform: translateY(-3px);
   }
+  cursor: pointer;
 `;
 
 const Bg = styled.div`
@@ -65,6 +66,9 @@ const BgDesc = styled.div`
   line-height: 1.4;
   overflow-y: scroll;
   opacity: 1 !important;
+  ::-webkit-scrollbar{
+    display:none;
+  }
 `;
 
 const HashTags = styled.div`
@@ -116,7 +120,14 @@ const PopupModal = styled(Modal)`
   }
 `;
 
-const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
+const MultipleIcon = styled(Icon)`
+  z-index:3;
+  position:absolute;
+  top:10px;
+  right:5px;
+`;
+
+const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
   const handleClick = async () => {
@@ -136,6 +147,9 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer }) => {
           <BgTitle>{title}</BgTitle>
           <BgDesc id={id}></BgDesc>
         </Bg>
+        {
+          imgsLength > 1 && <MultipleIcon inverted name='clone' />
+        }
         <Img path={imgs} />
         <Title>{title}</Title>
         <Info>

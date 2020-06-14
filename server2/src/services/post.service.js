@@ -6,7 +6,7 @@ const commentService = require('./comment.service');
 const likeService = require('./like.service');
 const hashtagService = require('./hashtag.service');
 const AppError = require('../utils/AppError');
-const { Post, Hashtag } = require('../models');
+const { Post, Hashtag, Like } = require('../models');
 const { getQueryOptions } = require('../utils/service.util');
 
 const getPostsByUser = async (userId) => {
@@ -36,6 +36,41 @@ const getPostsByUser = async (userId) => {
       },
     });
   return posts;
+};
+
+const getPostByLike = async (likeId) => {
+  const like = await Like.findById(likeId).populate({
+    path: 'post',
+    select: 'id',
+  });
+  if (like) {
+    const post = await Post.findById(like.post.id)
+      .populate({
+        path: 'comments',
+        select: 'contents writer createdAt',
+        populate: {
+          path: 'writer',
+          select: 'profile',
+        },
+      })
+      .populate({
+        path: 'tags',
+        select: 'hashtag',
+      })
+      .populate({
+        path: 'writer',
+        select: 'profile',
+      })
+      .populate({
+        path: 'likes',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'profile',
+        },
+      });
+    return post;
+  }
 };
 
 const getPosts = async (query) => {
@@ -161,7 +196,7 @@ const updatePost = async (body) => {
 };
 
 const deletePost = async (postId, userId) => {
-  const post = await getPostById(postId);
+  const post = await Post.findById(postId);
   if (!post) {
     throw new AppError(httpStatus.NOT_FOUND, `Post not found`);
   }
@@ -189,6 +224,7 @@ const deletePost = async (postId, userId) => {
 module.exports = {
   createPost,
   getPostsByUser,
+  getPostByLike,
   getPostById,
   getPosts,
   updatePost,

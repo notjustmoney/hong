@@ -19,8 +19,14 @@ const getPostById = {
 };
 
 const getPostsByUser = {
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     userId: Joi.string().custom(objectId),
+  }),
+};
+
+const getPostByLike = {
+  params: Joi.object().keys({
+    likeId: Joi.string().custom(objectId),
   }),
 };
 
@@ -45,6 +51,7 @@ module.exports = {
   createPost,
   getPostById,
   getPostsByUser,
+  getPostByLike,
   updatePost,
   deletePost,
 };
