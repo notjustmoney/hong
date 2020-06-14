@@ -19,7 +19,7 @@ const Fixedheader = styled.div`
   position: fixed;
   left: 0;
   top: ${(props) => (props.status ? "0" : "-70px")};
-  z-index: 20;
+  z-index: 95;
   transition: all 0.25s;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -152,6 +152,10 @@ const ModalWrapper = styled(Modal)`
 export default withRouter(({ location: { pathname } }) => {
   //const [open, setOpen] = useState(false);
   const open = useSelector((state) => state.isOpen);
+  const posts = useSelector((state) => state.posts);
+  const [infos, setInfos] = useState([]);
+  const [loading, setLoading] = useState(0);
+  const [cnt, setCnt] = useState(0);
   const dispatch = useDispatch();
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
@@ -167,6 +171,7 @@ export default withRouter(({ location: { pathname } }) => {
     const userId = window.localStorage.getItem("id");
     const access = window.localStorage.getItem("access_token");
     if (userId !== null) {
+      console.log("LS get user");
       const {
         data: { user },
       } = await apis.authMe(userId, access);
@@ -225,6 +230,36 @@ export default withRouter(({ location: { pathname } }) => {
   useEffect(() => {
     handleValideToken();
   }, [pathname]);
+  /*const handleInput = async (e) => {
+    e.preventDefault();
+    const input = e.target.childNodes[0];
+    const value = input.value;
+    console.log(value.split(", "));
+    input.value = `"${value}" 검색 중...`;
+    const resp = await apis.searchByTagName(value);
+    console.log(resp);
+    let tagId = null;
+    resp.data[0].tags.forEach((tag) => {
+      if (tag.hashtag === value) tagId = tag.id;
+    });
+    if (tagId === null) {
+      alert("검색 결과가 없습니다!");
+      return;
+    }
+    window.location.href = `/search/${tagId}`;
+  };*/
+
+  // 라우터로 돔을 조작하도록 바꾸자 eg) 아이콘에 링크 걸어서 옮기도록
+  const handleClick = (e) => {
+    const input = document.querySelector(".inputBox").value;
+    //const tags = input.value.spilt(", ");
+    if (input === "") return;
+    const tags = input.split(", ");
+    console.log(tags);
+  };
+  const handleChange = (e) => {
+    e.target.value = e.target.value.replace(" ", ",");
+  };
   return (
     <>
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
@@ -253,9 +288,12 @@ export default withRouter(({ location: { pathname } }) => {
                   type="text"
                   placeholder="태그를 입력하세요."
                   id="MainInput"
+                  onChange={handleChange}
                 />
                 <Iconlefst name="hashtag" />
-                <Iconright name="search" />
+                <Link to="/search">
+                  <Iconright name="search" />
+                </Link>
                 <div className="inputBar"></div>
               </div>
             </InputContainer>
@@ -301,7 +339,7 @@ export default withRouter(({ location: { pathname } }) => {
                 className="inputBox"
                 type="text"
                 placeholder="태그를 입력하세요."
-                id="SubInput"
+                id="MainInput"
               />
               <Iconlefst name="hashtag" />
               <Iconright name="search" />

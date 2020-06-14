@@ -65,7 +65,7 @@ const InfoWrapper = styled.div`
   align-items: center;
   padding-bottom: 50px;
   margin-right: 50px;
-  padding: 30px 50px;
+  padding: 30px 100px;
 `;
 
 const InfoContainer = styled.div`

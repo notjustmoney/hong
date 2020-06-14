@@ -32,6 +32,7 @@ const Banner = styled.div`
     height: 300px;
     width: 420px;
     background-color: #acc538;
+    z-index: 10;
   }
   display: flex;
   flex-direction: column;

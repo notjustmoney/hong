@@ -9,6 +9,7 @@ import UserInfo from "../routes/UserInfo";
 import Find from "../components/Findpw";
 import Search from "../routes/Search";
 import Header from "../components/Header";
+import SearchByTags from "../routes/SearchByTags";
 
 export default () => (
   <Router>
@@ -23,6 +24,7 @@ export default () => (
       <Route exact path="/register" component={RegisterForm} />
       <Route exact path="/contact" component={Contact} />
       <Route exact path="/find" component={Find} />
+      <Route exact path="/search" component={SearchByTags} />
       <Route path="/search/:id" component={Search} />
       <Route path="/user/:id" component={UserInfo} />
     </Switch>

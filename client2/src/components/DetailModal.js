@@ -229,6 +229,7 @@ const DetailModal = ({ info }) => {
   });
   const loginInfo = window.localStorage.getItem("access_token");
   const [contents, setContents] = useState(info);
+  const [loading, setLoading] = useState(true);
 
   const handleComment = (e) => {
     setComment(e.target.value);
@@ -243,6 +244,14 @@ const DetailModal = ({ info }) => {
     setContents(info);
   }, [info]);
 
+  useEffect(() => {
+    if (contents) {
+      let content = document.getElementById(`${contents.id}modal`);
+      let parseContents = contents.contents.replace(/&lt;/gi, "<");
+      content.innerHTML = parseContents;
+    }
+  }, [contents]);
+
   const handleCommentSubmit = async () => {
     if (comments === "") {
       alert("댓글을 작성해 주세요.");
@@ -250,10 +259,11 @@ const DetailModal = ({ info }) => {
     }
     setBtnState({ loading: "loading", disabled: "disabled" });
     const comment = {
+      postId: contents.id,
       contents: comments,
     };
     try {
-      const resp = await apis.comment(comment, contents.id, loginInfo);
+      const resp = await apis.comment(comment, loginInfo);
       const refresh = await apis.getDetailPost(contents.id);
       setContents(refresh.data);
       setBtnState({ loading: "", disabled: "disabled" });
@@ -305,7 +315,7 @@ const DetailModal = ({ info }) => {
                 <PopContents>
                   <Title>{contents.title}</Title>
                   <Price>{contents.price}원</Price>
-                  <Contents>{contents.contents}</Contents>
+                  <Contents id={`${contents.id}modal`}></Contents>
                   <Info>
                     <HashTags>
                       {contents.tags.map((tag, index) => (
