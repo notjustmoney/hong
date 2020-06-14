@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import "./header.css";
 import { Modal, Visibility, Icon } from "semantic-ui-react";
@@ -120,6 +120,7 @@ const Iconlefst = styled(Icon)`
 const Iconright = styled(Icon)`
   padding-top: 13px;
   float: right;
+  cursor: pointer;
 `;
 
 const SearchInput = styled.input`
@@ -149,12 +150,10 @@ const ModalWrapper = styled(Modal)`
   }
 `;
 
-export default withRouter(({ location: { pathname } }) => {
-  //const [open, setOpen] = useState(false);
+export default withRouter(({ location: { pathname, search } }) => {
   const open = useSelector((state) => state.isOpen);
   const dispatch = useDispatch();
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
+  const [tagsearch, setTagSearch] = useState("");
   const [calculations, setCalcul] = useState({
     topPassed: false,
     bottomPassed: false,
@@ -162,7 +161,8 @@ export default withRouter(({ location: { pathname } }) => {
     bottomVisible: false,
   });
   const loginInfo = useSelector((state) => state.loginInfo);
-
+  const uH = useHistory();
+  
   const handleIsUser = async () => {
     const userId = window.localStorage.getItem("id");
     const access = window.localStorage.getItem("access_token");
@@ -177,6 +177,26 @@ export default withRouter(({ location: { pathname } }) => {
   useEffect(() => {
     handleIsUser();
   }, []);
+
+  const handleSearch = (e) => {
+    const tags = (e.target.value).replace(" ",",");
+    setTagSearch(tags);
+  }
+
+  const handleTagSearch = () => {
+    if(tagsearch === ""){
+      alert("태그를 입력해주세요.");
+      return;
+    }
+    const url = encodeURIComponent(tagsearch);
+    uH.push(`/search?tags=${url}`);
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleTagSearch();
+    }    
+  };
 
   const handleUpdate = (e, { calculations }) => {
     setCalcul(calculations);
@@ -224,7 +244,19 @@ export default withRouter(({ location: { pathname } }) => {
   };
   useEffect(() => {
     handleValideToken();
+    
   }, [pathname]);
+
+  useEffect(() => {
+    if(pathname === "/search"){
+      const tags = decodeURIComponent(search.split("=")[1]);
+      setTagSearch(tags);
+    }
+    else{
+      setTagSearch("");
+    }
+  }, [search]);
+  
   return (
     <>
       <SVisibility className="Vcontainer" onUpdate={handleUpdate}>
@@ -251,11 +283,14 @@ export default withRouter(({ location: { pathname } }) => {
                 <SearchInput
                   className="inputBox"
                   type="text"
-                  placeholder="태그를 입력하세요."
+                  placeholder="띄어쓰기로 태그 별 검색."
                   id="MainInput"
+                  onChange={handleSearch}
+                  value={tagsearch}
+                  onKeyPress={handleKeyPress}
                 />
                 <Iconlefst name="hashtag" />
-                <Iconright name="search" />
+                <Iconright name="search" onClick={handleTagSearch} />
                 <div className="inputBar"></div>
               </div>
             </InputContainer>
@@ -300,11 +335,14 @@ export default withRouter(({ location: { pathname } }) => {
               <SearchInput
                 className="inputBox"
                 type="text"
-                placeholder="태그를 입력하세요."
+                placeholder="띄어쓰기로 태그 별 검색."
                 id="SubInput"
+                onChange={handleSearch}
+                value={tagsearch}
+                onKeyPress={handleKeyPress}
               />
               <Iconlefst name="hashtag" />
-              <Iconright name="search" />
+              <Iconright name="search" onClick={handleTagSearch} />
               <div className="inputBar"></div>
             </div>
           </InputContainer>
