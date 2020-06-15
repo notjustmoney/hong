@@ -4,6 +4,8 @@ import { Dimmer, Loader, Button, Icon } from "semantic-ui-react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import allActions from "../store/actions";
 import apis from "../api";
 
 const Container = styled.div`
@@ -177,12 +179,22 @@ const PopFooter = styled.div`
 `;
 
 const Like = styled(Icon)`
-  color: ${(props) => (props.isliked ? "rgba(254, 136, 0, 1)" : "inherit")};
-  :hover {
-    color: ${(props) =>
-      props.isliked ? "rgba(255, 181, 30, 1)" : "rgba(0,0,0,1);"};
+  &&&{
+    color: ${(props) => (props.isliked === "true" ? "rgba(254, 136, 0, 1)" : "rgba(0, 0, 0, 0.6)")};
+    :hover {
+      color: ${(props) =>
+        props.isliked === "true" ? "rgba(0,0,0,1)" : "rgba(255, 181, 30, 1)"};
+    }
+    margin-right: 10px;
   }
-  margin-right: 10px !important;
+`;
+
+const DeletePost = styled(Icon)`
+  &&&{
+    :hover {
+      color: rgba(200,50,50,1);
+    }
+  }
 `;
 
 const CommentBox = styled.div`
@@ -204,7 +216,7 @@ const Comment = styled.span`
 const NoComments = styled.div`
   height: 200px;
   text-align: center;
-  line-height: 200px;
+  line-height: 100%;
   color: rgba(12, 12, 12, 0.5);
 `;
 
@@ -245,17 +257,27 @@ const NeedLogin = styled.div`
   color: gray;
   line-height: 50px;
   text-align: center;
+  z-index:1;
+`;
+
+const NeedLoginSpan = styled.span`
+  color:rgba(254, 136, 0, 1);
+  z-index:2;
+  cursor: pointer;
 `;
 
 const DetailModal = ({ info }) => {
   const [comments, setComment] = useState("");
-  const [isLiked, setLike] = useState(false);
+  const [isLiked, setLike] = useState("false");
   const [btnstate, setBtnState] = useState({
     loading: "",
     disabled: "disabled",
   });
-  const loginInfo = window.localStorage.getItem("access_token");
+  const access_token = window.localStorage.getItem("access_token");
+  const loginInfo = useSelector((state) => state.loginInfo);
+  const open = useSelector((state) => state.isOpen);
   const [contents, setContents] = useState(info);
+  const dispatch = useDispatch();
 
   const handleComment = (e) => {
     setComment(e.target.value);
@@ -266,9 +288,63 @@ const DetailModal = ({ info }) => {
     }
   };
 
+  const handleLike = async () => {
+    if(!loginInfo){
+      dispatch(allActions.modalActions.openModal());
+      return;
+    }
+    if(isLiked === "false"){
+      try{
+        const resp = await apis.likes(contents.id,loginInfo.id,access_token);
+        const refresh = await apis.getDetailPost(contents.id);
+        setContents(refresh.data);
+        setLike("true");
+      }catch(e){
+        console.log(e);
+        
+        alert("새로고침이 필요합니다.");
+      }
+    }
+    else {
+      try{
+        const resp = await apis.unlikes(contents.id,loginInfo.id,access_token);
+        const refresh = await apis.getDetailPost(contents.id);
+        setContents(refresh.data);
+        setLike("false");
+      }catch(e){
+        console.log(e);
+        
+        alert("새로고침이 필요합니다.");
+      }
+    }
+  }
+
+  const handleDeletePost = async () => {
+    try{
+      const resp = await apis.deletepost(contents.id,access_token);
+      window.location.reload();
+    }catch(e){
+      alert("삭제 실패! 로그인 상태를 확인해주세요.");
+    }
+  };
+
   useEffect(() => {
     setContents(info);
+    
   }, [info]);
+
+  useEffect(() => {
+    if(!contents || !loginInfo){
+      return;
+    }
+    for (let key in contents.likes){
+      console.log(contents.likes[key]);
+      if(contents.likes[key].user.id === loginInfo.id){
+        setLike("true");
+        return;
+      }
+    }
+  }, [contents]);
 
   useEffect(() => {
     if (contents) {
@@ -289,7 +365,7 @@ const DetailModal = ({ info }) => {
       contents: comments,
     };
     try {
-      const resp = await apis.comment(comment, loginInfo);
+      const resp = await apis.comment(comment, access_token);
       const refresh = await apis.getDetailPost(contents.id);
       setContents(refresh.data);
       setBtnState({ loading: "", disabled: "disabled" });
@@ -345,13 +421,31 @@ const DetailModal = ({ info }) => {
                   <Info>
                     <HashTags>
                       {contents.tags.map((tag, index) => (
-                        <Link to={`/search?tags=${tag.id}`} key={index}>
+                        <Link to={`/search?tags=${tag.hashtag}`} key={index}>
                           <Tag>#{tag.hashtag}</Tag>
                         </Link>
                       ))}
                     </HashTags>
                     <PopFooter>
-                      <Like name="like" isliked={isLiked}>
+                      {contents.writer.id === loginInfo.id && 
+                        <DeletePost 
+                          name="x"
+                          onClick={() =>{
+                              if(window.confirm("해당 게시글을 삭제하시겠습니까?")){
+                                handleDeletePost();
+                              }
+                              else{
+
+                              }
+                            } 
+                          }
+                        />
+                      }
+                      <Like 
+                        name="like"
+                        isliked={isLiked}
+                        onClick={handleLike}
+                      >
                         {contents.likes.length}
                       </Like>
                       <Icon
@@ -401,7 +495,7 @@ const DetailModal = ({ info }) => {
                     </>
                   ) : (
                     <NeedLogin>
-                      댓글을 작성하시려면 로그인이 필요합니다.
+                      댓글을 작성하시려면 <NeedLoginSpan onClick={() => dispatch(allActions.modalActions.openModal())}>로그인</NeedLoginSpan>이 필요합니다.
                     </NeedLogin>
                   )}
                 </InputBox>
