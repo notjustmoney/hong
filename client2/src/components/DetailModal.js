@@ -507,7 +507,12 @@ const DetailModal = ({ info }) => {
                       <Icon
                         name="comment"
                         onClick={() => {
-                          document.getElementById("commentbox").focus();
+                          if(loginInfo){
+                            document.getElementById("commentbox").focus();
+                          }
+                          else{
+                            dispatch(allActions.modalActions.openModal())
+                          }
                         }}
                       >
                         {contents.comments.length}
