@@ -300,9 +300,10 @@ const DetailModal = ({ info }) => {
         setContents(refresh.data);
         setLike("true");
       }catch(e){
-        console.log(e);
-        
-        alert("새로고침이 필요합니다.");
+        const mess = e.response.data.message;
+        if(mess && mess.includes("Already")){
+          alert("이미 좋아요를 눌렀습니다.");
+        }
       }
     }
     else {
@@ -330,28 +331,23 @@ const DetailModal = ({ info }) => {
 
   useEffect(() => {
     setContents(info);
-    
   }, [info]);
 
   useEffect(() => {
-    if(!contents || !loginInfo){
-      return;
-    }
-    for (let key in contents.likes){
-      console.log(contents.likes[key]);
-      if(contents.likes[key].user.id === loginInfo.id){
-        setLike("true");
-        return;
-      }
-    }
-    setLike("false");
-  }, [contents]);
-
-  useEffect(() => {
+    console.log(contents);
+    console.log(loginInfo);
+    
     if (contents) {
       let content = document.getElementById(`${contents.id}modal`);
       let parseContents = contents.contents.replace(/&lt;/gi, "<");
       content.innerHTML = parseContents;
+      for (let key in contents.likes){
+        if(contents.likes[key].user.id === loginInfo.id){
+          setLike("true");
+          return;
+        }
+      }
+      setLike("false");
     }
   }, [contents]);
 
