@@ -4,10 +4,9 @@ const AppError = require('../utils/AppError');
 
 const getCommentById = async (commentId) => {
   const comment = await Comment.findById(commentId);
-  if (!comment) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Comment not found');
+  if (comment) {
+    return comment;
   }
-  return comment;
 };
 
 const createComment = async (postId, contents, userId) => {
