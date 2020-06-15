@@ -19,7 +19,7 @@ const Grid = styled.div`
 `;
 
 const Loading = styled.div`
-  text-align:center;
+  text-align: center;
 `;
 
 const Banner = styled.div`
@@ -29,7 +29,7 @@ const Banner = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
-  z-index:1;
+  z-index: 1;
   &::before {
     content: "";
     position: absolute;
@@ -48,7 +48,7 @@ const Banner = styled.div`
 
 const BannerTitle = styled.div`
   position: relative;
-  z-index: 2;
+  z-index: 11;
   font-size: 40px;
   font-weight: 700;
   color: #fff;
@@ -59,7 +59,7 @@ const BannerTitle = styled.div`
 const BannerContent = styled.div`
   color: #f2f2f2;
   position: relative;
-  z-index: 2;
+  z-index: 11;
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 10px;
@@ -90,7 +90,9 @@ const Main = () => {
     <>
       <Container>
         {loading ? (
-          <Loading><Loader active /></Loading>
+          <Loading>
+            <Loader active />
+          </Loading>
         ) : (
           <Grid>
             <Banner>
@@ -116,6 +118,8 @@ const Main = () => {
                   price={post.price}
                   writer={post.writer.profile.nickname}
                   imgsLength={post.imgs.length}
+                  likes={post.likes}
+                  comments={post.comments.length}
                 />
               ))}
           </Grid>

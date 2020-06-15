@@ -4,8 +4,6 @@ import { Icon } from "semantic-ui-react";
 import apis from "../api";
 import Cards from "../components/Cards";
 import styled from "styled-components";
-import ByTags from "./SearchByTags";
-import ByUser from "./SearchByUser";
 
 const Container = styled.div`
   width: 1250px;
@@ -44,53 +42,28 @@ const Tag = styled.div`
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;
-  transition:all .35s;
+  transition: all 0.35s;
   cursor: pointer;
-  i{
-    margin-left:3px;
-    color:black;
-    transition:all .2s;
+  i {
+    margin-left: 3px;
+    color: black;
+    transition: all 0.2s;
   }
-  :hover{
-    background-color:rgb(255, 181, 30);
-    i{
+  :hover {
+    background-color: rgb(255, 181, 30);
+    i {
       transform: rotate(90deg);
     }
   }
 `;
 
-export default withRouter(() => {
+export default withRouter((props) => {
   const [posts, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchType, setSearchType] = useState(null);
+  const [userId, setUserId] = useState("");
   const urlParams = new URLSearchParams(window.location.search);
-  const uH = useHistory();
 
-  
+  useEffect(() => {}, []);
 
-  useEffect(() => {
-    if(urlParams.get("userId")){
-      setSearchType("userId");
-    }
-    else if(urlParams.get("tags")){
-      setSearchType("tags");
-    }
-    else{
-      setSearchType(null);
-    }
-  }, []);
-
-  console.log(posts);
-  
-  return (
-    <>
-      <Container>
-        <>
-          {searchType === "userId" && <><ByUser /></>}
-          {searchType === "tags" && <><ByTags /></>}
-          {searchType === null && <>잘못된 주소로의 접근입니다.</>}
-        </>
-      </Container>
-    </>
-  );
+  return <>asdasd</>;
 });

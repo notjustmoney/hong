@@ -156,6 +156,7 @@ export default withRouter(({ location: { pathname, search } }) => {
   const [infos, setInfos] = useState([]);
   const [loading, setLoading] = useState(0);
   const [cnt, setCnt] = useState(0);
+  const urlParams = new URLSearchParams(window.location.search);
   const dispatch = useDispatch();
   const [tagsearch, setTagSearch] = useState("");
   const [calculations, setCalcul] = useState({
@@ -252,8 +253,8 @@ export default withRouter(({ location: { pathname, search } }) => {
   }, [pathname]);
 
   useEffect(() => {
-    if (pathname === "/search") {
-      const tags = decodeURIComponent(search.split("=")[1]);
+    if (pathname === "/search" && urlParams.get("tags")) {
+      const tags = urlParams.get("tags");
       setTagSearch(tags);
     } else {
       setTagSearch("");
