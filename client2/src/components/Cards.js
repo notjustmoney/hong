@@ -3,6 +3,7 @@ import styled from "styled-components";
 import apis from "../api";
 import { Modal, Icon } from "semantic-ui-react";
 import DetailModal from "../components/DetailModal";
+import { useSelector } from "react-redux";
 import "./card.css";
 
 const Container = styled.div`
@@ -127,9 +128,25 @@ const MultipleIcon = styled(Icon)`
   right:5px;
 `;
 
-const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength }) => {
+const LikesAndComments = styled.div`
+  color:rgba(0,0,0,.6);
+  margin-bottom:10px;
+  span{
+    margin-right:5px;
+  }
+`;
+
+const Like = styled(Icon)`
+  &&&{
+    color: ${(props) => (props.isliked === "true" ? "rgba(254, 136, 0, 1)" : "rgba(0, 0, 0, 0.6)")};
+  }
+`;
+
+const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength, likes, comments }) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
+  const [isLiked, setLike] = useState("false");
+  const loginInfo = useSelector((state) => state.loginInfo);
   const handleClick = async () => {
     setOpen(true);
     const resp = await apis.getDetailPost(id);
@@ -140,6 +157,18 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength }) =
     let parseContents = contents.replace(/&lt;/gi, "<");
     content.innerHTML = parseContents;
   }, []);
+
+  useEffect(() => {
+    if(!likes || !loginInfo){
+      return;
+    }
+    for (let key in likes){
+      if(likes[key].user.id === loginInfo.id){
+        setLike("true");
+        return;
+      }
+    }
+  },[likes])
   return (
     <>
       <Container onClick={handleClick}>
@@ -155,6 +184,10 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength }) =
         <Info>
           <Price>{price}원</Price>
           <Writer>{writer}</Writer>
+          <LikesAndComments>
+            <Like name="like" isliked={isLiked} /><span>{likes.length}</span>
+            <Icon name="comment" /><span>{comments}</span>
+          </LikesAndComments>
           <HashTags>
             {tags.map((tag, index) => (
               <Tag key={index}>#{tag.hashtag}</Tag>
