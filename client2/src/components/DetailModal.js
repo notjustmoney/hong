@@ -344,6 +344,7 @@ const DetailModal = ({ info }) => {
         return;
       }
     }
+    setLike("false");
   }, [contents]);
 
   useEffect(() => {
