@@ -48,7 +48,7 @@ const Banner = styled.div`
 
 const BannerTitle = styled.div`
   position: relative;
-  z-index: 20;
+  z-index: 11;
   font-size: 40px;
   font-weight: 700;
   color: #fff;
@@ -59,7 +59,7 @@ const BannerTitle = styled.div`
 const BannerContent = styled.div`
   color: #f2f2f2;
   position: relative;
-  z-index: 20;
+  z-index: 11;
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 10px;
@@ -118,6 +118,8 @@ const Main = () => {
                   price={post.price}
                   writer={post.writer.profile.nickname}
                   imgsLength={post.imgs.length}
+                  likes={post.likes}
+                  comments={post.comments.length}
                 />
               ))}
           </Grid>
