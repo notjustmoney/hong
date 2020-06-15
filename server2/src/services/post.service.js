@@ -126,7 +126,7 @@ const getPostById = async (postId) => {
       select: 'user',
       populate: {
         path: 'user',
-	select: 'id profile',
+        select: 'id profile',
       },
     });
   if (!post) {
