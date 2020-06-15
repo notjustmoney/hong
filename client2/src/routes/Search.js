@@ -78,7 +78,7 @@ export default withRouter(() => {
     else{
       setSearchType(null);
     }
-  }, []);
+  }, [urlParams]);
 
   console.log(posts);
   

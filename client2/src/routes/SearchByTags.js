@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, useHistory } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
+import { Icon, Loader } from "semantic-ui-react";
 import apis from "../api";
 import Cards from "../components/Cards";
 import styled from "styled-components";
-
-const Container = styled.div`
-  width: 1250px;
-  margin: 0 auto;
-  padding-top: 60px;
-`;
 
 const Grid = styled.div`
   display: grid;
@@ -90,7 +84,7 @@ export default withRouter((props) => {
       return; 
     }
     const url = encodeURIComponent(tagsArray);
-    uH.push(`/search?tagname=${url}`);
+    uH.push(`/search?tags=${url}`);
   }
 
   useEffect(() => {
@@ -111,7 +105,7 @@ export default withRouter((props) => {
           )}
         </HashTags>
         {loading ? (
-          <div>Loading...</div>
+          <Loader active />
         ) : (
           <>
             {loading ? (
