@@ -4,6 +4,7 @@ import { Dimmer, Loader, Button, Icon } from "semantic-ui-react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import apis from "../api";
 
 const Container = styled.div`
@@ -248,6 +249,8 @@ const NeedLogin = styled.div`
 `;
 
 const DetailModal = ({ info }) => {
+  const user = useSelector((state) => state.loginInfo);
+  const access = window.localStorage.getItem("access_token");
   const [comments, setComment] = useState("");
   const [isLiked, setLike] = useState(false);
   const [btnstate, setBtnState] = useState({
@@ -263,6 +266,26 @@ const DetailModal = ({ info }) => {
       setBtnState({ loading: "", disabled: "" });
     } else {
       setBtnState({ loading: "", disabled: "disabled" });
+    }
+  };
+
+  const handleLikeClick = async () => {
+    if (user !== null && contents !== null) {
+      if (isLiked) {
+        console.log("Unlike", contents.id, user.id, access);
+        const resp = await apis.unlikes(contents.id, user.id, access);
+        const refresh = await apis.getDetailPost(contents.id);
+        setContents(refresh.data);
+        setLike(false);
+      } else {
+        console.log("Like", contents.id, user.id, access);
+        const resp = await apis.likes(contents.id, user.id, access);
+        const refresh = await apis.getDetailPost(contents.id);
+        setContents(refresh.data);
+        setLike(true);
+      }
+    } else {
+      alert("로그인 해주세요!");
     }
   };
 
@@ -303,6 +326,7 @@ const DetailModal = ({ info }) => {
     }
     setComment("");
   };
+  console.log(contents);
   return (
     <>
       {contents === null ? (
@@ -345,13 +369,17 @@ const DetailModal = ({ info }) => {
                   <Info>
                     <HashTags>
                       {contents.tags.map((tag, index) => (
-                        <Link to={`/search?tags=${tag.id}`} key={index}>
+                        <Link to={`/search?tags=${tag.hashtag}`} key={index}>
                           <Tag>#{tag.hashtag}</Tag>
                         </Link>
                       ))}
                     </HashTags>
                     <PopFooter>
-                      <Like name="like" isliked={isLiked}>
+                      <Like
+                        name="like"
+                        isliked={isLiked}
+                        onClick={handleLikeClick}
+                      >
                         {contents.likes.length}
                       </Like>
                       <Icon

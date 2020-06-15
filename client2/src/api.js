@@ -36,6 +36,29 @@ const apis = {
     axios.get(`http://www.hongsick.com/api/search/tag/`, {
       params: { name },
     }),
+  likes: (postId, userId, access) =>
+    axios.post(
+      `http://www.hongsick.com/api/like/`,
+      {
+        postId,
+        userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }
+    ),
+  unlikes: (postId, userId, access) =>
+    axios.delete(`http://www.hongsick.com/api/like/`, {
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+      data: {
+        postId,
+        userId,
+      },
+    }),
 };
 
 export default apis;

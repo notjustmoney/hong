@@ -101,34 +101,42 @@ const QnA = () => {
           </div>
           <div className="accordian-wrapper">
             <a href="#content-2" className="accordian-toggle">
-              질문 2
+              회원가입은 어떻게 하나요?
             </a>
             <div className="accordian-content" id="content-2">
-              답변 2
+              오른쪽 위 User를 클릭해서 나오는 창에서 회원가입을 누르시면
+              <br />
+              회원가입 페이지로 이동합니다.
             </div>
           </div>
           <div className="accordian-wrapper">
             <a href="#content-3" className="accordian-toggle">
-              질문 3
+              좋아요와 댓글 기능이 궁금해요.
             </a>
             <div className="accordian-content" id="content-3">
-              답변 3
+              좋아요 기능을 통해 원하는 글을 저장할 수 있고
+              <br />
+              댓글 기능을 통해 다른 이용자와 소통할 수 있습니다.
             </div>
           </div>
           <div className="accordian-wrapper">
             <a href="#content-4" className="accordian-toggle">
-              질문 4
+              판매자 인증은 어떻게 하나요?
             </a>
             <div className="accordian-content" id="content-4">
-              답변 4
+              홍대병 공식 SNS 또는 이메일로 문의 주시면
+              <br />
+              홍대병에서 검토 후 인증 처리 해드리겠습니다.
             </div>
           </div>
           <div className="accordian-wrapper">
             <a href="#content-5" className="accordian-toggle">
-              질문 5
+              게시글은 어떻게 작성하나요?
             </a>
             <div className="accordian-content" id="content-5">
-              답변 5
+              판매자 인증 후 홍대병에게 문의 주시면
+              <br />
+              자세히 설명해 드리겠습니다.
             </div>
           </div>
         </Accordion>
