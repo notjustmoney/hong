@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 const express = require('express');
+const { loggers } = require('winston');
 const validate = require('../middlewares/validate');
 const searchValidation = require('../validations/search.validation');
 const postValidation = require('../validations/post.validation');
@@ -8,7 +9,6 @@ const postController = require('../controllers/post.controller');
 const catchAsync = require('../utils/catchAsync');
 const Hashtag = require('../models/hashtag.model');
 const Post = require('../models/post.model');
-const { loggers } = require('winston');
 
 const router = express.Router();
 
@@ -32,7 +32,6 @@ function powerSet(str) {
 }
 
 const getPostsByTag = async (tags) => {
-  
   const transformedTags = powerSet(tags.hashtag);
   // promise all
   Hashtag.find({
@@ -67,6 +66,33 @@ const getPostsByTag = async (tags) => {
   return posts;
 };
 
+const getPostsByTags = async (tags) => {
+  const posts = [];
+  tags.forEach(async (tag) => {
+    for (const elem of tag.posts) {
+      const post = await Post.findById(elem)
+        .populate({
+          path: 'comments',
+          select: 'contents writer createdAt',
+          populate: {
+            path: 'writer',
+            select: 'profile',
+          },
+        })
+        .populate({
+          path: 'tags',
+          select: 'hashtag',
+        })
+        .populate({
+          path: 'writer',
+          select: 'profile',
+        });
+      posts.push(post);
+    }
+  });
+  return posts;
+};
+
 router.route('/user/:userId').get(validate(postValidation.getPostsByUser), postController.getPostsByUser);
 router.route('/like/:likeId').get(validate(postValidation.getPostByLike), postController.getPostByLike);
 router.get(
@@ -76,6 +102,17 @@ router.get(
     const { name } = req.query;
     const tags = await Hashtag.findOne({ hashtag: name });
     const posts = await getPostsByTag(tags);
+    const response = posts;
+    res.send(response);
+  })
+);
+
+router.get(
+  '/tag',
+  validate(searchValidation.searchByTags),
+  catchAsync(async (req, res) => {
+    const { tags } = req.query;
+    const posts = await getPostsByTags(tags);
     const response = posts;
     res.send(response);
   })

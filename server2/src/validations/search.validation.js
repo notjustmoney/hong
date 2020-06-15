@@ -13,7 +13,14 @@ const searchByTagName = {
   }),
 };
 
+const searchByTags = {
+  query: Joi.object({
+    tags: Joi.array().required(),
+  }),
+};
+
 module.exports = {
   searchByTagId,
   searchByTagName,
+  searchByTags,
 };
