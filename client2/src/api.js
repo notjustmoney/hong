@@ -16,6 +16,7 @@ const apis = {
   register: (data) =>
     axios.post("http://www.hongsick.com/api/auth/register", data),
   getPosts: () => axios.get(`http://www.hongsick.com/api/post/`),
+  getPostsByUser: (userId) => axios.get(`http://www.hongsick.com/api/search/user/${userId}`),
   getDetailPost: (id) => axios.get(`http://www.hongsick.com/api/post/${id}`),
   forgot: (data) =>
     axios.post("http://www.hongsick.com/api/auth/forgot-password", data),
@@ -29,6 +30,16 @@ const apis = {
       headers: {
         Authorization: `Bearer ${access}`,
       },
+    }),
+  deleteComment: (commentId, userId, access) => 
+    axios.delete(`http://www.hongsick.com/api/comment`,{
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+      data:{
+        commentId,
+        userId
+      }
     }),
   searchByTag: (id) =>
     axios.get(`http://www.hongsick.com/api/search/tag/${id}`),
