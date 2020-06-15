@@ -19,7 +19,7 @@ const Grid = styled.div`
 `;
 
 const Loading = styled.div`
-  text-align:center;
+  text-align: center;
 `;
 
 const Banner = styled.div`
@@ -29,7 +29,7 @@ const Banner = styled.div`
   background-size: cover;
   background-position: center;
   position: relative;
-  z-index:1;
+  z-index: 1;
   &::before {
     content: "";
     position: absolute;
@@ -90,7 +90,9 @@ const Main = () => {
     <>
       <Container>
         {loading ? (
-          <Loading><Loader active /></Loading>
+          <Loading>
+            <Loader active />
+          </Loading>
         ) : (
           <Grid>
             <Banner>

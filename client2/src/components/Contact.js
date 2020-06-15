@@ -131,7 +131,7 @@ const Contact = () => {
             <PersonImg src="https://avatars0.githubusercontent.com/u/60615552?s=400&u=114d0e327877aa44205355648274e5e2884edd9e&v=4" />
             <PersonInfo>
               <Name>이찬형</Name>
-              <Mail>이찬형@gmail.com</Mail>
+              <Mail>lchyung1998@gmail.com</Mail>
               <Dev>FrontEnd Developer</Dev>
               <Desc>웹 페이지를 만듭니다. 꾸밉니다.</Desc>
             </PersonInfo>
@@ -148,21 +148,21 @@ const Contact = () => {
         </div>
         <div>
           <InfoWrapper>
-            <PersonImg src="https://pluspng.com/img-png/user-png-icon-male-user-icon-512.png" />
+            <PersonImg src="https://user-images.githubusercontent.com/60615552/84664284-456ddf00-af59-11ea-8f8a-8e8414f67029.jpeg" />
             <PersonInfo>
               <Name>박별</Name>
-              <Mail>박별@starportion.com</Mail>
+              <Mail>parkstar@starportion.com</Mail>
               <Dev>FrontEnd Developer</Dev>
-              <Desc>스타포션을 만듭니다.</Desc>
+              <Desc>서버와 통신을 합니다.</Desc>
             </PersonInfo>
           </InfoWrapper>
           <InfoWrapper>
-            <PersonImg src="https://pluspng.com/img-png/user-png-icon-male-user-icon-512.png" />
+            <PersonImg src="https://user-images.githubusercontent.com/60615552/84664269-40a92b00-af59-11ea-9356-448b21508351.jpeg" />
             <PersonInfo>
               <Name>박태순</Name>
-              <Mail>박태순@ensharp.com</Mail>
+              <Mail>qkrxotns@gmail.com</Mail>
               <Dev>BackEnd Developer</Dev>
-              <Desc>대전에 삽니다. KTX를 탑니다.</Desc>
+              <Desc>서버 보조를 해줍니다.</Desc>
             </PersonInfo>
           </InfoWrapper>
         </div>

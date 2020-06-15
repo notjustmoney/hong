@@ -42,16 +42,16 @@ const Tag = styled.div`
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;
-  transition:all .35s;
+  transition: all 0.35s;
   cursor: pointer;
-  i{
-    margin-left:3px;
-    color:black;
-    transition:all .2s;
+  i {
+    margin-left: 3px;
+    color: black;
+    transition: all 0.2s;
   }
-  :hover{
-    background-color:rgb(255, 181, 30);
-    i{
+  :hover {
+    background-color: rgb(255, 181, 30);
+    i {
       transform: rotate(90deg);
     }
   }
@@ -63,14 +63,7 @@ export default withRouter((props) => {
   const [userId, setUserId] = useState("");
   const urlParams = new URLSearchParams(window.location.search);
 
-  useEffect(() => {
+  useEffect(() => {}, []);
 
-  }, []);
-
-  
-  return (
-    <>
-      asdasd
-    </>
-  );
+  return <>asdasd</>;
 });
