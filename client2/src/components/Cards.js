@@ -159,16 +159,15 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength, lik
   }, []);
 
   useEffect(() => {
-    if(!likes || !loginInfo){
-      return;
-    }
-    for (let key in likes){
-      if(likes[key].user.id === loginInfo.id){
-        setLike("true");
-        return;
+    if(likes && loginInfo){
+      for (let key in likes){
+        if(likes[key].user.id === loginInfo.id){
+          setLike("true");
+          return;
+        }
       }
     }
-  },[likes])
+  },[likes, loginInfo])
   return (
     <>
       <Container onClick={handleClick}>
