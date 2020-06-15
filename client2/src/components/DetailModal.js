@@ -365,6 +365,8 @@ const DetailModal = ({ info }) => {
   }, [info]);
 
   useEffect(() => {
+    console.log(contents);
+    console.log(loginInfo);
     
     if (contents) {
       let content = document.getElementById(`${contents.id}modal`);
@@ -473,20 +475,27 @@ const DetailModal = ({ info }) => {
                       ))}
                     </HashTags>
                     <PopFooter>
-                      {contents.writer.id === loginInfo.id && 
-                        <DeletePost 
-                          name="x"
-                          onClick={() => {
-                              if(window.confirm("해당 게시글을 삭제하시겠습니까?")){
-                                handleDeletePost();
+                      {!contents && !loginInfo ? (
+                        <>
+                          {contents.writer.id === loginInfo.id && 
+                            <DeletePost 
+                              name="x"
+                              onClick={() => {
+                                  if(window.confirm("해당 게시글을 삭제하시겠습니까?")){
+                                    handleDeletePost();
+                                  }
+                                  else{
+    
+                                  }
+                                } 
                               }
-                              else{
-
-                              }
-                            } 
+                            />
                           }
-                        />
-                      }
+                        </>
+                        ) : (
+                        <></>
+                      )}
+                      
                       <Like 
                         name="like"
                         isliked={isLiked}
@@ -520,22 +529,29 @@ const DetailModal = ({ info }) => {
                         </CommentWriter>
                         <Comment>{comments.contents}</Comment>
                       </Nickname>
-                      {comments.writer.id === loginInfo.id &&
-                        <CommentOptions className="options">
-                          <OptionIcon
-                            name="x"
-                            onClick={() => {
-                                if(window.confirm("해당 댓글을 삭제하시겠습니까?")){
-                                  hadleDeleteComment(comments.id);
-                                }
-                                else{
+                      {!contents && !loginInfo ? (
+                        <>
+                          {comments.writer.id === loginInfo.id &&
+                            <CommentOptions className="options">
+                              <OptionIcon
+                                name="x"
+                                onClick={() => {
+                                    if(window.confirm("해당 댓글을 삭제하시겠습니까?")){
+                                      hadleDeleteComment(comments.id);
+                                    }
+                                    else{
 
+                                    }
+                                  } 
                                 }
-                              } 
-                            }
-                          />
-                        </CommentOptions>
-                      }
+                              />
+                            </CommentOptions>
+                          }
+                        </>
+                        ) : (
+                        <></>
+                      )}
+                      
                     </CommentBox>
                   ))}
                 </PopComment>
