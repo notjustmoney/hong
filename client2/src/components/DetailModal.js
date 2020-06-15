@@ -483,9 +483,7 @@ const DetailModal = ({ info }) => {
                       ))}
                     </HashTags>
                     <PopFooter>
-                      {!contents && !loginInfo ? (
-                        <>
-                          {contents.writer.id === loginInfo.id && 
+                          {loginInfo && contents.writer.id === loginInfo.id && 
                             <DeletePost 
                               name="x"
                               onClick={() => {
@@ -499,11 +497,6 @@ const DetailModal = ({ info }) => {
                               }
                             />
                           }
-                        </>
-                        ) : (
-                        <></>
-                      )}
-                      
                       <Like 
                         name="like"
                         isliked={isLiked}
@@ -537,9 +530,7 @@ const DetailModal = ({ info }) => {
                         </CommentWriter>
                         <Comment>{comments.contents}</Comment>
                       </Nickname>
-                      {!contents && !loginInfo ? (
-                        <>
-                          {comments.writer.id === loginInfo.id &&
+                          {loginInfo && comments.writer.id === loginInfo.id &&
                             <CommentOptions className="options">
                               <OptionIcon
                                 name="x"
@@ -555,11 +546,6 @@ const DetailModal = ({ info }) => {
                               />
                             </CommentOptions>
                           }
-                        </>
-                        ) : (
-                        <></>
-                      )}
-                      
                     </CommentBox>
                   ))}
                 </PopComment>
