@@ -525,7 +525,7 @@ const DetailModal = ({ info }) => {
                         </CommentWriter>
                         <Comment>{comments.contents}</Comment>
                       </Nickname>
-                      {comments.writer.id === loginInfo.id && (
+                      {loginInfo && comments.writer.id === loginInfo.id && (
                         <CommentOptions className="options">
                           <OptionIcon
                             name="x"
