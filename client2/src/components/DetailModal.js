@@ -373,7 +373,7 @@ const DetailModal = ({ info }) => {
       let content = document.getElementById(`${contents.id}modal`);
       let parseContents = contents.contents.replace(/&lt;/gi, "<");
       content.innerHTML = parseContents;
-      if (contents.likes.length > 0) {
+      if (contents.likes.length > 0 && loginInfo) {
         for (let key in contents.likes) {
           if (contents.likes[key].user.id === loginInfo.id) {
             setLike("true");
@@ -483,7 +483,7 @@ const DetailModal = ({ info }) => {
                       ))}
                     </HashTags>
                     <PopFooter>
-                      {contents.writer.id === loginInfo.id && (
+                      {loginInfo && contents.writer.id === loginInfo.id && (
                         <DeletePost
                           name="x"
                           onClick={() => {
