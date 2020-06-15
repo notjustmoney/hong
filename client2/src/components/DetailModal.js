@@ -146,6 +146,7 @@ const PopContents = styled.div`
 const PopComment = styled.div`
   min-height: 100px;
   flex: 1;
+  position:relative;
   width: 100%;
   padding: 10px 20px;
   overflow-y: scroll;
@@ -192,7 +193,7 @@ const Like = styled(Icon)`
 const DeletePost = styled(Icon)`
   &&&{
     :hover {
-      color: rgba(200,50,50,1);
+      color: rgba(254, 136, 0, 1);
     }
   }
 `;
@@ -201,6 +202,13 @@ const CommentBox = styled.div`
   width: 100%;
   display: flex;
   margin-bottom: 10px;
+  position: relative;
+  :hover{
+    .options{
+      opacity: 1;
+    }
+  }
+  z-index:100;
 `;
 
 const CommentWriter = styled.span`
@@ -266,6 +274,27 @@ const NeedLoginSpan = styled.span`
   cursor: pointer;
 `;
 
+const CommentOptions = styled.div`
+  z-index: 2;
+  height: 100%;
+  width:20px;
+  left:100%;
+  position: absolute;
+  opacity: 0;
+`;
+const OptionIcon = styled(Icon)`
+  &&&{
+    position: absolute;
+    top: 30%;
+    opacity: .5;
+    transition:all .35s;
+    cursor: pointer;
+    :hover{
+      color: rgba(254, 136, 0, 1);
+    }
+  }
+`;
+
 const DetailModal = ({ info }) => {
   const [comments, setComment] = useState("");
   const [isLiked, setLike] = useState("false");
@@ -287,6 +316,8 @@ const DetailModal = ({ info }) => {
       setBtnState({ loading: "", disabled: "disabled" });
     }
   };
+
+
 
   const handleLike = async () => {
     if(!loginInfo){
@@ -334,17 +365,17 @@ const DetailModal = ({ info }) => {
   }, [info]);
 
   useEffect(() => {
-    console.log(contents);
-    console.log(loginInfo);
     
     if (contents) {
       let content = document.getElementById(`${contents.id}modal`);
       let parseContents = contents.contents.replace(/&lt;/gi, "<");
       content.innerHTML = parseContents;
-      for (let key in contents.likes){
-        if(contents.likes[key].user.id === loginInfo.id){
-          setLike("true");
-          return;
+      if(contents.likes.length > 0){
+        for (let key in contents.likes){
+          if(contents.likes[key].user.id === loginInfo.id){
+            setLike("true");
+            return;
+          }
         }
       }
       setLike("false");
@@ -376,6 +407,24 @@ const DetailModal = ({ info }) => {
     }
     setComment("");
   };
+
+  const hadleDeleteComment = async (commentId) => {
+    try{
+      const resp = await apis.deleteComment(commentId,loginInfo.id,access_token);
+      const refresh = await apis.getDetailPost(contents.id);
+      setContents(refresh.data);
+      setBtnState({ loading: "", disabled: "disabled" });
+      const element = document.getElementById("comments");
+      element.scroll({
+        top: 0,
+        behavior: "smooth",
+      });
+    }catch(e){
+      alert("댓글 삭제 실패! 로그인 상태를 확인해주세요.")
+    }
+    
+  }
+
   return (
     <>
       {contents === null ? (
@@ -409,7 +458,7 @@ const DetailModal = ({ info }) => {
                   <UserImg
                     src={`http://www.hongsick.com${contents.writer.profile.thumbnail}`}
                   />
-                  <Nickname>{contents.writer.profile.nickname}</Nickname>
+                  <Nickname><Link to={`/search?userId=${contents.writer.id}`} >{contents.writer.profile.nickname}</Link></Nickname>
                 </PopHeader>
                 <PopContents>
                   <Title>{contents.title}</Title>
@@ -427,7 +476,7 @@ const DetailModal = ({ info }) => {
                       {contents.writer.id === loginInfo.id && 
                         <DeletePost 
                           name="x"
-                          onClick={() =>{
+                          onClick={() => {
                               if(window.confirm("해당 게시글을 삭제하시겠습니까?")){
                                 handleDeletePost();
                               }
@@ -471,6 +520,22 @@ const DetailModal = ({ info }) => {
                         </CommentWriter>
                         <Comment>{comments.contents}</Comment>
                       </Nickname>
+                      {comments.writer.id === loginInfo.id &&
+                        <CommentOptions className="options">
+                          <OptionIcon
+                            name="x"
+                            onClick={() => {
+                                if(window.confirm("해당 댓글을 삭제하시겠습니까?")){
+                                  hadleDeleteComment(comments.id);
+                                }
+                                else{
+
+                                }
+                              } 
+                            }
+                          />
+                        </CommentOptions>
+                      }
                     </CommentBox>
                   ))}
                 </PopComment>
