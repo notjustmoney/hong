@@ -29,8 +29,8 @@ const Intro = () => {
         values: {
           videoImageCount: 380,
           imageSequence: [0, 379],
-          title_up: [0, -230, { start: 0, end: 0.1 }],
-          title_end: [-230, -400, { start: 0.9, end: 1 }],
+          title_up: [0, -170, { start: 0, end: 0.1 }],
+          title_end: [-170, -400, { start: 0.9, end: 1 }],
           canvas_opacity_in: [0, 1, { start: 0.07, end: 0.1 }],
           canvas_opacity_out: [1, 0, { start: 0.9, end: 1 }],
           messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
