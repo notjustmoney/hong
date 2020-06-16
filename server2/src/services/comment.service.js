@@ -4,10 +4,9 @@ const AppError = require('../utils/AppError');
 
 const getCommentById = async (commentId) => {
   const comment = await Comment.findById(commentId);
-  if (!comment) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Comment not found');
+  if (comment) {
+    return comment;
   }
-  return comment;
 };
 
 const createComment = async (postId, contents, userId) => {
@@ -38,6 +37,11 @@ const updateComment = async (updateBody, userId) => {
 const deleteComment = async (commentId, userId) => {
   const comment = await getCommentById(commentId);
   if (comment.writer._id.equals(userId)) {
+    const post = await Post.findById(comment.post);
+    const index = post.comments.indexOf(commentId);
+    if (index > -1) {
+      post.comments.splice(index, 1);
+    }
     await comment.remove();
     return comment;
   }

@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   server:
-    image: chajyn/hong:server2 
+    image: chajyn/hong:server
     container_name: server
     ports:
       - "5000:3030"
@@ -10,7 +10,7 @@ services:
     networks:
       - backend
   nginx:
-    image: chajyn/hong:nginx-server2
+    image: chajyn/hong:nginx-server
     container_name: nginx
     depends_on:
       - server

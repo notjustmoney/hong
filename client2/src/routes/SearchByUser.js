@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, useHistory } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
+import { Loader, Icon } from "semantic-ui-react";
 import apis from "../api";
 import Cards from "../components/Cards";
 import styled from "styled-components";
-
-const Container = styled.div`
-  width: 1250px;
-  margin: 0 auto;
-  padding-top: 60px;
-`;
 
 const Grid = styled.div`
   display: grid;
@@ -19,51 +13,74 @@ const Grid = styled.div`
   margin-bottom: 50px;
 `;
 
-const HashTags = styled.div`
-  display: flex;
-  width: 100%;
-  div {
-    margin-right: 5px;
-    color: #0984e3;
-  }
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const Tag = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background-color: #e2e2e2;
-  padding: 5px;
-  margin-bottom: 5px;
-  border-radius: 3px;
-  transition: all 0.35s;
-  cursor: pointer;
-  i {
-    margin-left: 3px;
-    color: black;
-    transition: all 0.2s;
-  }
-  :hover {
-    background-color: rgb(255, 181, 30);
-    i {
-      transform: rotate(90deg);
-    }
-  }
+const WhoIsUser = styled.div`
+  font-size: 2em;
+  margin: 20px 10px;
 `;
 
 export default withRouter((props) => {
-  const [posts, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState("");
+  const [posts, setPosts] = useState(null);
+  const [error, setError] = useState("");
   const urlParams = new URLSearchParams(window.location.search);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setUserId(urlParams.get("userId"));
+  }, []);
+  useEffect(() => {
+    if (userId) {
+      handleGetUserPost();
+    }
+  }, [userId]);
 
-  return <>asdasd</>;
+  const handleGetUserPost = async () => {
+    try {
+      const resp = await apis.getPostsByUser(userId);
+      const reverse = resp.data.reverse();
+      setPosts(reverse);
+    } catch (e) {
+      console.log(e);
+      setError(e.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      {loading ? (
+        <Loader active />
+      ) : (
+        <>
+          {error && <div>{error}</div>}
+          {posts && (
+            <WhoIsUser>{posts[0].writer.profile.nickname}님의 게시글</WhoIsUser>
+          )}
+          <Grid>
+            {posts &&
+              posts.map((post, index) =>
+                post === null ? (
+                  <div key={index}></div>
+                ) : (
+                  <Cards
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    contents={post.contents}
+                    imgs={`http://www.hongsick.com${post.imgs[0]}`}
+                    tags={post.tags}
+                    price={post.price}
+                    writer={post.writer.profile.nickname}
+                    imgsLength={post.imgs.length}
+                    likes={post.likes}
+                    comments={post.comments.length}
+                  />
+                )
+              )}
+          </Grid>
+        </>
+      )}
+    </>
+  );
 });

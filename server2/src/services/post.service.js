@@ -120,6 +120,14 @@ const getPostById = async (postId) => {
     .populate({
       path: 'writer',
       select: 'profile',
+    })
+    .populate({
+      path: 'likes',
+      select: 'user',
+      populate: {
+        path: 'user',
+        select: 'id profile',
+      },
     });
   if (!post) {
     throw new AppError(httpStatus.NOT_FOUND, 'Post not found');

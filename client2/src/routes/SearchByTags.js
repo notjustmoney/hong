@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, useHistory } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
+import { Icon, Loader } from "semantic-ui-react";
 import apis from "../api";
 import Cards from "../components/Cards";
 import styled from "styled-components";
-
-const Container = styled.div`
-  width: 1250px;
-  margin: 0 auto;
-  padding-top: 60px;
-`;
 
 const Grid = styled.div`
   display: grid;
@@ -42,16 +36,16 @@ const Tag = styled.div`
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;
-  transition:all .35s;
+  transition: all 0.35s;
   cursor: pointer;
-  i{
-    margin-left:3px;
-    color:black;
-    transition:all .2s;
+  i {
+    margin-left: 3px;
+    color: black;
+    transition: all 0.2s;
   }
-  :hover{
-    background-color:rgb(255, 181, 30);
-    i{
+  :hover {
+    background-color: rgb(255, 181, 30);
+    i {
       transform: rotate(90deg);
     }
   }
@@ -68,10 +62,10 @@ export default withRouter((props) => {
       params: { id },
     },
   } = props;
-  
+
   const tags = props.location.search;
   const tagsArray = decodeURIComponent(tags.split("=")[1]).split(",");
-  
+
   const searchByTag = async (id) => {
     try {
       const resp = await apis.searchByTag(id);
@@ -84,41 +78,44 @@ export default withRouter((props) => {
   };
 
   const handleRemoveTag = (index) => {
-    tagsArray.splice(index,1);
-    if(tagsArray.length === 0){
+    tagsArray.splice(index, 1);
+    if (tagsArray.length === 0) {
       uH.push(`/main`);
-      return; 
+      return;
     }
     const url = encodeURIComponent(tagsArray);
-    uH.push(`/search?tagname=${url}`);
-  }
+    uH.push(`/search?tags=${url}`);
+  };
 
   useEffect(() => {
     searchByTag(id);
-    console.log(urlParams.get('userId'));
+    console.log(urlParams.get("userId"));
     console.log(1);
   }, []);
 
   console.log(posts);
-  
+
   return (
     <>
-        <HashTags>
-          {tagsArray && tagsArray.map((tag, index) => 
+      <HashTags>
+        {tagsArray &&
+          tagsArray.map((tag, index) => (
             <Tag key={index} onClick={() => handleRemoveTag(index)}>
-              #{tag}<Icon name="x" />
+              #{tag}
+              <Icon name="x" />
             </Tag>
-          )}
-        </HashTags>
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            {loading ? (
-              <div>Loading...</div>
-            ) : (
-              <Grid>
-                {posts && posts.map((post, index) =>
+          ))}
+      </HashTags>
+      {loading ? (
+        <Loader active />
+      ) : (
+        <>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <Grid>
+              {posts &&
+                posts.map((post, index) =>
                   post === null ? (
                     <div key={index}></div>
                   ) : (
@@ -135,10 +132,10 @@ export default withRouter((props) => {
                     />
                   )
                 )}
-              </Grid>
-            )}
-          </>
-        )}
+            </Grid>
+          )}
+        </>
+      )}
     </>
   );
 });

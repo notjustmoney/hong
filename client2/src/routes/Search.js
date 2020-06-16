@@ -44,16 +44,16 @@ const Tag = styled.div`
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;
-  transition:all .35s;
+  transition: all 0.35s;
   cursor: pointer;
-  i{
-    margin-left:3px;
-    color:black;
-    transition:all .2s;
+  i {
+    margin-left: 3px;
+    color: black;
+    transition: all 0.2s;
   }
-  :hover{
-    background-color:rgb(255, 181, 30);
-    i{
+  :hover {
+    background-color: rgb(255, 181, 30);
+    i {
       transform: rotate(90deg);
     }
   }
@@ -66,28 +66,32 @@ export default withRouter(() => {
   const urlParams = new URLSearchParams(window.location.search);
   const uH = useHistory();
 
-  
-
   useEffect(() => {
-    if(urlParams.get("userId")){
+    if (urlParams.get("userId")) {
       setSearchType("userId");
-    }
-    else if(urlParams.get("tags")){
+    } else if (urlParams.get("tags")) {
       setSearchType("tags");
-    }
-    else{
+    } else {
       setSearchType(null);
     }
-  }, []);
+  }, [urlParams]);
 
   console.log(posts);
-  
+
   return (
     <>
       <Container>
         <>
-          {searchType === "userId" && <><ByUser /></>}
-          {searchType === "tags" && <><ByTags /></>}
+          {searchType === "userId" && (
+            <>
+              <ByUser />
+            </>
+          )}
+          {searchType === "tags" && (
+            <>
+              <ByTags />
+            </>
+          )}
           {searchType === null && <>잘못된 주소로의 접근입니다.</>}
         </>
       </Container>

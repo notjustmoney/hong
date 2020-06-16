@@ -497,12 +497,16 @@ const DetailModal = ({ info }) => {
                         />
                       )}
                       <Like name="like" isliked={isLiked} onClick={handleLike}>
-                        {contents && contents.likes.length}
+                        {contents.likes.length}
                       </Like>
                       <Icon
                         name="comment"
                         onClick={() => {
-                          document.getElementById("commentbox").focus();
+                          if (loginInfo) {
+                            document.getElementById("commentbox").focus();
+                          } else {
+                            dispatch(allActions.modalActions.openModal());
+                          }
                         }}
                       >
                         {contents.comments.length}
