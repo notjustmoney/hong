@@ -373,7 +373,7 @@ const DetailModal = ({ info }) => {
       let content = document.getElementById(`${contents.id}modal`);
       let parseContents = contents.contents.replace(/&lt;/gi, "<");
       content.innerHTML = parseContents;
-      if (contents.likes.length > 0 && loginInfo) {
+      if (loginInfo && contents.likes.length > 0) {
         for (let key in contents.likes) {
           if (contents.likes[key].user.id === loginInfo.id) {
             setLike("true");
@@ -497,7 +497,7 @@ const DetailModal = ({ info }) => {
                         />
                       )}
                       <Like name="like" isliked={isLiked} onClick={handleLike}>
-                        {contents.likes.length}
+                        {contents && contents.likes.length}
                       </Like>
                       <Icon
                         name="comment"
