@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import allActions from "../store/actions";
 import apis from "../api";
 
+// 상품에 대한 자세한 정보 출력 컴포넌트
+
 const Container = styled.div`
   height: 300px;
   width: 500px;
@@ -297,7 +299,6 @@ const OptionIcon = styled(Icon)`
 `;
 
 const DetailModal = ({ info }) => {
-  const user = useSelector((state) => state.loginInfo);
   const access = window.localStorage.getItem("access_token");
   const [comments, setComment] = useState("");
   const [isLiked, setLike] = useState("false");
@@ -311,6 +312,7 @@ const DetailModal = ({ info }) => {
   const [contents, setContents] = useState(info);
   const dispatch = useDispatch();
 
+  // comment 작성 시 버튼 상태 변경
   const handleComment = (e) => {
     setComment(e.target.value);
     if (comments !== "") {
@@ -320,6 +322,7 @@ const DetailModal = ({ info }) => {
     }
   };
 
+  // 좋아요 관련 설정
   const handleLike = async () => {
     if (!loginInfo) {
       dispatch(allActions.modalActions.openModal());
@@ -327,6 +330,7 @@ const DetailModal = ({ info }) => {
     }
     if (isLiked === "false") {
       try {
+        // 좋아요
         const resp = await apis.likes(contents.id, loginInfo.id, access_token);
         const refresh = await apis.getDetailPost(contents.id);
         setContents(refresh.data);
@@ -339,6 +343,7 @@ const DetailModal = ({ info }) => {
       }
     } else {
       try {
+        // 좋아요 취소
         const resp = await apis.unlikes(
           contents.id,
           loginInfo.id,
@@ -355,6 +360,8 @@ const DetailModal = ({ info }) => {
     }
   };
 
+  // 포스트 삭제 함수
+  // access token 필요
   const handleDeletePost = async () => {
     try {
       const resp = await apis.deletepost(contents.id, access_token);
@@ -368,6 +375,8 @@ const DetailModal = ({ info }) => {
     setContents(info);
   }, [info]);
 
+  // content 렌더링 부분
+  // 내용이 바뀔 때마다 다시 렌더링하도록 설정
   useEffect(() => {
     if (contents) {
       let content = document.getElementById(`${contents.id}modal`);
@@ -385,6 +394,8 @@ const DetailModal = ({ info }) => {
     }
   }, [contents]);
 
+  // comment 제출 함수
+  // 작성 버튼 클릭 시 버튼 비활성화
   const handleCommentSubmit = async () => {
     if (comments === "") {
       alert("댓글을 작성해 주세요.");
@@ -411,6 +422,8 @@ const DetailModal = ({ info }) => {
     setComment("");
   };
 
+  // 댓글 삭제 함수
+  // access token으로 인증 필요
   const hadleDeleteComment = async (commentId) => {
     try {
       const resp = await apis.deleteComment(
