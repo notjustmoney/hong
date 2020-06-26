@@ -42,17 +42,11 @@ const apis = {
         userId,
       },
     }),
-  searchByTag: (id) =>
-    axios.get(`http://www.hongsick.com/api/search/tag/${id}`),
+  searchByTags: (tags) =>
+    axios.get(`http://www.hongsick.com/api/search/tags?tags=${tags}`),
   searchByTagName: (name) =>
     axios.get(`http://www.hongsick.com/api/search/tag/`, {
       params: { name },
-    }),
-  searchByTags: (qs) =>
-    axios.get(`http://www.hongsick.com/api/tags/`, {
-      params: {
-        tags: qs,
-      },
     }),
   likes: (postId, userId, access) =>
     axios.post(

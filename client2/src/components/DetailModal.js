@@ -296,6 +296,10 @@ const OptionIcon = styled(Icon)`
   }
 `;
 
+const Pointer = styled.span`
+  cursor: pointer;
+`;
+
 const DetailModal = ({ info }) => {
   const user = useSelector((state) => state.loginInfo);
   const access = window.localStorage.getItem("access_token");
@@ -464,10 +468,8 @@ const DetailModal = ({ info }) => {
                   <UserImg
                     src={`http://www.hongsick.com${contents.writer.profile.thumbnail}`}
                   />
-                  <Nickname>
-                    <Link to={`/search?userId=${contents.writer.id}`}>
-                      {contents.writer.profile.nickname}
-                    </Link>
+                  <Nickname onClick={() => window.location.href=`/search?userId=${contents.writer.id}`} >
+                      <Pointer>{contents.writer.profile.nickname}</Pointer>
                   </Nickname>
                 </PopHeader>
                 <PopContents>

@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter, useHistory } from "react-router-dom";
-import { Icon } from "semantic-ui-react";
-import apis from "../api";
-import Cards from "../components/Cards";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import ByTags from "./SearchByTags";
 import ByUser from "./SearchByUser";
@@ -13,86 +10,38 @@ const Container = styled.div`
   padding-top: 60px;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(200px, 300px));
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 50px;
-`;
-
-const HashTags = styled.div`
-  display: flex;
-  width: 100%;
-  div {
-    margin-right: 5px;
-    color: #0984e3;
-  }
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const Tag = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background-color: #e2e2e2;
-  padding: 5px;
-  margin-bottom: 5px;
-  border-radius: 3px;
-  transition: all 0.35s;
-  cursor: pointer;
-  i {
-    margin-left: 3px;
-    color: black;
-    transition: all 0.2s;
-  }
-  :hover {
-    background-color: rgb(255, 181, 30);
-    i {
-      transform: rotate(90deg);
-    }
-  }
-`;
-
+//검색 컴포넌트입니다.
+//url의 query string을 받아와서 변수가 user검색인지 tag검색인지를 구분합니다.
+//user검색이면 SearchByUser.js를 렌더링 tag검색이면 SearchByTags.js를 렌더링합니다.
+//또한 url의 query string이 바뀔때마다 렌더링의 갱신이 이루어집니다.
 export default withRouter(() => {
-  const [posts, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [searchType, setSearchType] = useState(null);
   const urlParams = new URLSearchParams(window.location.search);
-  const uH = useHistory();
 
+  //주소가 바뀜에 따라 searchType의 값을 바꿔줍니다.
   useEffect(() => {
-    if (urlParams.get("userId")) {
+    if(urlParams.get("userId")){
       setSearchType("userId");
-    } else if (urlParams.get("tags")) {
+    }
+    else if(urlParams.get("tags")){
       setSearchType("tags");
-    } else {
+    }
+    else{
       setSearchType(null);
     }
-  }, [urlParams]);
-  
-  console.log(posts);
+    
+  }, [window.location.search]);
+
+  useEffect(()=> {
+    console.log(searchType)
+  },[searchType])
 
   return (
     <>
       <Container>
         <>
-          {searchType === "userId" && (
-            <>
-              <ByUser />
-            </>
-          )}
-          {searchType === "tags" && (
-            <>
-              <ByTags />
-            </>
-          )}
-          {searchType === null && <>잘못된 주소로의 접근입니다.</>}
+          {(searchType === "tags" && <ByTags />) || (searchType === "userId" && <ByUser />) || (searchType === null && <>잘못된 주소로의 접근입니다.</>)}
+
         </>
       </Container>
     </>
