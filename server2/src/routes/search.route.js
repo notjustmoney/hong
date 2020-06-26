@@ -30,6 +30,14 @@ const getPostsByTag = async (tags) => {
       .populate({
         path: 'writer',
         select: 'profile',
+      })
+      .populate({
+        path: 'likes',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'profile',
+        },
       });
     posts.push(post);
   }
