@@ -1,7 +1,7 @@
 import axios from "axios";
 
+// axios 요청 모듈화
 const apis = {
-  // body로 넣어주기
   authMe: (userId, access) =>
     axios.get(`http://www.hongsick.com/api/auth/me/${userId}`, {
       headers: {

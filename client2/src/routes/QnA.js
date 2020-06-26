@@ -4,18 +4,14 @@ import { Link } from "react-router-dom";
 import "./QnA.css";
 import Kakaomap from "../components/Kakaomap";
 
+// 아코디언 형식의 FAQ와 카카오맵을 이용해 지도 구현
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 30px 50px;
-  /*background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 1) 1%,
-      rgba(255, 255, 255, 0.2)
-    ),
-    url("https://images.unsplash.com/photo-1494236581341-7d38b2e7d824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1888&q=80");*/
   background-position: center;
   background-size: cover;
 `;
@@ -54,19 +50,24 @@ const SLink = styled(Link)`
 `;
 
 const QnA = () => {
+  // 아코디언 FAQ
   const handleClick = (event) => {
     if (!event.target.classList.contains("accordian-toggle")) return;
+    // 클릭한 제목의 content 선택
     let content = document.querySelector(event.target.hash);
     if (!content) return;
     event.preventDefault();
+    // 클릭한 제목의 내용이 펼쳐져 있는 상태면 닫음
     if (content.classList.contains("active")) {
       content.classList.remove("active");
       return;
     }
+    // 열려있는 모든 내용을 닫음
     let accordians = document.querySelectorAll(".accordian-content.active");
     for (let i = 0; i < accordians.length; i++) {
       accordians[i].classList.remove("active");
     }
+    // 선택한 제목의 내용만 오픈
     content.classList.add("active");
   };
 

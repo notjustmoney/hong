@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
+// 모든 컴포넌트에 대해 글로벌 스타일 적용
+
 const GlobalStlye = createGlobalStyle`
     ${reset};
     * {

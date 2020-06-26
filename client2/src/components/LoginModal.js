@@ -6,6 +6,9 @@ import { useSelector, useDispatch } from "react-redux";
 import allActinos from "../store/actions";
 import apis from "../api";
 
+// 로그인 되지 않은 상태에서 User 버튼을 눌렀을 시 모달 출력
+// 이메일 및 비밀번호를 입력받아 서버로 전송
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -129,12 +132,14 @@ const LoginModal = () => {
     setPw(e.target.value);
   };
 
+  // 엔터 입력 시 로그인 진행
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
     }
   };
 
+  // 로그인 진행
   const handleSubmit = async () => {
     console.log("submit");
     if (id === "") {
@@ -147,17 +152,15 @@ const LoginModal = () => {
       setLoading(true);
       setDisabled("disabled");
       const info = { email: id, password: pw };
+      // 예외가 없을 시 post 요청
       try {
-        /*const resp = await axios.post(
-          "http://www.hongsick.com/api/auth/login",
-          info
-        );*/
         const resp = await apis.login(info);
         setLoading(false);
         setDisabled("");
         setData(resp);
         dispatch(allActinos.modalActions.closeModal());
       } catch (e) {
+        // 잘못된 이메일 / 패스워드일 경우
         console.log(e);
         setError("이메일 또는 비밀번호가 일치하지 않습니다.");
         setLoading(false);
@@ -167,6 +170,7 @@ const LoginModal = () => {
   };
   useEffect(() => {
     if (data !== null) {
+      // 세션 유지를 위해 로컬스토리지에 유저 정보 저장
       console.log(data);
       const access = data.data.tokens.access.token;
       const refresh = data.data.tokens.refresh.token;
