@@ -41,6 +41,7 @@ const Explain = styled.div`
 `;
 
 const Accordion = styled.div`
+  max-width: 1300px;
   width: 100%;
   padding: 0 40px;
   margin-top: 50px;

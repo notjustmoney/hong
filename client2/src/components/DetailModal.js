@@ -373,7 +373,7 @@ const DetailModal = ({ info }) => {
       let content = document.getElementById(`${contents.id}modal`);
       let parseContents = contents.contents.replace(/&lt;/gi, "<");
       content.innerHTML = parseContents;
-      if (contents.likes.length > 0 && loginInfo) {
+      if (loginInfo && contents.likes.length > 0) {
         for (let key in contents.likes) {
           if (contents.likes[key].user.id === loginInfo.id) {
             setLike("true");
@@ -483,35 +483,29 @@ const DetailModal = ({ info }) => {
                       ))}
                     </HashTags>
                     <PopFooter>
-                          {loginInfo && contents.writer.id === loginInfo.id && 
-                            <DeletePost 
-                              name="x"
-                              onClick={() => {
-                                  if(window.confirm("해당 게시글을 삭제하시겠습니까?")){
-                                    handleDeletePost();
-                                  }
-                                  else{
-    
-                                  }
-                                } 
-                              }
-                            />
-                          }
-                      <Like 
-                        name="like"
-                        isliked={isLiked}
-                        onClick={handleLike}
-                      >
+                      {loginInfo && contents.writer.id === loginInfo.id && (
+                        <DeletePost
+                          name="x"
+                          onClick={() => {
+                            if (
+                              window.confirm("해당 게시글을 삭제하시겠습니까?")
+                            ) {
+                              handleDeletePost();
+                            } else {
+                            }
+                          }}
+                        />
+                      )}
+                      <Like name="like" isliked={isLiked} onClick={handleLike}>
                         {contents.likes.length}
                       </Like>
                       <Icon
                         name="comment"
                         onClick={() => {
-                          if(loginInfo){
+                          if (loginInfo) {
                             document.getElementById("commentbox").focus();
-                          }
-                          else{
-                            dispatch(allActions.modalActions.openModal())
+                          } else {
+                            dispatch(allActions.modalActions.openModal());
                           }
                         }}
                       >
@@ -535,22 +529,21 @@ const DetailModal = ({ info }) => {
                         </CommentWriter>
                         <Comment>{comments.contents}</Comment>
                       </Nickname>
-                          {loginInfo && comments.writer.id === loginInfo.id &&
-                            <CommentOptions className="options">
-                              <OptionIcon
-                                name="x"
-                                onClick={() => {
-                                    if(window.confirm("해당 댓글을 삭제하시겠습니까?")){
-                                      hadleDeleteComment(comments.id);
-                                    }
-                                    else{
-
-                                    }
-                                  } 
-                                }
-                              />
-                            </CommentOptions>
-                          }
+                      {loginInfo && comments.writer.id === loginInfo.id && (
+                        <CommentOptions className="options">
+                          <OptionIcon
+                            name="x"
+                            onClick={() => {
+                              if (
+                                window.confirm("해당 댓글을 삭제하시겠습니까?")
+                              ) {
+                                hadleDeleteComment(comments.id);
+                              } else {
+                              }
+                            }}
+                          />
+                        </CommentOptions>
+                      )}
                     </CommentBox>
                   ))}
                 </PopComment>

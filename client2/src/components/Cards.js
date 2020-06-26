@@ -67,8 +67,8 @@ const BgDesc = styled.div`
   line-height: 1.4;
   overflow-y: scroll;
   opacity: 1 !important;
-  ::-webkit-scrollbar{
-    display:none;
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -122,27 +122,39 @@ const PopupModal = styled(Modal)`
 `;
 
 const MultipleIcon = styled(Icon)`
-  z-index:3;
-  position:absolute;
-  top:10px;
-  right:5px;
+  z-index: 3;
+  position: absolute;
+  top: 10px;
+  right: 5px;
 `;
 
 const LikesAndComments = styled.div`
-  color:rgba(0,0,0,.6);
-  margin-bottom:10px;
-  span{
-    margin-right:5px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 10px;
+  span {
+    margin-right: 5px;
   }
 `;
 
 const Like = styled(Icon)`
-  &&&{
-    color: ${(props) => (props.isliked === "true" ? "rgba(254, 136, 0, 1)" : "rgba(0, 0, 0, 0.6)")};
+  &&& {
+    color: ${(props) =>
+      props.isliked === "true" ? "rgba(254, 136, 0, 1)" : "rgba(0, 0, 0, 0.6)"};
   }
 `;
 
-const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength, likes, comments }) => {
+const Cards = ({
+  id,
+  imgs,
+  title,
+  tags,
+  contents,
+  price,
+  writer,
+  imgsLength,
+  likes,
+  comments,
+}) => {
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(null);
   const [isLiked, setLike] = useState("false");
@@ -159,15 +171,15 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength, lik
   }, []);
 
   useEffect(() => {
-    if(likes && loginInfo){
-      for (let key in likes){
-        if(likes[key].user.id === loginInfo.id){
+    if (likes && loginInfo) {
+      for (let key in likes) {
+        if (likes[key].user.id === loginInfo.id) {
           setLike("true");
           return;
         }
       }
     }
-  },[likes, loginInfo])
+  }, [likes, loginInfo]);
   return (
     <>
       <Container onClick={handleClick}>
@@ -175,17 +187,17 @@ const Cards = ({ id, imgs, title, tags, contents, price, writer, imgsLength, lik
           <BgTitle>{title}</BgTitle>
           <BgDesc id={id}></BgDesc>
         </Bg>
-        {
-          imgsLength > 1 && <MultipleIcon inverted name='clone' />
-        }
+        {imgsLength > 1 && <MultipleIcon inverted name="clone" />}
         <Img path={imgs} />
         <Title>{title}</Title>
         <Info>
           <Price>{price}원</Price>
           <Writer>{writer}</Writer>
           <LikesAndComments>
-            <Like name="like" isliked={isLiked} /><span>{likes.length}</span>
-            <Icon name="comment" /><span>{comments}</span>
+            <Like name="like" isliked={isLiked} />
+            <span>{likes.length}</span>
+            <Icon name="comment" />
+            <span>{comments}</span>
           </LikesAndComments>
           <HashTags>
             {tags.map((tag, index) => (

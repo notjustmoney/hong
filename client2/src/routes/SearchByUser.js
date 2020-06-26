@@ -15,9 +15,8 @@ const Grid = styled.div`
 
 const WhoIsUser = styled.div`
   font-size: 2em;
-  margin:20px 10px;
+  margin: 20px 10px;
 `;
-
 
 export default withRouter((props) => {
   const [loading, setLoading] = useState(true);
@@ -30,55 +29,58 @@ export default withRouter((props) => {
     setUserId(urlParams.get("userId"));
   }, []);
   useEffect(() => {
-    if(userId){
+    if (userId) {
       handleGetUserPost();
     }
-  },[userId])
+  }, [userId]);
 
   const handleGetUserPost = async () => {
-    try{
+    try {
       const resp = await apis.getPostsByUser(userId);
       const reverse = resp.data.reverse();
       setPosts(reverse);
-      
-    }catch(e){
+    } catch (e) {
       console.log(e);
       setError(e.response.data.message);
-      
-    }finally{
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
-  return (<>
-    {loading ? (
-      <Loader active />
-    ) : (
+  return (
     <>
-      {error && <div>{error}</div>}
-      {posts && <WhoIsUser>{posts[0].writer.profile.nickname}님의 게시글</WhoIsUser>}
-      <Grid>
-        {posts && posts.map((post, index) =>
-          post === null ? (
-              <div key={index}></div>
-            ) : (
-              <Cards
-                key={post.id}
-                id={post.id}
-                title={post.title}
-                contents={post.contents}
-                imgs={`http://www.hongsick.com${post.imgs[0]}`}
-                tags={post.tags}
-                price={post.price}
-                writer={post.writer.profile.nickname}
-                imgsLength={post.imgs.length}
-                likes={post.likes}
-                comments={post.comments.length}
-              />
-            )
-        )}
-      </Grid>
-      </>
-    )}
-  </>);
+      {loading ? (
+        <Loader active />
+      ) : (
+        <>
+          {error && <div>{error}</div>}
+          {posts && (
+            <WhoIsUser>{posts[0].writer.profile.nickname}님의 게시글</WhoIsUser>
+          )}
+          <Grid>
+            {posts &&
+              posts.map((post, index) =>
+                post === null ? (
+                  <div key={index}></div>
+                ) : (
+                  <Cards
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    contents={post.contents}
+                    imgs={`http://www.hongsick.com${post.imgs[0]}`}
+                    tags={post.tags}
+                    price={post.price}
+                    writer={post.writer.profile.nickname}
+                    imgsLength={post.imgs.length}
+                    likes={post.likes}
+                    comments={post.comments.length}
+                  />
+                )
+              )}
+          </Grid>
+        </>
+      )}
+    </>
+  );
 });

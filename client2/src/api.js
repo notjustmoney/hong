@@ -48,6 +48,12 @@ const apis = {
     axios.get(`http://www.hongsick.com/api/search/tag/`, {
       params: { name },
     }),
+  searchByTags: (qs) =>
+    axios.get(`http://www.hongsick.com/api/tags/`, {
+      params: {
+        tags: qs,
+      },
+    }),
   likes: (postId, userId, access) =>
     axios.post(
       `http://www.hongsick.com/api/like/`,
