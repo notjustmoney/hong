@@ -1,7 +1,7 @@
 import axios from "axios";
 
+// axios 요청 모듈화
 const apis = {
-  // body로 넣어주기
   authMe: (userId, access) =>
     axios.get(`http://www.hongsick.com/api/auth/me/${userId}`, {
       headers: {
@@ -42,17 +42,11 @@ const apis = {
         userId,
       },
     }),
-  searchByTag: (id) =>
-    axios.get(`http://www.hongsick.com/api/search/tag/${id}`),
+  searchByTags: (tags) =>
+    axios.get(`http://www.hongsick.com/api/search/tags?tags=${tags}`),
   searchByTagName: (name) =>
     axios.get(`http://www.hongsick.com/api/search/tag/`, {
       params: { name },
-    }),
-  searchByTags: (qs) =>
-    axios.get(`http://www.hongsick.com/api/tags/`, {
-      params: {
-        tags: qs,
-      },
     }),
   likes: (postId, userId, access) =>
     axios.post(

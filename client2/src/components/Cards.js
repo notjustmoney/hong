@@ -6,13 +6,14 @@ import DetailModal from "../components/DetailModal";
 import { useSelector } from "react-redux";
 import "./card.css";
 
+// Main 컴포넌트에서 받아온 props를 출력
+
 const Container = styled.div`
   width: 300px;
   display: flex;
   flex-direction: column;
   position: relative;
   background-color: white;
-  /*font-family: "Song Myung", serif;*/
   font-family: --apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);

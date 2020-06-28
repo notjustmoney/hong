@@ -9,8 +9,9 @@ import UserInfo from "../routes/UserInfo";
 import Find from "../components/Findpw";
 import Search from "../routes/Search";
 import Header from "../components/Header";
-import SearchByTags from "../routes/SearchByTags";
 
+//react-router-dom을 통해 경로에 따른 렌더링을 해주는 라우터입니다.
+//헤더는 index페이지와 contact페이지를 제외하고 모든 컴포넌트에서 렌더링 됩니다.
 export default () => (
   <Router>
     <Route

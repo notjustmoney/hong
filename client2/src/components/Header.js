@@ -9,8 +9,10 @@ import { useSelector, useDispatch } from "react-redux";
 import UserDropdown from "./UserDropdown";
 import apis from "../api";
 
+// 스크롤에 반응하는 헤더
+// 큰 헤더가 보이지 않게 되면 간축된 헤더가 나타남
+
 const Fixedheader = styled.div`
-  /*font-family: "Song Myung", serif;*/
   font-family: --apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   width: 100%;
@@ -168,6 +170,7 @@ export default withRouter(({ location: { pathname, search } }) => {
   const loginInfo = useSelector((state) => state.loginInfo);
   const uH = useHistory();
 
+  // 로컬스토리지에 유저 정보가 있는지 혹인
   const handleIsUser = async () => {
     const userId = window.localStorage.getItem("id");
     const access = window.localStorage.getItem("access_token");
@@ -176,6 +179,7 @@ export default withRouter(({ location: { pathname, search } }) => {
       const {
         data: { user },
       } = await apis.authMe(userId, access);
+      // 유저 정보가 있다면 redux 스토어에 저장
       dispatch(allActions.loginActions.loginUserSuccess(user));
     }
   };
@@ -204,10 +208,12 @@ export default withRouter(({ location: { pathname, search } }) => {
     }
   };
 
+  // 스크롤 시 헤더의 정보를 저장하는 calculations 업데이트
   const handleUpdate = (e, { calculations }) => {
     setCalcul(calculations);
   };
 
+  // access token 만료 시 refresh token을 발급하기 위한 작업
   const handleValideToken = async () => {
     const userId = window.localStorage.getItem("id");
     const access = window.localStorage.getItem("access_token");
