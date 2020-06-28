@@ -1,3 +1,4 @@
+// AppError class inherited Javascript Error class
 class AppError extends Error {
   constructor(statusCode, message, isOperational = true, stack = '') {
     super(message);
